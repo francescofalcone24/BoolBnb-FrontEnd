@@ -16,8 +16,16 @@ export default {
     data() {
         return {
             // store,
+           
+
+
 
         }
+    },
+    methods: {
+       
+
+		
     },
 
     mounted() {
@@ -31,7 +39,7 @@ export default {
 
 <template>
     <h5 class="text-center">Hompage</h5>
-
+    <input type="text">
 </template>
 
 <style scoped></style>
