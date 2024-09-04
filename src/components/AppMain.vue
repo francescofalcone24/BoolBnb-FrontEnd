@@ -1,6 +1,6 @@
 <script>
 import AppHompage from '../pages/AppHompage.vue'
-import store from './data/store.js';
+import store from '../data/store';
 import axios from "axios";
 import { RouterView } from 'vue-router';
 export default {
