@@ -1,8 +1,8 @@
 <script>
 import AppHompage from '../pages/AppHompage.vue'
-// import store from './data/store.js';
+import store from './data/store.js';
 import axios from "axios";
-// import { RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 export default {
 
     name: 'AppMain',
@@ -16,7 +16,7 @@ export default {
 
     data() {
         return {
-            // store,
+            store,
 
         }
     },
@@ -33,7 +33,7 @@ export default {
 
 <template>
 
-    <AppHompage />
+    <router-view></router-view>
 
 </template>
 

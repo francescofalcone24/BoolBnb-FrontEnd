@@ -5,7 +5,6 @@ import AppFooter from './components/AppFooter.vue'
 
 // import store from './data/store.js';
 import axios from "axios";
-// import { RouterView } from 'vue-router';
 export default {
 
   name: 'App',
