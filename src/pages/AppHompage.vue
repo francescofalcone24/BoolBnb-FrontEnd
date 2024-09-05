@@ -21,36 +21,91 @@ export default {
             room: null,
             bed: null,
             search_input: null,
-            antonioIncazzato: []
+            antonioIncazzato: [],
+
+            lat_nap :  40.851775,
+            lon_nap : 14.268124,
+
+            lat_rom : 41.090057740987575,
+            lon_rom : 14.335063267776684,
+            unita : "kilometers"
+            
         }
     },
     methods: {
         getInputSearch(value) {
             this.search_input = value.target.value
-            console.log(this.search_input)
+
         },
 
         getSuite() {
+
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
+                console.log(response, 'questa è la chiamata')
+
                 for (let index = 0; index <= response.data.results.data.length - 1; index++) {
                     let suite_address = response.data.results.data[index].address
+
                     let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
                     let suite_room = response.data.results.data[index].room
                     let bed_room = response.data.results.data[index].bed
 
-                    if (country_filter && suite_room == this.room && bed_room == this.bed) {
 
-                        console.log(response.data.results.data[index])
-                        this.suite.push(response.data.results.data[index])
+                    let filter = this.getDistanceBetweenPoints(response.data.results.data[index].latitude, response.data.results.data[index].longitude, this.lat_rom, this.lon_rom, this.unita )
+                    console.log(filter)
+
+
+                    if(filter <= 30){
+                        if (this.room != null && this.bed != null) {
+                            this.suite = []
+                            if (country_filter && suite_room >= this.room && bed_room >= this.bed) {
+                                console.log(response.data.results.data[index], 'controllo su tutti e 3')
+                                this.suite.push(response.data.results.data[index])
+                            }
+                            this.room = null
+                            this.bed = null
+                        }
+                        else if (this.room != null || this.bed != null) {
+                            this.suite = []
+                            if (country_filter && suite_room >= this.room && bed_room >= this.bed) {
+                                console.log(response.data.results.data[index], 'controllo sulle stanze o letti')
+                                this.suite.push(response.data.results.data[index])
+                            }
+                            this.room = null
+                            this.bed = null
+                        }
+                        else if (country_filter) {
+                            
+
+                                this.suite = []
+                                console.log(response.data.results.data[index], 'if solo città')
+                                this.suite.push(response.data.results.data[index])
+                                this.room = null
+                                this.bed = null
+                            }
                     }
                 }
             })
         },
+                        getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
+                        let theta = longitude1 - longitude2;
+                        let distance = 60 * 1.1515 * (180 / Math.PI) * Math.acos(
+                            Math.sin(latitude1 * (Math.PI / 180)) * Math.sin(latitude2 * (Math.PI / 180)) +
+                            Math.cos(latitude1 * (Math.PI / 180)) * Math.cos(latitude2 * (Math.PI / 180)) * Math.cos(theta * (Math.PI / 180))
+                        );
+                        if (unit == 'miles') {
+                            return Math.round(distance, 2);
+                        } else if (unit == 'kilometers') {
+                            return Math.round(distance * 1.609344, 2);
+                        }
+                    }
     },
 
-    mounted() {
 
-    }
+
+mounted() {
+    this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita )
+}
 
 
 }
@@ -68,11 +123,11 @@ export default {
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-3">
                             <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                                @input="getInputSearch">
+                                @input="getInputSearch" name="search_bar">
                         </div>
                         <div>
-                            <button class="btn btn-success search-btn me-3" type="submit"
-                                @click="getSuite()">Search</button>
+                            <button class="btn btn-success search-btn me-3" type="button"
+                                @click="getSuite">Search</button>
 
                             <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Filters
@@ -139,6 +194,7 @@ export default {
             </div>
         </div>
     </div>
+    <!--************************************* SEZIONE PER LE CARD **********************************************************-->
     <div>
         <ul v-for="element in suite">
             <li>
