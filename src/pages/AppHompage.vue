@@ -20,24 +20,28 @@ export default {
             searchBar: [],
             room: null,
             bed: null,
-            range: 7,
+            range: 35,
             search_input: null,
-            antonioIncazzato: [],
+            result_suggest: [],
+
+            base_url: "https://api.tomtom.com/search/2/search/",
 
 
-            lat_nap: 40.851775,
-            lon_nap: 14.268124,
+            // lat_nap: 0,
+            // lon_nap: 0,
 
-            lat_rom: 41.090057740987575,
-            lon_rom: 14.335063267776684,
+            lat_rom: 0,
+            lon_rom: 0,
             unita: "kilometers"
+
+
 
         }
     },
     methods: {
         getInputSearch(value) {
             this.search_input = value.target.value
-
+            this.autocomplete(this.search_input)
         },
 
         getSuite() {
@@ -48,7 +52,7 @@ export default {
                 for (let index = 0; index <= response.data.results.data.length - 1; index++) {
                     let suite_address = response.data.results.data[index].address
 
-                    let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
+                    // let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
                     let suite_room = response.data.results.data[index].room
                     let bed_room = response.data.results.data[index].bed
 
@@ -57,13 +61,13 @@ export default {
 
 
                     let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
-                    console.log(filter)
+                    console.log(filter_coordinate)
 
 
                     if (filter_coordinate <= this.range) {
                         if (this.room != null && this.bed != null) {
                             this.suite = []
-                            if (country_filter && suite_room >= this.room && bed_room >= this.bed) {
+                            if (suite_room >= this.room && bed_room >= this.bed) {
                                 console.log(response.data.results.data[index], 'controllo su tutti e 3')
                                 this.suite.push(response.data.results.data[index])
                             }
@@ -72,22 +76,22 @@ export default {
                         }
                         else if (this.room != null || this.bed != null) {
                             this.suite = []
-                            if (country_filter && suite_room >= this.room && bed_room >= this.bed) {
+                            if (suite_room >= this.room && bed_room >= this.bed) {
                                 console.log(response.data.results.data[index], 'controllo sulle stanze o letti')
                                 this.suite.push(response.data.results.data[index])
                             }
                             this.room = null
                             this.bed = null
                         }
-                        else if (country_filter) {
+                        // else if (country_filter) {
 
 
-                            this.suite = []
-                            console.log(response.data.results.data[index], 'if solo città')
-                            this.suite.push(response.data.results.data[index])
-                            this.room = null
-                            this.bed = null
-                        }
+                        //     this.suite = []
+                        //     console.log(response.data.results.data[index], 'if solo città')
+                        //     this.suite.push(response.data.results.data[index])
+                        //     this.room = null
+                        //     this.bed = null
+                        // }
                     }
                 }
             })
@@ -103,6 +107,48 @@ export default {
             } else if (unit == 'kilometers') {
                 return Math.round(distance * 1.609344, 2);
             }
+        },
+
+        //**************************************** */
+        autocomplete(value) {
+            // this.getInputSearch()
+            const base_url = "https://api.tomtom.com/search/2/search/"
+            // risultati.innerHTML = null;
+
+            // let codifica = value.target.value
+            console.log('diocane')
+            let mid_url = value.replace(/ /g, '%20');
+            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=1&countrySet={IT}`
+
+            delete axios.defaults.headers.common['X-Requested-With'];
+
+            axios.get(base_url + mid_url + apiKey).then(response => {
+
+                this.result_suggest = response.data.results;
+                console.log(this.result_suggest[0].position.lat)
+                this.lat_rom = this.result_suggest[0].position.lat
+
+                console.log(this.result_suggest[0].position.lon)
+                this.lon_rom = this.result_suggest[0].position.lon
+
+
+                // for (let index = 0; index <= result_suggest.length - 1; index++) {
+                //     let suggest = result_suggest[index].address;
+                //     let address_suggest = document.createElement("li");
+
+                //     address_suggest.classList.add("list-group-item");
+                //     address_suggest.classList.add("list-group-item-action");
+                //     address_suggest.classList.add("list-group-item");
+                //     address_suggest.innerHTML = `${suggest.freeformAddress}`;
+
+                //     address_suggest.addEventListener('click', function () {
+                //         input.value = address_suggest.innerHTML;
+                //         risultati.innerHTML = null;
+                //     })
+                //     risultati.append(address_suggest);
+                // }
+
+            });
         }
     },
 
@@ -151,7 +197,7 @@ export default {
                             <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
                                 <div class="offcanvas-item mx-5">
                                     <label for="customRange1" class="form-label">Km radius</label>
-                                    <input type="range" min="0" max="20" v-model=range class="form-range"
+                                    <input type="range" min="0" max="50" v-model=range class="form-range"
                                         id="customRange1">
                                 </div>
                                 <div class="offcanvas-item mx-5">
@@ -203,13 +249,13 @@ export default {
         </div>
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
-    <div>
-        <ul v-for="element in suite">
+    <!-- <div>
+        <ul v-for="element in result_suggest">
             <li>
-                {{ element.address }}
+                {{ element }}
             </li>
         </ul>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
