@@ -1,8 +1,8 @@
 <script>
 import AppHeader from './components/AppHeader.vue'
-// import AppMain from './components/AppMain.vue'
-// import AppFooter from './components/AppFooter.vue'
-// import AppHompage from './pages/AppHompage.vue';
+import AppMain from './components/AppMain.vue'
+import AppFooter from './components/AppFooter.vue'
+import AppHompage from './pages/AppHompage.vue';
 
 // import store from './data/store.js';
 import axios from "axios";
@@ -14,9 +14,9 @@ export default {
   components: {
 
     AppHeader,
-    // AppMain,
-    // AppFooter,
-    // AppHompage
+    AppMain,
+    AppFooter,
+    AppHompage
 
   },
 
@@ -38,10 +38,10 @@ export default {
 
 <template>
   <AppHeader />
-  <!-- <AppMain />
+  <AppMain />
   <AppFooter />
-  <AppHompage/> -->
-  <router-view></router-view>
+  <AppHompage />
+  <!-- <router-view></router-view> -->
 
 </template>
 
