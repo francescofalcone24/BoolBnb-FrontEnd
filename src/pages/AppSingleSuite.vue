@@ -49,7 +49,7 @@ export default {
 
 <template>
 
-    <div class="container text-center p-0" v-if="store.singleSuite">
+    <!-- <div class="container text-center p-0" v-if="store.singleSuite">
 
 
         <div class="card mb-3 p-5">
@@ -71,12 +71,22 @@ export default {
 
         </div>
 
+    </div> -->
+    <div class="container d-flex py-2 justify-content-between col-12" v-if="store.singleSuite">
+        
+        <img v-if="!store.singleSuite.img.startsWith('http')" style="height: 50rem;"
+        :src="store.localHostUrl + '/storage/' + store.singleSuite.img" class=" w-50" alt="...">
+        
+        <img v-else="" :src="store.singleSuite.img" class=" w-50" alt="..." style="height: 50rem;">
+        <div class="d-flex flex-column justify-content-center">
+            <h5 class="card-title">{{ store.singleSuite.title }}</h5>
+            <p class="card-text">{{ store.singleSuite.address }}</p>
+            <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">back to the list</router-link>
+
+        </div>
     </div>
 </template>
 
 <style scoped>
-* {
-    background-color: #222;
-    color: gray;
-}
+
 </style>

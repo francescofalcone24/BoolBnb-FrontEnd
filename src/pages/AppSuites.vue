@@ -33,19 +33,20 @@ export default {
 <template>
 
     <div class="container">
-        <div class="row">
-            <div v-for="suite in store.suite" class="col-12 col-sm-6 col-md-4 col-xl-3">
-                <div class="card my-3">
+        <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
+            <div v-for="suite in store.suite" class="col-3 myBorder">
+                <div class="card my-3 myBorder">
                     <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-                        class="card-img-top" alt="...">
+                        class="card-img-top h-100" alt="...">
 
-                    <img v-else="" :src="suite.img" class="card-img-top" alt="...">
-                    <h3>{{ suite.title }}</h3>
-                </div>
-                <div>
-                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                        class="btn btn-outline-primary mt-auto">more
-                        details</router-link>
+                    <img v-else="" :src="suite.img" class="card-img-top h-100" alt="...">
+                    <div class="card-body myBorder text-center">
+                        <h5 class="card-title ellipse py-1">{{ suite.title }}</h5>
+                        <p class="card-text ellipse">{{ suite.address }}</p>
+                        <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                            class="btn btn-outline-primary mt-auto">more
+                            details</router-link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,8 +55,14 @@ export default {
 </template>
 
 <style scoped>
-* {
-    background-color: #222;
-    color: gray;
+.ellipse{
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
+.myBorder{
+    border: 0px;
+}
+
 </style>
