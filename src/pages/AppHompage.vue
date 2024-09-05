@@ -20,18 +20,18 @@ export default {
             searchBar: [],
             room: null,
             bed: null,
-            range : 7,
+            range: 7,
             search_input: null,
             antonioIncazzato: [],
 
 
-            lat_nap :  40.851775,
-            lon_nap : 14.268124,
+            lat_nap: 40.851775,
+            lon_nap: 14.268124,
 
-            lat_rom : 41.090057740987575,
-            lon_rom : 14.335063267776684,
-            unita : "kilometers"
-            
+            lat_rom: 41.090057740987575,
+            lon_rom: 14.335063267776684,
+            unita: "kilometers"
+
         }
     },
     methods: {
@@ -56,11 +56,11 @@ export default {
                     let lng_input = response.data.results.data[index].longitude
 
 
-                    let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input , this.lat_rom, this.lon_rom, this.unita )
+                    let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
                     console.log(filter)
 
 
-                    if(filter_coordinate <= this.range){
+                    if (filter_coordinate <= this.range) {
                         if (this.room != null && this.bed != null) {
                             this.suite = []
                             if (country_filter && suite_room >= this.room && bed_room >= this.bed) {
@@ -80,37 +80,37 @@ export default {
                             this.bed = null
                         }
                         else if (country_filter) {
-                            
 
-                                this.suite = []
-                                console.log(response.data.results.data[index], 'if solo città')
-                                this.suite.push(response.data.results.data[index])
-                                this.room = null
-                                this.bed = null
-                            }
+
+                            this.suite = []
+                            console.log(response.data.results.data[index], 'if solo città')
+                            this.suite.push(response.data.results.data[index])
+                            this.room = null
+                            this.bed = null
+                        }
                     }
                 }
             })
         },
-                        getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
-                        let theta = longitude1 - longitude2;
-                        let distance = 60 * 1.1515 * (180 / Math.PI) * Math.acos(
-                            Math.sin(latitude1 * (Math.PI / 180)) * Math.sin(latitude2 * (Math.PI / 180)) +
-                            Math.cos(latitude1 * (Math.PI / 180)) * Math.cos(latitude2 * (Math.PI / 180)) * Math.cos(theta * (Math.PI / 180))
-                        );
-                        if (unit == 'miles') {
-                            return Math.round(distance, 2);
-                        } else if (unit == 'kilometers') {
-                            return Math.round(distance * 1.609344, 2);
-                        }
-                    }
+        getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
+            let theta = longitude1 - longitude2;
+            let distance = 60 * 1.1515 * (180 / Math.PI) * Math.acos(
+                Math.sin(latitude1 * (Math.PI / 180)) * Math.sin(latitude2 * (Math.PI / 180)) +
+                Math.cos(latitude1 * (Math.PI / 180)) * Math.cos(latitude2 * (Math.PI / 180)) * Math.cos(theta * (Math.PI / 180))
+            );
+            if (unit == 'miles') {
+                return Math.round(distance, 2);
+            } else if (unit == 'kilometers') {
+                return Math.round(distance * 1.609344, 2);
+            }
+        }
     },
 
 
 
-mounted() {
-    this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita )
-}
+    mounted() {
+        this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita)
+    }
 
 
 }
@@ -131,8 +131,10 @@ mounted() {
                                 @input="getInputSearch" name="search_bar" required>
                         </div>
                         <div>
-                            <button class="btn btn-success search-btn me-3" type="button"
-                                @click="getSuite">Search</button>
+                            <!-- <button class="btn btn-success search-btn me-3" type="button"
+                                @click="getSuite">Search</button> -->
+                            <button class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
+                                    :to="{ name: 'suites' }" class="nav-link text-light">Search</router-link></button>
 
                             <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Filters
@@ -149,7 +151,8 @@ mounted() {
                             <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
                                 <div class="offcanvas-item mx-5">
                                     <label for="customRange1" class="form-label">Km radius</label>
-                                    <input type="range" min="0" max="20" v-model=range  class="form-range" id="customRange1">
+                                    <input type="range" min="0" max="20" v-model=range class="form-range"
+                                        id="customRange1">
                                 </div>
                                 <div class="offcanvas-item mx-5">
                                     <label for="suite_room" class="form-label">Rooms:</label>

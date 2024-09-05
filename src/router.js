@@ -17,7 +17,7 @@ const router = createRouter({
         },
         {
             path: '/suites',
-            name: 'sutes all',
+            name: 'suites',
             component: AppSuites
         },
         // {
