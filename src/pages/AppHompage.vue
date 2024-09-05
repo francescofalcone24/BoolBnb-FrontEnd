@@ -39,7 +39,7 @@ export default {
 
 <template>
     <h5 class="text-center">Hompage</h5>
-    <input type="text">
+    <!-- <input type="text"> -->
 </template>
 
 <style scoped></style>
