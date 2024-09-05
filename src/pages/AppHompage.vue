@@ -20,7 +20,7 @@ export default {
             searchBar: [],
             room: null,
             bed: null,
-            range: 35,
+            range: 20,
             search_input: null,
             result_suggest: [],
 
@@ -48,50 +48,61 @@ export default {
             console.log(this.range, 'questo è il range')
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
                 console.log(response, 'questa è la chiamata')
-
+                this.suite = []
                 for (let index = 0; index <= response.data.results.data.length - 1; index++) {
-                    let suite_address = response.data.results.data[index].address
+                    // let suite_address = response.data.results.data[index].address
 
                     // let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
                     let suite_room = response.data.results.data[index].room
                     let bed_room = response.data.results.data[index].bed
-
+                   
                     let lat_input = response.data.results.data[index].latitude
                     let lng_input = response.data.results.data[index].longitude
 
+                   
+                    
 
                     let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
-                    console.log(filter_coordinate)
-
+                    // if(filter_coordinate < this.range){
+                    //     console.log(filter_coordinate ,'sono nell if')
+                    //     console.log(lat_input, "coordinate appartamento")
+                    //     console.log(lng_input, "coordinate appartamento")
+                    //     console.log(this.lat_rom, "coordinate napoli")
+                    //     console.log(this.lon_rom, "coordinate napoli")
+                    // }
+                    
 
                     if (filter_coordinate <= this.range) {
-                        if (this.room != null && this.bed != null) {
-                            this.suite = []
-                            if (suite_room >= this.room && bed_room >= this.bed) {
-                                console.log(response.data.results.data[index], 'controllo su tutti e 3')
-                                this.suite.push(response.data.results.data[index])
-                            }
+                        if (this.room != null && this.suite_room >= this.room && this.bed != null && bed_room >= this.bed) {
+                            console.log(suite_room >= this.room,'sono nel 1' )
+                            this.suite.push(response.data.results.data[index])
+                            console.log(this.suite)
+                        }
+
+                        else if (this.room != null && this.suite_room >= this.room || this.bed != null && this.suite_bed >= this.bed ) {
+                            this.suite.push(response.data.results.data[index])
+                            console.log(this.room, ' sono nell 2 ')
+                            this.room = null
+                            this.bed = null
+                            // if(suite_room >= this.room  ||  bed_room >= this.room ){
+                            //     console.log('sono nel sotto if')
+                            //     this.suite.push(response.data.results.data[index])
+                            //     this.room = null
+                            //     this.bed = null
+                            // }
+                        }
+                        else if (this.room == null && this.bed == null){
+                            this.suite.push(response.data.results.data[index])
+                            console.log(this.suite, 'sono nel 3')
                             this.room = null
                             this.bed = null
                         }
-                        else if (this.room != null || this.bed != null) {
-                            this.suite = []
-                            if (suite_room >= this.room && bed_room >= this.bed) {
-                                console.log(response.data.results.data[index], 'controllo sulle stanze o letti')
-                                this.suite.push(response.data.results.data[index])
-                            }
+                        else{
+                            this.suite.push(response.data.results.data[index])
+                            console.log(this.suite, 'sononel 4')
                             this.room = null
                             this.bed = null
                         }
-                        // else if (country_filter) {
-
-
-                        //     this.suite = []
-                        //     console.log(response.data.results.data[index], 'if solo città')
-                        //     this.suite.push(response.data.results.data[index])
-                        //     this.room = null
-                        //     this.bed = null
-                        // }
                     }
                 }
             })
@@ -111,11 +122,9 @@ export default {
 
         //**************************************** */
         autocomplete(value) {
-            // this.getInputSearch()
-            const base_url = "https://api.tomtom.com/search/2/search/"
-            // risultati.innerHTML = null;
 
-            // let codifica = value.target.value
+            const base_url = "https://api.tomtom.com/search/2/search/"
+         
             console.log('diocane')
             let mid_url = value.replace(/ /g, '%20');
             const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=1&countrySet={IT}`
@@ -123,31 +132,12 @@ export default {
             delete axios.defaults.headers.common['X-Requested-With'];
 
             axios.get(base_url + mid_url + apiKey).then(response => {
-
                 this.result_suggest = response.data.results;
                 console.log(this.result_suggest[0].position.lat)
                 this.lat_rom = this.result_suggest[0].position.lat
 
                 console.log(this.result_suggest[0].position.lon)
                 this.lon_rom = this.result_suggest[0].position.lon
-
-
-                // for (let index = 0; index <= result_suggest.length - 1; index++) {
-                //     let suggest = result_suggest[index].address;
-                //     let address_suggest = document.createElement("li");
-
-                //     address_suggest.classList.add("list-group-item");
-                //     address_suggest.classList.add("list-group-item-action");
-                //     address_suggest.classList.add("list-group-item");
-                //     address_suggest.innerHTML = `${suggest.freeformAddress}`;
-
-                //     address_suggest.addEventListener('click', function () {
-                //         input.value = address_suggest.innerHTML;
-                //         risultati.innerHTML = null;
-                //     })
-                //     risultati.append(address_suggest);
-                // }
-
             });
         }
     },
@@ -194,7 +184,7 @@ export default {
                             </div>
                             <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
                                 <div class="offcanvas-item mx-5">
-                                    <label for="customRange1" class="form-label">Km radius</label>
+                                    <label for="customRange1" class="form-label">Km radius {{ this.range }}</label>
                                     <input type="range" min="0" max="50" v-model=range class="form-range"
                                         id="customRange1">
                                 </div>
@@ -209,7 +199,7 @@ export default {
                                         min="1" max="20" v-model=bed>
                                 </div>
 
-                                <div>
+                                <!-- <div>
                                     <div class="form-check mx-5">
                                         <label for="services">Services:</label>
                                         <div class="d-flex flex-column flex-wrap ">
@@ -237,7 +227,7 @@ export default {
                                         </div>
 
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -247,13 +237,13 @@ export default {
         </div>
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
-    <!-- <div>
-        <ul v-for="element in result_suggest">
-            <li>
-                {{ element }}
+    <div class="container">
+        <ul v-for="element in suite" class="d-flex">
+            <li class="col-4">
+                {{ element.address }}
             </li>
         </ul>
-    </div> -->
+    </div>
 </template>
 
 <style scoped>
