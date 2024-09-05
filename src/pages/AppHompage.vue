@@ -20,8 +20,10 @@ export default {
             searchBar: [],
             room: null,
             bed: null,
+            range : 7,
             search_input: null,
             antonioIncazzato: [],
+
 
             lat_nap :  40.851775,
             lon_nap : 14.268124,
@@ -39,7 +41,7 @@ export default {
         },
 
         getSuite() {
-
+            console.log(this.range, 'questo è il range')
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
                 console.log(response, 'questa è la chiamata')
 
@@ -50,12 +52,15 @@ export default {
                     let suite_room = response.data.results.data[index].room
                     let bed_room = response.data.results.data[index].bed
 
+                    let lat_input = response.data.results.data[index].latitude
+                    let lng_input = response.data.results.data[index].longitude
 
-                    let filter = this.getDistanceBetweenPoints(response.data.results.data[index].latitude, response.data.results.data[index].longitude, this.lat_rom, this.lon_rom, this.unita )
+
+                    let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input , this.lat_rom, this.lon_rom, this.unita )
                     console.log(filter)
 
 
-                    if(filter <= 30){
+                    if(filter_coordinate <= this.range){
                         if (this.room != null && this.bed != null) {
                             this.suite = []
                             if (country_filter && suite_room >= this.room && bed_room >= this.bed) {
@@ -123,7 +128,7 @@ mounted() {
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-3">
                             <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                                @input="getInputSearch" name="search_bar">
+                                @input="getInputSearch" name="search_bar" required>
                         </div>
                         <div>
                             <button class="btn btn-success search-btn me-3" type="button"
@@ -144,7 +149,7 @@ mounted() {
                             <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
                                 <div class="offcanvas-item mx-5">
                                     <label for="customRange1" class="form-label">Km radius</label>
-                                    <input type="range" class="form-range" id="customRange1">
+                                    <input type="range" min="0" max="20" v-model=range  class="form-range" id="customRange1">
                                 </div>
                                 <div class="offcanvas-item mx-5">
                                     <label for="suite_room" class="form-label">Rooms:</label>
