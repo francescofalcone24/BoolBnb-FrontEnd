@@ -18,8 +18,8 @@ export default {
             store,
             suite: [],
             searchBar: [],
-            room: null,
-            bed: null,
+            room: 0,
+            bed: 0,
             range: 20,
             search_input: null,
             result_suggest: [],
@@ -48,7 +48,7 @@ export default {
             console.log(this.range, 'questo è il range')
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
                 console.log(response, 'questa è la chiamata')
-                this.suite = []
+                this.store.suite = []
                 for (let index = 0; index <= response.data.results.data.length - 1; index++) {
                     // let suite_address = response.data.results.data[index].address
 
@@ -71,37 +71,46 @@ export default {
                     //     console.log(this.lon_rom, "coordinate napoli")
                     // }
                     
-
+                    
                     if (filter_coordinate <= this.range) {
-                        if (this.room != null && this.suite_room >= this.room && this.bed != null && bed_room >= this.bed) {
-                            console.log(suite_room >= this.room,'sono nel 1' )
-                            this.suite.push(response.data.results.data[index])
-                            console.log(this.suite)
-                        }
+                        // if (this.room != null && this.bed != null) {
+                           
+                        //     if(suite_room >= this.room && bed_room >= this.bed){
+                        //         console.log('sono con la &&')
+                        //         console.log(suite_room >= this.room,'se io ho messo letti e stanze' )
+                        //         this.suite.push(response.data.results.data[index])
+                        //         console.log(this.suite)
+                        //         this.bed = null
+                        //         this.room = null
+                        //     }
 
-                        else if (this.room != null && this.suite_room >= this.room || this.bed != null && this.suite_bed >= this.bed ) {
-                            this.suite.push(response.data.results.data[index])
-                            console.log(this.room, ' sono nell 2 ')
-                            this.room = null
-                            this.bed = null
-                            // if(suite_room >= this.room  ||  bed_room >= this.room ){
-                            //     console.log('sono nel sotto if')
-                            //     this.suite.push(response.data.results.data[index])
-                            //     this.room = null
-                            //     this.bed = null
-                            // }
-                        }
-                        else if (this.room == null && this.bed == null){
-                            this.suite.push(response.data.results.data[index])
-                            console.log(this.suite, 'sono nel 3')
-                            this.room = null
-                            this.bed = null
-                        }
-                        else{
-                            this.suite.push(response.data.results.data[index])
-                            console.log(this.suite, 'sononel 4')
-                            this.room = null
-                            this.bed = null
+                        // }else if(this.room != null || this.bed != null){
+                        //     if(suite_room >= this.room || bed_room == this.bed){
+                        //         console.log('sono con ||')
+                        //         console.log(suite_room >= this.room,'se ho le stanze soltanto' )
+                        //         this.suite.push(response.data.results.data[index])
+                        //         console.log(this.suite)
+                        //         this.bed = null
+                        //         this.room = null
+                        //     }
+                        //     else if(suite_room == this.room || bed_room >= this.bed){
+                        //         console.log('sono con ||')
+                        //         console.log(suite_room >= this.room,'se ho i letti soltanto' )
+                        //         this.suite.push(response.data.results.data[index])
+                        //         console.log(this.suite)
+                        //         this.bed = null
+                        //         this.room = null
+                        //     } else if(this.room == null && this.bed == null){
+                        //         console.log('ho solo le cooordinate')
+                        //         this.bed = null
+                        //         this.room = null
+                        //     }
+                        //}
+                        if((this.room != 0 && this.bed != 0)||(this.room != 0 || this.bed != 0)){
+                            if(suite_room >= this.room && bed_room >= this.bed){
+                                console.log(response.data.results.data[index])
+                                this.store.suite.push( response.data.results.data[index])
+                            }
                         }
                     }
                 }
