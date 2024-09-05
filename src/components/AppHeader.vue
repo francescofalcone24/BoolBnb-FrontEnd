@@ -1,6 +1,7 @@
 <script>
 import store from '../data/store';
 import axios from "axios";
+import { RouterLink, RouterView } from 'vue-router';
 
 export default {
 
