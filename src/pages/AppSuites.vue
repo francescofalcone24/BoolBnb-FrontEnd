@@ -34,8 +34,12 @@ export default {
 
     <div class="container">
         <div class="row">
-            <div v-for="suite in store.suite" class="col-3">
-                <div class="card">
+            <div v-for="suite in store.suite" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                <div class="card my-3">
+                    <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                        class="card-img-top" alt="...">
+
+                    <img v-else="" :src="suite.img" class="card-img-top" alt="...">
                     <h3>{{ suite.title }}</h3>
                 </div>
                 <div>
@@ -46,6 +50,12 @@ export default {
             </div>
         </div>
     </div>
+
 </template>
 
-<style scoped></style>
+<style scoped>
+* {
+    background-color: #222;
+    color: gray;
+}
+</style>

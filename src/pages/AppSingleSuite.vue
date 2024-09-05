@@ -49,16 +49,34 @@ export default {
 
 <template>
 
-    <div class="container" v-if="store.singleSuite">
-        <div class="row">
-            <div class="col-3">
-                <div class="card">
-                    <h3>{{ store.singleSuite['title'] }}</h3>
+    <div class="container text-center p-0" v-if="store.singleSuite">
 
-                </div>
+
+        <div class="card mb-3 p-5">
+
+            <img v-if="!store.singleSuite.img.startsWith('http')" style="height: 50rem;"
+                :src="store.localHostUrl + '/storage/' + store.singleSuite.img" class="card-img-top" alt="...">
+
+            <img v-else="" :src="store.singleSuite.img" class="card-img-top" alt="..." style="height: 50rem;">
+
+
+            <div class=" card-body">
+
+                <h5 class="card-title">{{ store.singleSuite.title }}</h5>
+                <p class="card-text">{{ store.singleSuite.address }}</p>
+                <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">
+                    back to the list</router-link>
+
             </div>
+
         </div>
+
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+* {
+    background-color: #222;
+    color: gray;
+}
+</style>

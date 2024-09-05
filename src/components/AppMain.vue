@@ -59,28 +59,6 @@ export default {
 <template>
 
     <router-view></router-view>
-    <!-- <div>
-        <label for="search_bar">ricerca</label>
-        <input @input="getInputSearch" name="search_bar" type="text">
-    </div>
-    <div>
-        <label for="n_room">stanze</label>
-        <input name="n_room" v-model=room type="number">
-    </div>
-
-    <div>
-        <label for="n_bed">bed</label>
-        <input name="n_bed" v-model=bed type="number">
-    </div>
-
-    <button @click="getSuite"> cerca</button>
-    <div>
-        <ul v-for="element in suite">
-            <li>
-                {{ element.address }}
-            </li>
-        </ul>
-    </div> -->
 </template>
 
 <style scoped></style>

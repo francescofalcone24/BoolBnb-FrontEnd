@@ -1,7 +1,7 @@
 <script>
-import store from '../data/store';
+import store from '../data/store.js';
 import axios from "axios";
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 export default {
 
@@ -16,7 +16,7 @@ export default {
 
   data() {
     return {
-      // store,
+      store,
 
     }
   },
@@ -34,43 +34,20 @@ export default {
 <template>
 
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary my-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <nav class="navbar my-navbar p-0 m-0 align-items-center">
+    <div class="d-flex justify-content-between align-items-center container">
+      <div class="">
+        <img src="../assets/img/BoolBnB.png" class="my-navbar p-0 m-0" alt="">
+      </div>
+      <div class="">
+        <ul class="navbar-nav ms-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+
+            <router-link :to="{ name: 'home' }" class="nav-link text-dark"> Home </router-link>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
       </div>
+
     </div>
   </nav>
 

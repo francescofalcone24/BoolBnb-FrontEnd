@@ -167,8 +167,10 @@ export default {
                                 @input="getInputSearch" name="search_bar" required>
                         </div>
                         <div>
-                            <button class="btn btn-success search-btn me-3" type="button"
-                                @click="getSuite">Search</button>
+                            <!-- <button class="btn btn-success search-btn me-3" type="button"
+                                @click="getSuite">Search</button> -->
+                            <button class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
+                                    :to="{ name: 'suites' }" class="nav-link text-light">Search</router-link></button>
 
                             <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Filters
