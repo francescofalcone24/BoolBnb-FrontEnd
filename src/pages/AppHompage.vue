@@ -23,10 +23,10 @@ export default {
             range: 20,
             search_input: null,
             result_suggest: [],
-            suggest:[],
+            aka:[],
 
             base_url: "https://api.tomtom.com/search/2/search/",
-
+            pokemon:null,
 
             // lat_nap: 0,
             // lon_nap: 0,
@@ -46,9 +46,9 @@ export default {
         },
 
         getSuite() {
-            console.log(this.range, 'questo è il range')
+            // console.log(this.range, 'questo è il range')
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
-                console.log(response, 'questa è la chiamata')
+                // console.log(response, 'questa è la chiamata')
                 this.store.suite = []
                 for (let index = 0; index <= response.data.results.data.length - 1; index++) {
                     // let suite_address = response.data.results.data[index].address
@@ -60,53 +60,9 @@ export default {
                     let lat_input = response.data.results.data[index].latitude
                     let lng_input = response.data.results.data[index].longitude
 
-                   
-                    
-
                     let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
-                    // if(filter_coordinate < this.range){
-                    //     console.log(filter_coordinate ,'sono nell if')
-                    //     console.log(lat_input, "coordinate appartamento")
-                    //     console.log(lng_input, "coordinate appartamento")
-                    //     console.log(this.lat_rom, "coordinate napoli")
-                    //     console.log(this.lon_rom, "coordinate napoli")
-                    // }
-                    
-                    
+               
                     if (filter_coordinate <= this.range) {
-                        // if (this.room != null && this.bed != null) {
-                           
-                        //     if(suite_room >= this.room && bed_room >= this.bed){
-                        //         console.log('sono con la &&')
-                        //         console.log(suite_room >= this.room,'se io ho messo letti e stanze' )
-                        //         this.suite.push(response.data.results.data[index])
-                        //         console.log(this.suite)
-                        //         this.bed = null
-                        //         this.room = null
-                        //     }
-
-                        // }else if(this.room != null || this.bed != null){
-                        //     if(suite_room >= this.room || bed_room == this.bed){
-                        //         console.log('sono con ||')
-                        //         console.log(suite_room >= this.room,'se ho le stanze soltanto' )
-                        //         this.suite.push(response.data.results.data[index])
-                        //         console.log(this.suite)
-                        //         this.bed = null
-                        //         this.room = null
-                        //     }
-                        //     else if(suite_room == this.room || bed_room >= this.bed){
-                        //         console.log('sono con ||')
-                        //         console.log(suite_room >= this.room,'se ho i letti soltanto' )
-                        //         this.suite.push(response.data.results.data[index])
-                        //         console.log(this.suite)
-                        //         this.bed = null
-                        //         this.room = null
-                        //     } else if(this.room == null && this.bed == null){
-                        //         console.log('ho solo le cooordinate')
-                        //         this.bed = null
-                        //         this.room = null
-                        //     }
-                        //}
                         if((this.room != 0 && this.bed != 0)||(this.room != 0 || this.bed != 0)){
                             if(suite_room >= this.room && bed_room >= this.bed){
                                 console.log(response.data.results.data[index])
@@ -133,9 +89,9 @@ export default {
         //**************************************** */
         autocomplete(value) {
 
-            const base_url = "https://api.tomtom.com/search/2/search/"
-            // this.suggests = []
-            console.log('diocane')
+            const base_url = "https://api.tomtom.com/search/2/geocode/"
+            this.aka = []
+            // console.log('diocane')
             let mid_url = value.replace(/ /g, '%20');
             const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
 
@@ -148,14 +104,20 @@ export default {
 
                 console.log(this.result_suggest[0].position.lon)
                 this.lon_rom = this.result_suggest[0].position.lon
-                for (let index = 0; index < response.data.results.length; index++) {
-                   
+                for (let index = 0; index < this.result_suggest.length; index++) {
                     
-                    this.suggests.push(response.data.results[index])
-                    console.log(this.suggests , 'questo è l array')
+                    console.log(this.result_suggest[index].address.freeformAddress)
+                    this.aka[index] = this.result_suggest[index].address.freeformAddress
+                    console.log(this.aka, 'questo è l array')
+                    // console.log(this.aka , 'questo è l array')
 
                 }
             });
+        },
+        getChoose(x){
+            this.pokemon = this.aka[x]
+            console.log(this.searchBar, 'cliccato')
+            this.aka=[]
         }
     },
 
@@ -180,12 +142,11 @@ export default {
                 <div class="searchbar-container">
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-3">
-                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
                                 @input="getInputSearch" name="search_bar" required>
                             <ul id="result" class="list-group position-absolute">
-                                <li class="list-group-item" v-for="item in suggests">
-                                   {{item}}
-                                   ciao
+                                <li class="list-group-item" v-for="item,index in this.aka" @click="this.getChoose(index)">
+                                   {{item}}                                
                                 </li>
                             </ul>
                         </div>
@@ -263,9 +224,9 @@ export default {
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
     <div class="container">
-        <ul v-for="element in suite" class="d-flex">
+        <ul v-for="element in aka " class="d-flex">
             <li class="col-4">
-                {{ element.address }}
+                <!-- {{ element.address }} --> ciao
             </li>
         </ul>
     </div>
