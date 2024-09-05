@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppHomepage from './pages/AppHompage.vue';
+import AppSuites from './pages/AppSuites.vue';
 // import AppAbout from './pages/AppAbout.vue';
 // import AppProjects from './pages/AppProjects.vue';
 // import AppContacts from './pages/AppContacts.vue';
@@ -13,6 +14,11 @@ const router = createRouter({
             path: '/',
             name: 'home',
             component: AppHomepage
+        },
+        {
+            path: '/suites',
+            name: 'sutes all',
+            component: AppSuites
         },
         // {
         //     path: '/about',
