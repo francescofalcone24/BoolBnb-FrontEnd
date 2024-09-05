@@ -23,6 +23,7 @@ export default {
             range: 20,
             search_input: null,
             result_suggest: [],
+            suggest:[],
 
             base_url: "https://api.tomtom.com/search/2/search/",
 
@@ -133,10 +134,10 @@ export default {
         autocomplete(value) {
 
             const base_url = "https://api.tomtom.com/search/2/search/"
-         
+            // this.suggests = []
             console.log('diocane')
             let mid_url = value.replace(/ /g, '%20');
-            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=1&countrySet={IT}`
+            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
 
             delete axios.defaults.headers.common['X-Requested-With'];
 
@@ -147,6 +148,13 @@ export default {
 
                 console.log(this.result_suggest[0].position.lon)
                 this.lon_rom = this.result_suggest[0].position.lon
+                for (let index = 0; index < response.data.results.length; index++) {
+                   
+                    
+                    this.suggests.push(response.data.results[index])
+                    console.log(this.suggests , 'questo è l array')
+
+                }
             });
         }
     },
@@ -174,6 +182,12 @@ export default {
                         <div class="col-8 me-3">
                             <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
                                 @input="getInputSearch" name="search_bar" required>
+                            <ul id="result" class="list-group position-absolute">
+                                <li class="list-group-item" v-for="item in suggests">
+                                   {{item}}
+                                   ciao
+                                </li>
+                            </ul>
                         </div>
                         <div>
                             <!-- <button class="btn btn-success search-btn me-3" type="button"

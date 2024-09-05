@@ -36,14 +36,16 @@ export default {
 
   <nav class="navbar my-navbar p-0 m-0 align-items-center">
     <div class="d-flex justify-content-between align-items-center container">
-      <div class="">
+      <div class="w-50">
         <img src="../assets/img/BoolBnB.png" class="my-navbar p-0 m-0" alt="">
       </div>
-      <div class="">
-        <ul class="navbar-nav ms-3">
-          <li class="nav-item">
-
+      <div class="w-50">
+        <ul class="d-flex justify-content-end align-items-center text-decoration-none">
+          <li class="nav-item list-group col-3 text-center list-style-none justify-self-center">
             <router-link :to="{ name: 'home' }" class="nav-link text-dark"> Home </router-link>
+          </li>
+          <li class="nav-item list-group col-3 text-center list-style-none justify-self-center">
+            <a class="text-decoration-none text-dark" href="http://localhost:8000/login">Login</a>
           </li>
         </ul>
       </div>
