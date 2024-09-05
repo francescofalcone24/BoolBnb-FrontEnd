@@ -58,8 +58,8 @@ export default {
 
 <template>
 
-    <!-- <router-view></router-view> -->
-    <div>
+    <router-view></router-view>
+    <!-- <div>
         <label for="search_bar">ricerca</label>
         <input @input="getInputSearch" name="search_bar" type="text">
     </div>
@@ -80,7 +80,7 @@ export default {
                 {{ element.address }}
             </li>
         </ul>
-    </div>
+    </div> -->
 </template>
 
 <style scoped></style>
