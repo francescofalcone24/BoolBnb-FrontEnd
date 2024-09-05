@@ -23,10 +23,10 @@ export default {
             range: 20,
             search_input: null,
             result_suggest: [],
-            aka:[],
+            aka: [],
 
             base_url: "https://api.tomtom.com/search/2/search/",
-            pokemon:null,
+            pokemon: null,
 
             // lat_nap: 0,
             // lon_nap: 0,
@@ -56,17 +56,17 @@ export default {
                     // let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
                     let suite_room = response.data.results.data[index].room
                     let bed_room = response.data.results.data[index].bed
-                   
+
                     let lat_input = response.data.results.data[index].latitude
                     let lng_input = response.data.results.data[index].longitude
 
                     let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
-               
+
                     if (filter_coordinate <= this.range) {
-                        if((this.room != 0 && this.bed != 0)||(this.room != 0 || this.bed != 0)){
-                            if(suite_room >= this.room && bed_room >= this.bed){
+                        if ((this.room != 0 && this.bed != 0) || (this.room != 0 || this.bed != 0) || (this.room == 0 || this.bed == 0)) {
+                            if (suite_room >= this.room && bed_room >= this.bed) {
                                 console.log(response.data.results.data[index])
-                                this.store.suite.push( response.data.results.data[index])
+                                this.store.suite.push(response.data.results.data[index])
                             }
                         }
                     }
@@ -105,7 +105,7 @@ export default {
                 console.log(this.result_suggest[0].position.lon)
                 this.lon_rom = this.result_suggest[0].position.lon
                 for (let index = 0; index < this.result_suggest.length; index++) {
-                    
+
                     console.log(this.result_suggest[index].address.freeformAddress)
                     this.aka[index] = this.result_suggest[index].address.freeformAddress
                     console.log(this.aka, 'questo è l array')
@@ -114,10 +114,10 @@ export default {
                 }
             });
         },
-        getChoose(x){
+        getChoose(x) {
             this.pokemon = this.aka[x]
             console.log(this.searchBar, 'cliccato')
-            this.aka=[]
+            this.aka = []
         }
     },
 
@@ -142,11 +142,12 @@ export default {
                 <div class="searchbar-container">
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-3">
-                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
-                                @input="getInputSearch" name="search_bar" required>
+                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
                             <ul id="result" class="list-group position-absolute">
-                                <li class="list-group-item" v-for="item,index in this.aka" @click="this.getChoose(index)">
-                                   {{item}}                                
+                                <li class="list-group-item" v-for="item, index in this.aka"
+                                    @click="this.getChoose(index)">
+                                    {{ item }}
                                 </li>
                             </ul>
                         </div>
