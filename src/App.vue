@@ -26,18 +26,18 @@ export default {
   methods: {
 
 
-    getSuite() {
-      axios.get('http://localhost:8000/api/suite?page=1').then(response => {
+    // getSuite() {
+    //   axios.get('http://localhost:8000/api/suite?page=1').then(response => {
 
-        this.store.suite = response.data.results.data;
-        //console.log(this.store.suite);
+    //     this.store.suite = response.data.results.data;
+    //     //console.log(this.store.suite);
 
-      })
-    },
+    //   })
+    // },
   },
 
   mounted() {
-    this.getSuite()
+    // this.getSuite()
 
 
   }
