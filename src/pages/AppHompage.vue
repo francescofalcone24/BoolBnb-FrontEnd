@@ -92,7 +92,7 @@ export default {
 
             const base_url = "https://api.tomtom.com/search/2/geocode/"
             this.aka = []
-            // console.log('diocane')
+           
             let mid_url = value.replace(/ /g, '%20');
             const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
 
@@ -225,13 +225,14 @@ export default {
         </div>
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
-    <div class="container">
+    <!-- <div class="container">
         <ul v-for="element in aka " class="d-flex">
-            <li class="col-4">
-                <!-- {{ element.address }} --> ciao
-            </li>
+            <li class="col-4"> -->
+                <!-- {{ element.address }} --> 
+                <!-- ciao -->
+            <!-- </li>
         </ul>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
