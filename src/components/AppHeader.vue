@@ -37,7 +37,9 @@ export default {
   <nav class="navbar my-navbar p-0 m-0 align-items-center">
     <div class="d-flex justify-content-between align-items-center container">
       <div class="w-50">
-        <img src="../assets/img/BoolBnB.png" class="my-navbar p-0 m-0" alt="">
+        <router-link :to="{ name: 'home' }">
+          <img src="../assets/img/BoolBnB.png" class="my-navbar p-0 m-0" alt="">
+        </router-link>
       </div>
       <div class="w-50">
         <ul class="d-flex justify-content-end align-items-center text-decoration-none">
