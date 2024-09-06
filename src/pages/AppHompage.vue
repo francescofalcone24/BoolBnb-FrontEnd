@@ -24,6 +24,7 @@ export default {
             search_input: null,
             result_suggest: [],
             aka:[],
+            can_search:  'abilited',
 
             base_url: "https://api.tomtom.com/search/2/search/",
             pokemon:null,
@@ -47,6 +48,7 @@ export default {
 
         getSuite() {
             // console.log(this.range, 'questo è il range')
+            
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
                 // console.log(response, 'questa è la chiamata')
                 this.store.suite = []
@@ -88,31 +90,36 @@ export default {
 
         //**************************************** */
         autocomplete(value) {
-
-            const base_url = "https://api.tomtom.com/search/2/geocode/"
-            this.aka = []
-            // console.log('diocane')
-            let mid_url = value.replace(/ /g, '%20');
-            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
-
-            delete axios.defaults.headers.common['X-Requested-With'];
-
-            axios.get(base_url + mid_url + apiKey).then(response => {
-                this.result_suggest = response.data.results;
-                console.log(this.result_suggest[0].position.lat)
-                this.lat_rom = this.result_suggest[0].position.lat
-
-                console.log(this.result_suggest[0].position.lon)
-                this.lon_rom = this.result_suggest[0].position.lon
-                for (let index = 0; index < this.result_suggest.length; index++) {
+            if(value.length >= 6){
+                this.can_search = 'abilited'
+                const base_url = "https://api.tomtom.com/search/2/geocode/"
+                this.aka = []
+                // console.log('diocane')
+                let mid_url = value.replace(/ /g, '%20');
+                const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
+                
+                delete axios.defaults.headers.common['X-Requested-With'];
+                
+                axios.get(base_url + mid_url + apiKey).then(response => {
+                    this.result_suggest = response.data.results;
+                    console.log(this.result_suggest[0].position.lat)
+                    this.lat_rom = this.result_suggest[0].position.lat
                     
-                    console.log(this.result_suggest[index].address.freeformAddress)
-                    this.aka[index] = this.result_suggest[index].address.freeformAddress
-                    console.log(this.aka, 'questo è l array')
-                    // console.log(this.aka , 'questo è l array')
-
-                }
-            });
+                    console.log(this.result_suggest[0].position.lon)
+                    this.lon_rom = this.result_suggest[0].position.lon
+                    for (let index = 0; index < this.result_suggest.length; index++) {
+                        
+                        console.log(this.result_suggest[index].address.freeformAddress)
+                        this.aka[index] = this.result_suggest[index].address.freeformAddress
+                        console.log(this.aka, 'questo è l array')
+                        // console.log(this.aka , 'questo è l array')
+                        
+                    }
+                });
+            }else if(value.length <= 6){
+                console.log(value.length , 'minore di 6')
+                this.can_search = 'disabled'
+            }
         },
         getChoose(x){
             this.pokemon = this.aka[x]
@@ -153,7 +160,7 @@ export default {
                         <div>
                             <!-- <button class="btn btn-success search-btn me-3" type="button"
                                 @click="getSuite">Search</button> -->
-                            <button class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
+                            <button :class="this.can_search" class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
                                     :to="{ name: 'suites' }" class="nav-link text-light">Search</router-link></button>
 
                             <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
