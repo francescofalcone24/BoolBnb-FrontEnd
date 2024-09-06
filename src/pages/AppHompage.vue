@@ -24,10 +24,9 @@ export default {
             search_input: null,
             result_suggest: [],
             aka:[],
-            can_search:  'abilited',
 
             base_url: "https://api.tomtom.com/search/2/search/",
-            pokemon:null,
+            pokemon: null,
 
             // lat_nap: 0,
             // lon_nap: 0,
@@ -58,17 +57,17 @@ export default {
                     // let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
                     let suite_room = response.data.results.data[index].room
                     let bed_room = response.data.results.data[index].bed
-                   
+
                     let lat_input = response.data.results.data[index].latitude
                     let lng_input = response.data.results.data[index].longitude
 
                     let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
-               
+
                     if (filter_coordinate <= this.range) {
-                        if((this.room != 0 && this.bed != 0)||(this.room != 0 || this.bed != 0)){
-                            if(suite_room >= this.room && bed_room >= this.bed){
+                        if ((this.room != 0 && this.bed != 0) || (this.room != 0 || this.bed != 0) || (this.room == 0 || this.bed == 0)) {
+                            if (suite_room >= this.room && bed_room >= this.bed) {
                                 console.log(response.data.results.data[index])
-                                this.store.suite.push( response.data.results.data[index])
+                                this.store.suite.push(response.data.results.data[index])
                             }
                         }
                     }
@@ -90,41 +89,36 @@ export default {
 
         //**************************************** */
         autocomplete(value) {
-            if(value.length >= 6){
-                this.can_search = 'abilited'
-                const base_url = "https://api.tomtom.com/search/2/geocode/"
-                this.aka = []
-                // console.log('diocane')
-                let mid_url = value.replace(/ /g, '%20');
-                const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
-                
-                delete axios.defaults.headers.common['X-Requested-With'];
-                
-                axios.get(base_url + mid_url + apiKey).then(response => {
-                    this.result_suggest = response.data.results;
-                    console.log(this.result_suggest[0].position.lat)
-                    this.lat_rom = this.result_suggest[0].position.lat
+
+            const base_url = "https://api.tomtom.com/search/2/geocode/"
+            this.aka = []
+            // console.log('diocane')
+            let mid_url = value.replace(/ /g, '%20');
+            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
+
+            delete axios.defaults.headers.common['X-Requested-With'];
+
+            axios.get(base_url + mid_url + apiKey).then(response => {
+                this.result_suggest = response.data.results;
+                console.log(this.result_suggest[0].position.lat)
+                this.lat_rom = this.result_suggest[0].position.lat
+
+                console.log(this.result_suggest[0].position.lon)
+                this.lon_rom = this.result_suggest[0].position.lon
+                for (let index = 0; index < this.result_suggest.length; index++) {
                     
-                    console.log(this.result_suggest[0].position.lon)
-                    this.lon_rom = this.result_suggest[0].position.lon
-                    for (let index = 0; index < this.result_suggest.length; index++) {
-                        
-                        console.log(this.result_suggest[index].address.freeformAddress)
-                        this.aka[index] = this.result_suggest[index].address.freeformAddress
-                        console.log(this.aka, 'questo è l array')
-                        // console.log(this.aka , 'questo è l array')
-                        
-                    }
-                });
-            }else if(value.length <= 6){
-                console.log(value.length , 'minore di 6')
-                this.can_search = 'disabled'
-            }
+                    console.log(this.result_suggest[index].address.freeformAddress)
+                    this.aka[index] = this.result_suggest[index].address.freeformAddress
+                    console.log(this.aka, 'questo è l array')
+                    // console.log(this.aka , 'questo è l array')
+
+                }
+            });
         },
-        getChoose(x){
+        getChoose(x) {
             this.pokemon = this.aka[x]
             console.log(this.searchBar, 'cliccato')
-            this.aka=[]
+            this.aka = []
         }
     },
 
@@ -149,11 +143,12 @@ export default {
                 <div class="searchbar-container">
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-3">
-                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
-                                @input="getInputSearch" name="search_bar" required>
+                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
                             <ul id="result" class="list-group position-absolute">
-                                <li class="list-group-item" v-for="item,index in this.aka" @click="this.getChoose(index)">
-                                   {{item}}                                
+                                <li class="list-group-item" v-for="item, index in this.aka"
+                                    @click="this.getChoose(index)">
+                                    {{ item }}
                                 </li>
                             </ul>
                         </div>
