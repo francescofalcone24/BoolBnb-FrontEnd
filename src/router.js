@@ -20,21 +20,6 @@ const router = createRouter({
             name: 'suites',
             component: AppSuites
         },
-        // {
-        //     path: '/about',
-        //     name: 'About Me',
-        //     component: AppAbout
-        // },
-        // {
-        //     path: '/contacts',
-        //     name: 'Contacts',
-        //     component: AppContacts
-        // },
-        // {
-        //     path: '/projects',
-        //     name: 'Projects',
-        //     component: AppProjects
-        // },
         {
             path: '/suites/:slug',
             name: 'AppSingleSuite',
