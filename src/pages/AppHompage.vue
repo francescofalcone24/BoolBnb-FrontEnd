@@ -23,7 +23,7 @@ export default {
             range: 20,
             search_input: null,
             result_suggest: [],
-            aka: [],
+            aka:[],
 
             base_url: "https://api.tomtom.com/search/2/search/",
             pokemon: null,
@@ -47,6 +47,7 @@ export default {
 
         getSuite() {
             // console.log(this.range, 'questo è il range')
+            
             axios.get('http://localhost:8000/api/suite?page=1').then(response => {
                 // console.log(response, 'questa è la chiamata')
                 this.store.suite = []
@@ -91,7 +92,7 @@ export default {
 
             const base_url = "https://api.tomtom.com/search/2/geocode/"
             this.aka = []
-            // console.log('diocane')
+           
             let mid_url = value.replace(/ /g, '%20');
             const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
 
@@ -105,7 +106,7 @@ export default {
                 console.log(this.result_suggest[0].position.lon)
                 this.lon_rom = this.result_suggest[0].position.lon
                 for (let index = 0; index < this.result_suggest.length; index++) {
-
+                    
                     console.log(this.result_suggest[index].address.freeformAddress)
                     this.aka[index] = this.result_suggest[index].address.freeformAddress
                     console.log(this.aka, 'questo è l array')
@@ -154,7 +155,7 @@ export default {
                         <div>
                             <!-- <button class="btn btn-success search-btn me-3" type="button"
                                 @click="getSuite">Search</button> -->
-                            <button class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
+                            <button  class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
                                     :to="{ name: 'suites' }" class="nav-link text-light">Search</router-link></button>
 
                             <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
@@ -224,13 +225,14 @@ export default {
         </div>
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
-    <div class="container">
+    <!-- <div class="container">
         <ul v-for="element in aka " class="d-flex">
-            <li class="col-4">
-                <!-- {{ element.address }} --> ciao
-            </li>
+            <li class="col-4"> -->
+                <!-- {{ element.address }} --> 
+                <!-- ciao -->
+            <!-- </li>
         </ul>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
