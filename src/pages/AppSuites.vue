@@ -15,7 +15,7 @@ export default {
     data() {
         return {
             store,
-            filtered: store.suite,
+            filtered: [],
             results: 0,
             room: 0,
             bed: 0,
@@ -33,16 +33,12 @@ export default {
                 }
             }).then(response => {
                 console.log(response.data.results, 'questa è la nuoava api');
-                this.store.suite = response.data.results 
+                this.store.suite = response.data.results;
+                this.filtered = this.store.suite;
             }).catch(function (error) {
                 console.log(error);
             });
                 
-        },
-        porcodio(){
-            console.log(this.store.suite, 'store dopo api')
-            console.log(this.store.country_range, 'loggata coordinate')
-            console.log(this.store.suite[0].title)
         },
     
         filter(){
@@ -71,8 +67,6 @@ export default {
         <button class="btn btn-primary search-btn my-filters-btn" type="button" data-bs-toggle="offcanvas"data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
             Filters
         </button>
-        <button @click="porcodio">
-        </button>
         <!-- ***************************************OFFCANVAS****************************************************** -->
 
         <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
@@ -95,11 +89,11 @@ export default {
                 </div>
             </div>
         </div>
-       <div v-for="item in store.suite">
+       <!-- <div v-for="item in store.suite">
         <h5>
          {{ item.img }}
         </h5>
-       </div>
+       </div> -->
         
        
          <!-- ***************************************OFFCANVAS****************************************************** -->
@@ -107,7 +101,7 @@ export default {
         
          <!-- ***************************************SUITE CARDS****************************************************** -->
         
-        <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
+        <!-- <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
                 <h2>Results: {{ store.suite.length }}</h2>
                 <div v-for="suite in store.suite" class="col-3 myBorder">
                 
@@ -118,16 +112,16 @@ export default {
                     <img  :src="suite.img" class="card-img-top h-100" alt="...">
                     <div class="card-body myBorder text-center">
                         <h5 class="card-title ellipse py-1">{{ suite.title }}</h5>
-                        <p class="card-text ellipse">{{ suite.address }}</p>
+                        <p class="card-text ellipse">{{ suite.address }}</p> -->
                         <!-- <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                             class="btn btn-outline-primary mt-auto">more
                             details</router-link> -->
-                    </div>
+                    <!-- </div>
                 </div>
             </div>
-        </div>
+        </div> -->
       
-<!-- 
+
         <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
             <h2>Results: {{ filtered.length }}</h2>
             <div v-for="suite in filtered" class="col-3 myBorder">
@@ -145,7 +139,7 @@ export default {
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>  
 
 </template>

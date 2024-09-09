@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 
 const iMieiDati = reactive({
 
-    suite: 'ciao',
+    suite: [],
     country_range : {
         "lat" : 0,
         "lng" : 0
