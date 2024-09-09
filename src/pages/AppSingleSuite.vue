@@ -16,7 +16,11 @@ export default {
         return {
             store,
 
+
         }
+    },
+    methods: {
+
     },
 
     mounted() {
@@ -24,21 +28,21 @@ export default {
         //console.log(this.$route.params.slug);
         console.log(this.$route.params)
         console.log(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
-     axios
-         .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
-         .then(response => {
-             console.log(response.data.results , 'risposta api');
+        axios
+            .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
+            .then(response => {
+                console.log(response.data.results, 'risposta api');
 
 
-             if (response.data.status) {
-                 this.store.singleSuite = response.data.results;
-                 console.log('questo è ', this.store.singleSuite);
+                if (response.data.status) {
+                    this.store.singleSuite = response.data.results;
+                    console.log('questo è ', this.store.singleSuite);
                 } else {
                     this.$router.push({ name: 'not-found' })
-             }
+                }
 
 
-         })
+            })
     }
 
 
@@ -83,6 +87,9 @@ export default {
             <h5 class="card-title">{{ store.singleSuite.title }}</h5>
             <p class="card-text">{{ store.singleSuite.address }}</p>
             <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">back to the list</router-link>
+            <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
+                class="btn btn-outline-danger">contact</router-link>
+
 
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
@@ -153,6 +160,7 @@ export default {
 
         </div>
     </div>
+
 </template>
 
 <style scoped>
