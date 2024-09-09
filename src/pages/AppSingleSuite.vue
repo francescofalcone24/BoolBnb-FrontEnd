@@ -24,7 +24,7 @@ export default {
         //console.log(this.$route.params.slug);
 
         axios
-            .get(`http://127.0.0.1:8000/api/suite/${this.$route.params.slug}`)
+            .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
             .then(response => {
                 console.log(response.data.suite);
 

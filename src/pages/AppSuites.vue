@@ -52,7 +52,7 @@ export default {
     },
     
     mounted() {
-        console.log(this.store)
+       
         this.getApi()
         console.log(this.store, 'store ')
 
