@@ -22,22 +22,23 @@ export default {
     mounted() {
 
         //console.log(this.$route.params.slug);
+        console.log(this.$route.params)
+        console.log(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
+     axios
+         .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
+         .then(response => {
+             console.log(response.data.results , 'risposta api');
 
-        axios
-            .get(`http://127.0.0.1:8000/api/suite/${this.$route.params.slug}`)
-            .then(response => {
-                console.log(response.data.suite);
 
-
-                if (response.data.status) {
-                    store.singleSuite = response.data.suite;
-                    console.log('questo è ', store.singleSuite);
+             if (response.data.status) {
+                 this.store.singleSuite = response.data.results;
+                 console.log('questo è ', this.store.singleSuite);
                 } else {
                     this.$router.push({ name: 'not-found' })
-                }
+             }
 
 
-            })
+         })
     }
 
 
