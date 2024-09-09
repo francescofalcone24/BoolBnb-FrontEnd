@@ -42,11 +42,8 @@ export default {
         porcodio(){
             console.log(this.store.suite, 'store dopo api')
             console.log(this.store.country_range, 'loggata coordinate')
-        }
-    },
+        },
     
-
-    methods: {
         filter(){
             this.filtered = this.store.suite.filter(suite => (suite.bed >= this.bed) && (suite.room >= this.room) );
             console.log(this.filtered, 'BELLAA');     
@@ -56,6 +53,7 @@ export default {
     mounted() {
         console.log(this.store)
         this.getApi()
+        console.log(this.store, 'store ')
 
     }
 

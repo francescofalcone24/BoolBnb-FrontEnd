@@ -47,7 +47,7 @@ export default {
         },
 
         getSuite() {
-            this.getApi()
+            // this.getApi()
             // console.log(this.range, 'questo è il range')
             
             // axios.get('http://localhost:8000/api/suite').then(response => {
@@ -109,6 +109,7 @@ export default {
                 this.lon_rom = this.result_suggest[0].position.lon
                 this.store.country_range = [];
                 this.store.country_range.push(this.lat_rom, this.lon_rom)
+                console.log(this.store.country_range , 'coordinate')
                 for (let index = 0; index < this.result_suggest.length; index++) {
                     
                     console.log(this.result_suggest[index].address.freeformAddress)
@@ -133,7 +134,7 @@ export default {
 
     mounted() {
         // this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita)
-        this.getApi()
+        
     }
 
 
