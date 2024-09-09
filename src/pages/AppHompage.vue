@@ -107,10 +107,7 @@ export default {
 
                 console.log(this.result_suggest[0].position.lon ,'longitudine')
                 this.lon_rom = this.result_suggest[0].position.lon
-                this.store.country_range = {
-                    "lat": 0,
-                    "lng": 0
-                }
+             
                 this.store.country_range.lat = this.result_suggest[0].position.lat
                 this.store.country_range.lng = this.result_suggest[0].position.lon
 
