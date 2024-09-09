@@ -46,33 +46,34 @@ export default {
         },
 
         getSuite() {
+            this.getApi()
             // console.log(this.range, 'questo è il range')
             
-            axios.get('http://localhost:8000/api/suite?page=1').then(response => {
-                // console.log(response, 'questa è la chiamata')
-                this.store.suite = []
-                for (let index = 0; index <= response.data.results.data.length - 1; index++) {
-                    // let suite_address = response.data.results.data[index].address
+            // axios.get('http://localhost:8000/api/suite').then(response => {
+            //     // console.log(response, 'questa è la chiamata')
+            //     this.store.suite = []
+            //     for (let index = 0; index <= response.data.results.data.length - 1; index++) {
+            //         // let suite_address = response.data.results.data[index].address
 
-                    // let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
-                    let suite_room = response.data.results.data[index].room
-                    let bed_room = response.data.results.data[index].bed
+            //         // let country_filter = suite_address.toLowerCase().includes(this.search_input.toLowerCase())
+            //         let suite_room = response.data.results.data[index].room
+            //         let bed_room = response.data.results.data[index].bed
 
-                    let lat_input = response.data.results.data[index].latitude
-                    let lng_input = response.data.results.data[index].longitude
+            //         let lat_input = response.data.results.data[index].latitude
+            //         let lng_input = response.data.results.data[index].longitude
 
-                    let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
+            //         let filter_coordinate = this.getDistanceBetweenPoints(lat_input, lng_input, this.lat_rom, this.lon_rom, this.unita)
 
-                    if (filter_coordinate <= this.range) {
-                        if ((this.room != 0 && this.bed != 0) || (this.room != 0 || this.bed != 0) || (this.room == 0 || this.bed == 0)) {
-                            if (suite_room >= this.room && bed_room >= this.bed) {
-                                console.log(response.data.results.data[index])
-                                this.store.suite.push(response.data.results.data[index])
-                            }
-                        }
-                    }
-                }
-            })
+            //         if (filter_coordinate <= this.range) {
+            //             if ((this.room != 0 && this.bed != 0) || (this.room != 0 || this.bed != 0) || (this.room == 0 || this.bed == 0)) {
+            //                 if (suite_room >= this.room && bed_room >= this.bed) {
+            //                     console.log(response.data.results.data[index])
+            //                     this.store.suite.push(response.data.results.data[index])
+            //                 }
+            //             }
+            //         }
+            //     }
+            // })
         },
         getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
             let theta = longitude1 - longitude2;
@@ -119,13 +120,38 @@ export default {
             this.pokemon = this.aka[x]
             console.log(this.searchBar, 'cliccato')
             this.aka = []
+        },
+        getApi() {
+            let now =[]
+             delete axios.defaults.headers.common['X-Requested-With'];
+             console.log(this.store, 'questo è lo store');
+            axios.get('http://localhost:8000/api/suite/search', {
+               
+                 params: {
+                     lat: this.lat_rom,
+                     lng: this.lon_rom
+               
+                 }
+            })
+                .then(response => {
+                    
+                    console.log(response.data.results,'questa è la nuoava api');
+                    return now = response.data.results
+                    
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                this.store.suite.push(now)
+                console.log(this.store.suite)
         }
     },
 
 
 
     mounted() {
-        this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita)
+        // this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita)
+        this.getApi()
     }
 
 
