@@ -15,7 +15,7 @@ export default {
 
     data() {
         return {
-            store,
+           store,
             suite: [],
             searchBar: [],
             room: 0,
@@ -24,6 +24,7 @@ export default {
             search_input: null,
             result_suggest: [],
             aka:[],
+
 
             base_url: "https://api.tomtom.com/search/2/search/",
             pokemon: null,
@@ -106,6 +107,8 @@ export default {
 
                 console.log(this.result_suggest[0].position.lon)
                 this.lon_rom = this.result_suggest[0].position.lon
+                this.store.country_range = [];
+                this.store.country_range.push(this.lat_rom, this.lon_rom)
                 for (let index = 0; index < this.result_suggest.length; index++) {
                     
                     console.log(this.result_suggest[index].address.freeformAddress)
@@ -122,28 +125,27 @@ export default {
             this.aka = []
         },
         getApi() {
-            let now =[]
-             delete axios.defaults.headers.common['X-Requested-With'];
-             console.log(this.store, 'questo è lo store');
+            this.store.suite= []
+            delete axios.defaults.headers.common['X-Requested-With'];
+            console.log(this.store, 'questo è lo store');
             axios.get('http://localhost:8000/api/suite/search', {
-               
-                 params: {
-                     lat: this.lat_rom,
-                     lng: this.lon_rom
-               
-                 }
-            })
-                .then(response => {
-                    
-                    console.log(response.data.results,'questa è la nuoava api');
-                    return now = response.data.results
-                    
-                })
-                .catch(function (error) {
+                params: {
+                    lat: this.lat_rom,
+                    lng: this.lon_rom
+                }
+            }).then(response => {
+                    console.log(response.data.results, 'questa è la nuoava api');
+                    this.store.suite = response.data.results 
+                }).catch(function (error) {
                     console.log(error);
                 });
-                this.store.suite.push(now)
-                console.log(this.store.suite)
+                
+
+
+        },
+        porcodio(){
+            console.log(this.store.suite, 'store dopo api')
+            console.log(this.store.country_range, 'loggata coordinate')
         }
     },
 
@@ -181,13 +183,24 @@ export default {
                         <div>
                             <!-- <button class="btn btn-success search-btn me-3" type="button"
                                 @click="getSuite">Search</button> -->
-                            <button  class="btn btn-success search-btn me-3" type="button" @click="getSuite"><router-link
-                                    :to="{ name: 'suites' }" class="nav-link text-light">Search</router-link></button>
+                            <button  class="btn btn-success search-btn me-3" type="button" @click="getSuite">
+                            <router-link :to="{ name: 'suites' }" class="nav-link text-light">
+                                    Search
+                                    </router-link>
+                                    
+                                    </button>
+
+
+                                 
 
                             <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Filters
                             </button>
+
+                            
                         </div>
+
+                       
 
                         <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop"
                             aria-labelledby="offcanvasTopLabel">
