@@ -18,9 +18,35 @@ export default {
 
         }
     },
+    methods :{
+        getApi() {
+            this.store.suite= []
+            delete axios.defaults.headers.common['X-Requested-With'];
+            console.log(this.store, 'questo è lo store');
+            axios.get('http://localhost:8000/api/suite/search', {
+                params: {
+                    lat: this.store.country_range.lat_rom,
+                    lng: this.store.country_range.lon_rom
+                }
+            }).then(response => {
+                console.log(response.data.results, 'questa è la nuoava api');
+                this.store.suite = response.data.results 
+            }).catch(function (error) {
+                console.log(error);
+            });
+                
+        },
+        porcodio(){
+            console.log(this.store.suite, 'store dopo api')
+            console.log(this.store.country_range, 'loggata coordinate')
+        }
+    },
+    
 
     mounted() {
         console.log(this.store)
+        this.getApi()
+
     }
 
 

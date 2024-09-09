@@ -124,29 +124,9 @@ export default {
             console.log(this.searchBar, 'cliccato')
             this.aka = []
         },
-        getApi() {
-            this.store.suite= []
-            delete axios.defaults.headers.common['X-Requested-With'];
-            console.log(this.store, 'questo è lo store');
-            axios.get('http://localhost:8000/api/suite/search', {
-                params: {
-                    lat: this.lat_rom,
-                    lng: this.lon_rom
-                }
-            }).then(response => {
-                    console.log(response.data.results, 'questa è la nuoava api');
-                    this.store.suite = response.data.results 
-                }).catch(function (error) {
-                    console.log(error);
-                });
-                
 
-
-        },
-        porcodio(){
-            console.log(this.store.suite, 'store dopo api')
-            console.log(this.store.country_range, 'loggata coordinate')
-        }
+         // da spostare
+      
     },
 
 
