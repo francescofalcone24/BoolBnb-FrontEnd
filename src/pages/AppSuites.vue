@@ -23,13 +23,13 @@ export default {
     },
     methods :{
         getApi() {
-            this.store.suite= []
+            console.log(this.store.country_range, 'coordinate per chiamata')
             delete axios.defaults.headers.common['X-Requested-With'];
             console.log(this.store, 'questo è lo store');
             axios.get('http://localhost:8000/api/suite/search', {
                 params: {
-                    lat: this.store.country_range.lat_rom,
-                    lng: this.store.country_range.lon_rom
+                    lat: this.store.country_range.lat,
+                    lng: this.store.country_range.lng
                 }
             }).then(response => {
                 console.log(response.data.results, 'questa è la nuoava api');

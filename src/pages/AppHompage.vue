@@ -102,13 +102,18 @@ export default {
 
             axios.get(base_url + mid_url + apiKey).then(response => {
                 this.result_suggest = response.data.results;
-                console.log(this.result_suggest[0].position.lat)
+                console.log(this.result_suggest[0].position.lat ,'latitudine')
                 this.lat_rom = this.result_suggest[0].position.lat
 
-                console.log(this.result_suggest[0].position.lon)
+                console.log(this.result_suggest[0].position.lon ,'longitudine')
                 this.lon_rom = this.result_suggest[0].position.lon
-                this.store.country_range = [];
-                this.store.country_range.push(this.lat_rom, this.lon_rom)
+                this.store.country_range = {
+                    "lat": 0,
+                    "lng": 0
+                }
+                this.store.country_range.lat = this.result_suggest[0].position.lat
+                this.store.country_range.lng = this.result_suggest[0].position.lon
+
                 console.log(this.store.country_range , 'coordinate')
                 for (let index = 0; index < this.result_suggest.length; index++) {
                     
