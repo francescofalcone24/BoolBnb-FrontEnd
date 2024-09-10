@@ -101,7 +101,7 @@ export default {
             this.aka = []
 
             let mid_url = value.replace(/ /g, '%20');
-            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
+            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet=IT`
 
             delete axios.defaults.headers.common['X-Requested-With'];
 
