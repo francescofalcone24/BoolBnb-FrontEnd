@@ -151,42 +151,8 @@ export default {
 <template>
 
     <div class="container">
-        <!-- <button class="btn btn-primary my-filters-btn" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-            Filters
-        </button> -->
-
-        <!-- ***************************************OFFCANVAS****************************************************** -->
-
-        <!-- <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasTopLabel">Search filters:</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
-                <div class="offcanvas-item mx-5">
-                    <label for="customRange1" class="form-label">Km radius {{ this.range }} </label>
-                    <input @input="filter()" type="range" min="0" max="20" v-model=range class="form-range"
-                        id="customRange1">
-                </div>
-                <div class="offcanvas-item mx-5">
-                    <label for="suite_room" class="form-label">Rooms:</label>
-                    <input type="number" class="form-control" id="suite_room" placeholder="" name="room" min="0"
-                        max="20" v-model=room @input="filter()">
-                </div>
-                <div class="offcanvas-item mx-5">
-                    <label for="suite_bed" class="form-label">Beds:</label>
-                    <input type="number" class="form-control" id="suite_bed" placeholder="" name="bed" min="0" max="20"
-                        v-model=bed @input="filter()">
-                </div>
-            </div>
-        </div> -->
 
 
-        <!-- ***************************************OFFCANVAS****************************************************** -->
-
-
-        <!-- ***************************************SUITE CARDS****************************************************** -->
         <!-- SEARCHBAR -->
         <form class="d-flex justify-content-center my-5" role="search">
             <div class="col-8 me-3">
@@ -237,64 +203,137 @@ export default {
                 </div>
             </div>
 
+            <!-- ***************************************SUITE CARDS****************************************************** -->
+
+
 
             <div class="col-9">
-                <div v-for="suite in filtered" class="col-12 ms-2 my-3 d-flex rounded border p-2">
-                    <div class="my-img col-3 me-3">
-                        <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-                            class="card-img-top object-fit-cover " alt="...">
+                <!-- CARD SPONSORIZZATE -->
+                <div v-for="suite in filtered">
+                    <div v-if="suite.sponsor === 1"
+                        class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative">
+                        <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+                        <div class="my-img col-3 me-3">
+                            <img v-if="!suite.img.startsWith('http')"
+                                :src="store.localHostUrl + '/storage/' + suite.img"
+                                class="h-100 col-3 rounded card-img-top object-fit-cover " alt="...">
 
-                        <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded" alt="...">
-                    </div>
-                    <div class="col-6 ">
-                        <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
-                        <span>{{ suite.address }}</span>
-                        <div class="d-flex flex-wrap align-content-end">
-                            <div class="me-4">
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
-                                    Rooms: {{ suite.room }}
+                            <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded object-fit-cover"
+                                alt="...">
+                        </div>
+                        <div class="col-6 ">
+                            <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                            <span>{{ suite.address }}</span>
+                            <div class="d-flex flex-wrap align-content-end">
+                                <div class="me-4">
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                        Rooms: {{ suite.room }}
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                        Beds: {{ suite.bed }}
+                                    </div>
                                 </div>
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
-                                    Beds: {{ suite.bed }}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
-                                    Bathrooms: {{ suite.bathroom }}
-                                </div>
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
-                                    Square Meters: {{ suite.squareM }}
+                                <div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                        Bathrooms: {{ suite.bathroom }}
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                        Square Meters: {{ suite.squareM }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                    <div class="ms-4 mt-2 col-2">
+                        <!-- SERVICES QUI QUANDO LI ABBIAMO -->
+                        <div class="ms-4 mt-2 col-2">
 
-                        <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                            class="btn btn-outline-primary mt-auto mb-3">
-                            Show Suite
-                        </router-link>
-                        <div>
-                            servizi:
-                            <br>
-                            1
-                            <br>
-                            2
-                            <br>
-                            3
-                            <br>
-                            4
+                            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                                class="btn btn-outline-primary mt-auto mb-3">
+                                Show Suite
+                            </router-link>
+                            <!-- <div>
+                                servizi:
+                                <br>
+                                1
+                                <br>
+                                2
+                                <br>
+                                3
+                                <br>
+                                4
+                            </div> -->
                         </div>
                     </div>
                     <!-- <div class="card-body text-center">
 
                         
                     </div> -->
+
+                </div>
+
+
+                <!-- CARD NON SPONSORIZZATE -->
+                <div v-for="suite in filtered">
+                    <div v-if="suite.sponsor === 0" class="col-12 ms-2 my-3 d-flex rounded border p-2">
+
+                        <div class="my-img col-3 me-3">
+                            <img v-if="!suite.img.startsWith('http')"
+                                :src="store.localHostUrl + '/storage/' + suite.img"
+                                class="card-img-top object-fit-cover " alt="...">
+
+                            <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded object-fit-cover"
+                                alt="...">
+                        </div>
+                        <div class="col-6 ">
+                            <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                            <span>{{ suite.address }}</span>
+                            <div class="d-flex flex-wrap align-content-end">
+                                <div class="me-4">
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                        Rooms: {{ suite.room }}
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                        Beds: {{ suite.bed }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                        Bathrooms: {{ suite.bathroom }}
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                        Square Meters: {{ suite.squareM }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ms-4 mt-2 col-2">
+
+                            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                                class="btn btn-outline-primary mt-auto mb-3">
+                                Show Suite
+                            </router-link>
+                            <!-- <div>
+                                servizi:
+                                <br>
+                                1
+                                <br>
+                                2
+                                <br>
+                                3
+                                <br>
+                                4
+                            </div> -->
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -345,6 +384,20 @@ export default {
 
 .my-fa-w {
     width: 20px;
+}
+
+.my-sponsored-div {
+    width: 110px;
+    height: 30px;
+    background-color: rgb(255, 123, 0);
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    padding: 2px;
+    font-weight: 500;
 }
 
 #result {
