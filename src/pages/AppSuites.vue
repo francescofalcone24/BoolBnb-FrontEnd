@@ -109,8 +109,14 @@ export default {
         getChoose(x) {
             this.pokemon = this.aka[x]
             console.log(this.searchBar, 'cliccato')
-            this.aka = []
+            this.aka = [];
+            this.disabled();
+            this.getApi(); 
         },
+        
+        disabled() {
+            document.getElementById("search-btn").classList.remove("disabled")
+        }
 
     },
     
@@ -179,7 +185,7 @@ export default {
                         </div>
                         <div>
                             <!-- <router-link :to="{ name: 'suites' }" class="nav-link text-light"> -->
-                                <button  class="btn btn-success search-btn me-3" type="button" @click="getSuite">
+                                <button id="search-btn"  class="btn btn-success search-btn me-3 disabled" type="button" @click="getSuite">
                                     Search     
                                 </button>
                             <!-- </router-link> -->
