@@ -1,6 +1,7 @@
 <script>
 import store from '../data/store';
 import axios from "axios";
+
 export default {
 
     name: 'AppSuites',
@@ -16,20 +17,21 @@ export default {
         return {
             store,
             filtered: [],
-            range:20,
+            range: 20,
             results: 0,
             room: 0,
             bed: 0,
             search_input: null,
             lat_rom: 0,
             lon_rom: 0,
-            aka:[],
+            aka: [],
             result_suggest: [],
             searchBar: [],
             pokemon: null,
+
         }
     },
-    methods :{
+    methods: {
         getInputSearch(value) {
             this.search_input = value.target.value
             this.autocomplete(this.search_input)
@@ -47,10 +49,11 @@ export default {
                 console.log(response.data.results, 'questa è la nuoava api');
                 this.store.suite = response.data.results;
                 this.filtered = this.store.suite;
+                console.log(this.filtered, 'questo e` array filtrato da API')
                 this.filter()
             }).catch(function (error) {
                 console.log(error);
-            });       
+            });
         },
 
         getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
@@ -61,25 +64,32 @@ export default {
             );
             if (unit == 'miles') {
                 return Math.round(distance, 2);
-                
+
             } else if (unit == 'kilometers') {
                 return Math.round(distance * 1.609344, 2);
-                
+
             }
         },
 
-        filter(){ 
+        filter() {
             this.filtered = [];
             for (let index = 0; index < this.store.suite.length; index++) {
-                
+
                 let filter_coordinate = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-                
+                // this.filtered[index].distance = this.filter_coordinate
+
+
                 if (filter_coordinate <= this.range) {
-                    if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed )) {
+                    if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
                         this.filtered.push(this.store.suite[index])
                     }
                 }
+                // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
+                this.filtered[index].distance = filter_coordinate
+                console.log(this.filtered)
+
             }
+            this.orderByDistance();
         },
         autocomplete(value) {
 
@@ -95,7 +105,7 @@ export default {
                 this.result_suggest = response.data.results;
                 this.lat_rom = this.result_suggest[0].position.lat
                 this.lon_rom = this.result_suggest[0].position.lon
-                for (let index = 0; index < this.result_suggest.length; index++) { 
+                for (let index = 0; index < this.result_suggest.length; index++) {
                     this.aka[index] = this.result_suggest[index].address.freeformAddress
                 }
             });
@@ -103,8 +113,9 @@ export default {
         getSuite() {
             this.store.country_range.lat = this.result_suggest[0].position.lat
             this.store.country_range.lng = this.result_suggest[0].position.lon
-            
-            console.log(this.store.country_range , 'coordinate')
+
+            console.log(this.store.country_range, 'coordinate')
+            this.getApi()
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
@@ -116,13 +127,18 @@ export default {
         
         disabled() {
             document.getElementById("search-btn").classList.remove("disabled")
+        },
+
+        orderByDistance() {
+            this.filtered.sort((a, b) => a.distance - b.distance);
         }
 
+
     },
-    
+
     mounted() {
         console.log(this.store);
-        this.getApi();        
+        this.getApi();
     }
 
 
@@ -135,7 +151,8 @@ export default {
 <template>
 
     <div class="container">
-        <button class="btn btn-primary my-filters-btn" type="button" data-bs-toggle="offcanvas"data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+        <button class="btn btn-primary my-filters-btn" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
             Filters
         </button>
         <!-- ***************************************OFFCANVAS****************************************************** -->
@@ -147,26 +164,29 @@ export default {
             </div>
             <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
                 <div class="offcanvas-item mx-5">
-                    <label for="customRange1" class="form-label" >Km radius {{ this.range }} </label>
-                    <input @input="filter()" type="range" min="0" max="20" v-model=range class="form-range" id="customRange1">
+                    <label for="customRange1" class="form-label">Km radius {{ this.range }} </label>
+                    <input @input="filter()" type="range" min="0" max="20" v-model=range class="form-range"
+                        id="customRange1">
                 </div>
                 <div class="offcanvas-item mx-5">
                     <label for="suite_room" class="form-label">Rooms:</label>
-                    <input type="number" class="form-control" id="suite_room" placeholder="" name="room" min="0" max="20" v-model=room @input="filter()">
+                    <input type="number" class="form-control" id="suite_room" placeholder="" name="room" min="0"
+                        max="20" v-model=room @input="filter()">
                 </div>
                 <div class="offcanvas-item mx-5">
                     <label for="suite_bed" class="form-label">Beds:</label>
-                    <input type="number" class="form-control" id="suite_bed" placeholder="" name="bed" min="0" max="20" v-model=bed @input="filter()" >
+                    <input type="number" class="form-control" id="suite_bed" placeholder="" name="bed" min="0" max="20"
+                        v-model=bed @input="filter()">
                 </div>
             </div>
         </div>
-        
-       
-         <!-- ***************************************OFFCANVAS****************************************************** -->
-        
-        
-         <!-- ***************************************SUITE CARDS****************************************************** -->
-      
+
+
+        <!-- ***************************************OFFCANVAS****************************************************** -->
+
+
+        <!-- ***************************************SUITE CARDS****************************************************** -->
+
         <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
             <h2>Results: {{ filtered.length }}</h2>
 
@@ -185,7 +205,7 @@ export default {
                         </div>
                         <div>
                             <!-- <router-link :to="{ name: 'suites' }" class="nav-link text-light"> -->
-                                <button id="search-btn"  class="btn btn-success search-btn me-3 disabled" type="button" @click="getSuite">
+                                <button id="search-btn" class="btn btn-success search-btn me-3 disabled" type="button" @click="getSuite">
                                     Search     
                                 </button>
                             <!-- </router-link> -->
@@ -211,20 +231,22 @@ export default {
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
 </template>
 
 <style scoped>
-.ellipse{
-	width: 100%;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+.ellipse {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-.myBorder{
+
+.myBorder {
     border: 0px;
 }
+
 .offcanvas {
     background-color: rgba(255, 255, 255, 0.621);
     color: white;
@@ -235,13 +257,14 @@ export default {
     width: 20%;
     margin-bottom: 1rem;
 }
-.my-filters-btn{
-position: fixed;
-right: 6rem;
-z-index: 1;
-}
-#result{
+
+.my-filters-btn {
+    position: fixed;
+    right: 6rem;
     z-index: 1;
 }
 
+#result {
+    z-index: 1;
+}
 </style>
