@@ -6,7 +6,6 @@ import AppSingleSuite from './pages/AppSingleSuite.vue';
 // import AppContacts from './pages/AppContacts.vue';
 // import SingleProject from './pages/SingleProject.vue';
 import NotFound from './pages/NotFound.vue';
-import AppContactMe from './pages/AppContactMe.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -25,11 +24,6 @@ const router = createRouter({
             path: '/suites/:slug',
             name: 'AppSingleSuite',
             component: AppSingleSuite
-        },
-        {
-            path: '/contacts/:slug',
-            name: 'Contacts',
-            component: AppContactMe
         },
         {
             path: '/:pathMatch(.*)*',

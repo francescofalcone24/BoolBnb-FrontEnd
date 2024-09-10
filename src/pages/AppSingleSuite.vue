@@ -15,11 +15,44 @@ export default {
     data() {
         return {
             store,
+            text: '',
+            email: '',
+            name: '',
+            loading: false,
+            success: false,
+            errors: {}
 
 
         }
     },
     methods: {
+        sendForm() {
+            this.loading = true;
+            const data = {
+                'name': this.name,
+                'email': this.email,
+                'text': this.text
+            };
+
+            // pulisco l'array con i messaggi
+            this.errors = {};
+
+            // Importante - Stiamo comunicando con Laravel, quindi non è più obbligatorio inserire gli headers con il Content-Type
+            // come abbiamo fatto invece quando comunicavamo direttamente con gli script PHP
+            axios.post(`http://127.0.0.1:8000/api/pincopallino/${this.$route.params.slug}`, data).then((response) => {
+                this.success = response.data.success;
+                if (!this.success) {
+                    this.errors = response.data.errors;
+                    console.log(this.errors);
+                } else {
+                    // ripulisco i campi di input
+                    this.name = '';
+                    this.email = '';
+                    this.text = '';
+                }
+                this.loading = false;
+            });
+        },
 
     },
 
@@ -87,8 +120,12 @@ export default {
             <h5 class="card-title">{{ store.singleSuite.title }}</h5>
             <p class="card-text">{{ store.singleSuite.address }}</p>
             <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">back to the list</router-link>
-            <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
-                class="btn btn-outline-danger">contact</router-link>
+            <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
+                class="btn btn-outline-danger">contact</router-link> -->
+            <button class="btn btn-outline-danger my-2" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                CONTACT THE HOUSE
+            </button>
 
 
             <ul class="list-group list-group-flush">
@@ -160,6 +197,52 @@ export default {
 
         </div>
     </div>
+    <!-- ***************************************OFFCANVAS****************************************************** -->
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasTopLabel">CONTACT THE HOUSE</h5>
+            <div v-if="success" class="alert alert-success text-start" role="alert">
+                Messaggio inviato con successo!
+            </div>
+        </div>
+        <div class="offcanvas-body d-flex flex-column flex-wrap ">
+            <div class="row">
+                <form @submit.prevent="sendForm()" class="col-12 text-start">
+                    <div class="offcanvas-item my-3">
+                        <input class=" border form-control" :class="{ 'is-invalid': errors.name }" type="text"
+                            name="name" id="name" placeholder="Name" v-model="name">
+                        <p v-for="(error, index) in errors.name" :key="`message-error-${index}`"
+                            class="invalid-feedback">
+                            {{ error }}
+                        </p>
+                    </div>
+                    <div class="offcanvas-item my-3">
+                        <input class="border form-control" :class="{ 'is-invalid': errors.email }" type="text"
+                            name="email" id="email" placeholder="Email" v-model="email">
+                        <p v-for="(error, index) in errors.email" :key="`message-error-${index}`"
+                            class="invalid-feedback">
+                            {{ error }}
+                        </p>
+                    </div>
+                    <div class="offcanvas-item my-3">
+                        <textarea class="border form-control" :class="{ 'is-invalid': errors.message }" name="text"
+                            id="text" cols="30" rows="10" placeholder="Message" v-model="text"></textarea>
+                        <p v-for="(error, index) in errors.text" :key="`message-error-${index}`"
+                            class="invalid-feedback">
+                            {{ error }}
+                        </p>
+                    </div>
+                    <button class="btn btn-lg btn-primary text-white" type="submit" :disabled="loading">{{ loading ?
+                        'Sending...' : 'Send'
+                        }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ***************************************OFFCANVAS****************************************************** -->
 
 </template>
 
@@ -178,5 +261,11 @@ strong {
 
 i {
     width: 10px;
+}
+
+.offcanvas {
+
+    background-color: #a39696;
+
 }
 </style>
