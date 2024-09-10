@@ -213,7 +213,7 @@ export default {
 
 
             <!-- FILTERS BAR -->
-            <div class="col-2 p-0 border border-dark my-2 h-100 sticky-top z-1 bg-warning-subtle">
+            <div class="my-left-bar col-2 p-0 border border-dark my-2 h-100 sticky-top z-1 bg-warning-subtle">
                 <h4 class="border-bottom border-dark p-3 text-center m-0">Results: {{ filtered.length }}</h4>
 
                 <h5 class="border-bottom border-dark p-1 my-3">Filter by:</h5>
@@ -304,6 +304,10 @@ export default {
 </template>
 
 <style scoped>
+.my-left-bar {
+    top: 1rem
+}
+
 .searchbar {
     border-radius: 80px;
     height: 3rem;
