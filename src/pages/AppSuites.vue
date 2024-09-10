@@ -81,11 +81,11 @@ export default {
 
                 if (filter_coordinate <= this.range) {
                     if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
+                        this.store.suite[index].distance = filter_coordinate
                         this.filtered.push(this.store.suite[index])
                     }
                 }
                 // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-                this.filtered[index].distance = filter_coordinate
                 console.log(this.filtered)
 
             }
@@ -122,9 +122,9 @@ export default {
             console.log(this.searchBar, 'cliccato')
             this.aka = [];
             this.disabled();
-            this.getApi(); 
+            this.getApi();
         },
-        
+
         disabled() {
             document.getElementById("search-btn").classList.remove("disabled")
         },
@@ -151,14 +151,14 @@ export default {
 <template>
 
     <div class="container">
-        <button class="btn btn-primary my-filters-btn" type="button" data-bs-toggle="offcanvas"
+        <!-- <button class="btn btn-primary my-filters-btn" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
             Filters
-        </button>
+        </button> -->
 
         <!-- ***************************************OFFCANVAS****************************************************** -->
 
-        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <!-- <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasTopLabel">Search filters:</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -180,55 +180,122 @@ export default {
                         v-model=bed @input="filter()">
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <!-- ***************************************OFFCANVAS****************************************************** -->
 
 
         <!-- ***************************************SUITE CARDS****************************************************** -->
+        <!-- SEARCHBAR -->
+        <form class="d-flex justify-content-center my-5" role="search">
+            <div class="col-8 me-3">
+                <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
+                    @input="getInputSearch" name="search_bar" required>
+                <ul id="result" class="list-group position-absolute">
+                    <li class="list-group-item" v-for="item, index in this.aka" @click="this.getChoose(index)">
+                        {{ item }}
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <!-- <router-link :to="{ name: 'suites' }" class="nav-link text-light"> -->
+                <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
+                    Search
+                </button>
+                <!-- </router-link> -->
+            </div>
+        </form>
 
-        <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
-            <h2>Results: {{ filtered.length }}</h2>
-
-
-
-            <form class="d-flex justify-content-center" role="search">
-                        <div class="col-8 me-3">
-                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
-                            <ul id="result" class="list-group position-absolute">
-                                <li class="list-group-item" v-for="item, index in this.aka"
-                                    @click="this.getChoose(index)">
-                                    {{ item }}
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <!-- <router-link :to="{ name: 'suites' }" class="nav-link text-light"> -->
-                                <button id="search-btn" class="btn btn-success search-btn me-3 disabled" type="button" @click="getSuite">
-                                    Search     
-                                </button>
-                            <!-- </router-link> -->
-                        </div>
-            </form>
+        <div class="container d-flex">
 
 
 
 
-            <div v-for="suite in filtered" class="col-3 myBorder">
-                <div class="card my-3 myBorder">
-                    <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-                        class="card-img-top h-100" alt="...">
+            <!-- FILTERS BAR -->
+            <div class="col-2 p-0 border border-dark my-2 h-100 sticky-top z-1 bg-warning-subtle">
+                <h4 class="border-bottom border-dark p-3 text-center m-0">Results: {{ filtered.length }}</h4>
 
-                    <img v-else="" :src="suite.img" class="card-img-top h-100" alt="...">
-                    <div class="card-body myBorder text-center">
-                        <h5 class="card-title ellipse py-1">{{ suite.title }}</h5>
-                        <p class="card-text ellipse">{{ suite.address }}</p>
-                        <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                            class="btn btn-outline-primary mt-auto">more
-                            details</router-link>
+                <h5 class="border-bottom border-dark p-1 my-3">Filter by:</h5>
+                <div>
+                    <div class="border-bottom border-dark my-3">
+                        <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
+                        </label>
+                        <input @input="filter()" type="range" min="0" max="20" v-model=range
+                            class="w-50 mx-2 mb-2 form-control form-range text-light" id="customRange1">
                     </div>
+                    <div class="border-bottom border-dark my-3">
+                        <label for="suite_room" class="ms-2 fw-semibold form-label">Rooms:</label>
+                        <input type="number" class="w-50 mx-2 mb-2 form-control form-control" id="suite_room"
+                            placeholder="" name="room" min="0" max="20" v-model=room @input="filter()">
+                    </div>
+                    <div class="my-3">
+                        <label for="suite_bed" class="ms-2 fw-semibold form-label">Beds:</label>
+                        <input type="number" class="w-50 mx-2 mb-2 form-control" id="suite_bed" placeholder=""
+                            name="bed" min="0" max="20" v-model=bed @input="filter()">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-9">
+                <div v-for="suite in filtered" class="col-12 ms-2 my-3 d-flex rounded border p-2">
+                    <div class="my-img col-3 me-3">
+                        <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                            class="card-img-top object-fit-cover " alt="...">
+
+                        <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded" alt="...">
+                    </div>
+                    <div class="col-6 ">
+                        <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                        <span>{{ suite.address }}</span>
+                        <div class="d-flex flex-wrap align-content-end">
+                            <div class="me-4">
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                    Rooms: {{ suite.room }}
+                                </div>
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                    Beds: {{ suite.bed }}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                    Bathrooms: {{ suite.bathroom }}
+                                </div>
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                    Square Meters: {{ suite.squareM }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SERVICES QUI QUANDO LI ABBIAMO -->
+                    <div class="ms-4 mt-2 col-2">
+
+                        <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                            class="btn btn-outline-primary mt-auto mb-3">
+                            Show Suite
+                        </router-link>
+                        <div>
+                            servizi:
+                            <br>
+                            1
+                            <br>
+                            2
+                            <br>
+                            3
+                            <br>
+                            4
+                        </div>
+                    </div>
+                    <!-- <div class="card-body text-center">
+
+                        
+                    </div> -->
+
                 </div>
             </div>
         </div>
@@ -237,35 +304,46 @@ export default {
 </template>
 
 <style scoped>
-.ellipse {
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.searchbar {
+    border-radius: 80px;
+    height: 3rem;
+    background-color: rgba(240, 248, 255, 0);
+    border: black 2px solid;
+    /* width: 70%; */
+    padding: 1rem;
+    outline: none;
+    color: black;
 }
 
-.myBorder {
-    border: 0px;
+.searchbar:focus {
+    background-color: #FFF3CD;
+    transition: 0.5s;
 }
 
-.offcanvas {
-    background-color: rgba(255, 255, 255, 0.621);
-    color: white;
-    height: 50vh;
+.search-btn {
+    height: 3rem;
+    border-radius: 20px;
+    background-color: rgba(240, 248, 255, 0);
+    border: black 2px solid;
+    color: black;
 }
 
-.offcanvas-item {
-    width: 20%;
-    margin-bottom: 1rem;
+.search-btn:hover {
+    background-color: #FFF3CD;
+    transition: 1s;
+
 }
 
-.my-filters-btn {
-    position: fixed;
-    right: 6rem;
-    z-index: 1;
+.my-img {
+    width: 220px;
+    height: 220px;
+}
+
+.my-fa-w {
+    width: 20px;
 }
 
 #result {
-    z-index: 1;
+    z-index: 99;
 }
 </style>
