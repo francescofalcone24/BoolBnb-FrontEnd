@@ -130,8 +130,8 @@ export default {
         },
 
         orderByDistance() {
-            this.filtered.sort((a, b) => a.distance - b.distance);
-        }
+            this.filtered.sort((a, b) => a.distance - b.distance)
+        },
 
 
     },
@@ -155,6 +155,7 @@ export default {
             data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
             Filters
         </button>
+
         <!-- ***************************************OFFCANVAS****************************************************** -->
 
         <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
