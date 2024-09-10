@@ -89,6 +89,7 @@ export default {
                 console.log(this.filtered)
 
             }
+            this.orderByDistance();
         },
         autocomplete(value) {
 
@@ -122,17 +123,8 @@ export default {
             this.aka = []
         },
 
-        dioBenedetto(0, 20) {
-
-
-            if (a.anno < b.anno) {
-                return -1;
-            }
-            else if (a.anno > b.anno) {
-                return 1;
-            }
-            return 0;
-
+        orderByDistance() {
+            this.filtered.sort((a, b) => a.distance - b.distance);
         }
 
 
@@ -191,7 +183,6 @@ export default {
 
         <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
             <h2>Results: {{ filtered.length }}</h2>
-            <button @click="dioBenedetto"></button>
 
 
 
