@@ -242,8 +242,7 @@ export default {
                 <div class="ms-4 mt-2 col-2">
 
                     <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                        class="btn btn-outline-primary mt-auto">more
-                        details</router-link>
+                        class="btn btn-outline-primary mt-auto">Show Suite</router-link>
                     <!-- <div>
                                 servizi:
                                 <br>
