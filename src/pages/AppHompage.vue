@@ -38,8 +38,8 @@ export default {
             unita: "kilometers",
             my_base_url: 'http://127.0.0.1:8000',
             latest_endpoint: '/api/suite/latest',
-            myApi: 'hola'
-
+            myApi: 'latitude=' + this.lat_rom + '&longitude=' + this.lon_rom + '&radius=20',
+            
 
 
         }
@@ -53,7 +53,7 @@ export default {
         getSuite() {
             this.store.country_range.lat = this.result_suggest[0].position.lat
             this.store.country_range.lng = this.result_suggest[0].position.lon
-            this.myApi = 'latitude=' + store.country_range.lat + '&longitude=' + store.country_range.lng
+            this.myApi = 'latitude=' + this.lat_rom + '&longitude=' + this.lon_rom
 
             console.log(this.store.country_range, 'coordinate')
             // this.getApi()
@@ -176,7 +176,7 @@ export default {
                             </ul>
                         </div>
                         <div>
-                            <router-link :to="{ name: 'suites', params: { api_url: this.myApi } }"
+                            <router-link :to="{ name: 'suites' , query : {latitude : this.lat_rom, longitude : this.lon_rom} }"
                                 class="nav-link text-light disabled" id="search-link">
                                 <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite"> Search
                                 </button>
