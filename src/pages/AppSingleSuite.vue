@@ -59,7 +59,7 @@ export default {
     mounted() {
 
         //console.log(this.$route.params.slug);
-        console.log(this.$route.params)
+        console.log(this.$route.params, 'questa e la rotta per lo slug')
         console.log(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
         axios
             .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)

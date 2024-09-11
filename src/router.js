@@ -16,12 +16,12 @@ const router = createRouter({
             component: AppHomepage
         },
         {
-            path: '/suite/search?:api_url',
+            path: '/suite/search',
             name: 'suites',
             component: AppSuites
         },
         {
-            path: '/suites/:slug',
+            path: '/suite/:slug',
             name: 'AppSingleSuite',
             component: AppSingleSuite
         },

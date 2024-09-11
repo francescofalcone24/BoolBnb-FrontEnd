@@ -29,9 +29,10 @@ export default {
             result_suggest: [],
             searchBar: [],
             pokemon: null,
-            base_url :'http://localhost:8000/api',
-            end_point : 0,
-            
+            base_url: 'http://localhost:8000/api',
+            end_point: 0,
+            myApi: null
+
         }
     },
     methods: {
@@ -45,23 +46,23 @@ export default {
             console.log(this.store, 'questo è lo store');
             axios.get(
                 // 'http://localhost:8000/api/suite/search'
-                this.base_url + this.end_point
-                // 'http://localhost:8000/api/suite/search?latitude='+ this.store.country_range.lat + '&longitude=' + this.store.country_range.lng +'&radius=20'
-                
+                // this.base_url + this.end_point
+                'http://localhost:8000/api/suite/search?latitude=' + this.store.country_range.lat + '&longitude=' + this.store.country_range.lng + '&radius=20'
+
                 , {
-                // params: {
-                //     lat: this.store.country_range.lat,
-                //     lng: this.store.country_range.lng
-                // }
-            }).then(response => {
-                console.log(response.data.results, 'questa è la nuoava api');
-                this.store.suite = response.data.results;
-                this.filtered = this.store.suite;
-                console.log(this.filtered, 'questo e` array filtrato da API')
-                this.filter()
-            }).catch(function (error) {
-                console.log(error);
-            });
+                    params: {
+                        lat: this.store.country_range.lat,
+                        lng: this.store.country_range.lng
+                    }
+                }).then(response => {
+                    console.log(response.data.results, 'questa è la nuoava api');
+                    this.store.suite = response.data.results;
+                    this.filtered = this.store.suite;
+                    console.log(this.filtered, 'questo e` array filtrato da API')
+                    this.filter()
+                }).catch(function (error) {
+                    console.log(error);
+                });
         },
 
         getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
@@ -140,11 +141,11 @@ export default {
         orderByDistance() {
             this.filtered.sort((a, b) => a.distance - b.distance)
         },
-        getroute(){
-            
-            const route = useRoute();  
-           
-            console.log( route.path ,'yo')
+        getroute() {
+
+            const route = useRoute();
+
+            console.log(route.path, 'yo')
             this.end_point = route.path
             console.log(this.end_point, 'yo secondo')
         }
