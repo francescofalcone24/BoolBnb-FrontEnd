@@ -20,39 +20,61 @@ export default {
             name: '',
             loading: false,
             success: false,
-            errors: {}
+            errors: {},
+            validateEmail: false
 
 
         }
     },
     methods: {
         sendForm() {
-            this.loading = true;
-            const data = {
-                'name': this.name,
-                'email': this.email,
-                'text': this.text
-            };
+            if (this.validateEmail == true) {
+                this.loading = true;
+                const data = {
+                    'name': this.name,
+                    'email': this.email,
+                    'text': this.text
+                };
 
-            // pulisco l'array con i messaggi
-            this.errors = {};
+                // pulisco l'array con i messaggi
+                this.errors = {};
 
-            // Importante - Stiamo comunicando con Laravel, quindi non è più obbligatorio inserire gli headers con il Content-Type
-            // come abbiamo fatto invece quando comunicavamo direttamente con gli script PHP
-            axios.post(`http://127.0.0.1:8000/api/pincopallino/${this.$route.params.slug}`, data).then((response) => {
-                this.success = response.data.success;
-                if (!this.success) {
-                    this.errors = response.data.errors;
-                    console.log(this.errors);
-                } else {
-                    // ripulisco i campi di input
-                    this.name = '';
-                    this.email = '';
-                    this.text = '';
-                }
-                this.loading = false;
-            });
+                // Importante - Stiamo comunicando con Laravel, quindi non è più obbligatorio inserire gli headers con il Content-Type
+                // come abbiamo fatto invece quando comunicavamo direttamente con gli script PHP
+                axios.post(`http://127.0.0.1:8000/api/pincopallino/${this.$route.params.slug}`, data).then((response) => {
+                    this.success = response.data.success;
+                    if (!this.success) {
+                        this.errors = response.data.errors;
+                        console.log(this.errors);
+                    } else {
+                        // ripulisco i campi di input
+                        this.name = '';
+                        this.email = '';
+                        this.text = '';
+                    }
+                    this.loading = false;
+                });
+            }
+
         },
+
+        validateEmailInput() {
+            this.validateEmail = false
+            const emailInput = document.getElementById('email').value;
+            const feedbackElement = document.getElementById('emailFeedback');
+
+            const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+
+            if (emailInput.includes('@') && emailInput.includes('.') && !emailInput.endsWith('.')) {
+                feedbackElement.textContent = "";
+                return this.validateEmail = true
+
+            } else {
+                feedbackElement.textContent = "Please enter a valid email address.";
+                return this.validateEmail = false
+
+            }
+        }
 
     },
 
@@ -221,11 +243,15 @@ export default {
                     </div>
                     <div class="offcanvas-item my-3">
                         <input class="border form-control" :class="{ 'is-invalid': errors.email }" type="text"
-                            name="email" id="email" placeholder="Email" v-model="email">
-                        <p v-for="(error, index) in errors.email" :key="`message-error-${index}`"
+                            name="email" id="email" placeholder="Email" v-model="email" required
+                            @input="validateEmailInput()">
+                        <!-- <p v-for="(error, index) in errors.email" :key="`message-error-${index}`"
                             class="invalid-feedback">
                             {{ error }}
-                        </p>
+                        </p> -->
+                        <span id="emailFeedback" style="color: red;"></span>
+
+
                     </div>
                     <div class="offcanvas-item my-3">
                         <textarea class="border form-control" :class="{ 'is-invalid': errors.message }" name="text"
