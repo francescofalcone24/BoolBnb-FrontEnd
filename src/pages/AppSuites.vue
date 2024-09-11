@@ -191,7 +191,7 @@ export default {
             </div>
         </form>
 
-        <div class="container d-flex">
+        <div class="container container-breack">
 
 
 
@@ -201,7 +201,7 @@ export default {
                 <h4 class="border-bottom border-dark p-3 text-center m-0">Results: {{ filtered.length }}</h4>
 
                 <h5 class="border-bottom border-dark p-1 my-3">Filter by:</h5>
-                <div>
+                <div class="filtri-brack">
                     <div class="border-bottom border-dark my-3">
                         <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
                         </label>
@@ -225,13 +225,13 @@ export default {
 
 
 
-            <div class="col-9">
+            <div class="col-xl-8 col-lg-9 col-md-9 col-md-12">
                 <!-- CARD SPONSORIZZATE -->
                 <div v-for="suite in filtered">
                     <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                         class="text-decoration-none text-dark">
                         <div v-if="suite.sponsor === 1"
-                            class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative">
+                            class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
                             <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
                             <div class="my-img col-3 me-3">
                                 <img v-if="!suite.img.startsWith('http')"
@@ -360,6 +360,11 @@ export default {
 </template>
 
 <style scoped>
+.container-breack{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
 .my-left-bar {
     top: 1rem
 }
@@ -419,5 +424,27 @@ export default {
 
 #result {
     z-index: 99;
+}
+@media only screen and (max-width: 992px) {
+  .my-left-bar{
+    position: static;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  .filtri-brack{
+   
+  }
+  .container-breack{
+    display: block;
+  }
+  .my-card-breack{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+  }
+  .my-img{
+    align-self: center;
+  }
 }
 </style>

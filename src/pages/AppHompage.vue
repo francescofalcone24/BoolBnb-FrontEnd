@@ -373,9 +373,4 @@ export default {
         min-width: 80%;
     }
 }
-@media only screen and (max-width: 768px) {
-    .my-card-breack{
-        /* flex-direction: column; */
-    }
-}
 </style>
