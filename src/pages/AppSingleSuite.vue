@@ -110,25 +110,20 @@ export default {
         </div>
 
     </div> -->
-    <div class="container d-flex py-2 justify-content-between col-12" v-if="store.singleSuite">
+    <div class="container d-flex py-2 justify-content-around col-12 mt-5" v-if="store.singleSuite">
 
-        <img v-if="!store.singleSuite.img.startsWith('http')" style="height: 50rem;"
-            :src="store.localHostUrl + '/storage/' + store.singleSuite.img" class=" w-50" alt="...">
+        <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+            class="mb-5" alt="...">
 
-        <img v-else="" :src="store.singleSuite.img" class=" w-50" alt="..." style="height: 50rem;">
-        <div class="d-flex flex-column justify-content-center">
-            <h5 class="card-title">{{ store.singleSuite.title }}</h5>
+        <img v-else="" :src="store.singleSuite.img" class="mb-5" alt="...">
+
+        <div class="d-flex flex-column ">
+            <h2 class="card-title">{{ store.singleSuite.title }}</h2>
             <p class="card-text">{{ store.singleSuite.address }}</p>
-            <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">back to the list</router-link>
-            <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
-                class="btn btn-outline-danger">contact</router-link> -->
-            <button class="btn btn-outline-danger my-2" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                CONTACT THE HOUSE
-            </button>
 
 
-            <ul class="list-group list-group-flush">
+
+            <ul class="list-group list-group-flush mb-3">
                 <li class="list-group-item">
                     <div class="col-6 d-flex justify-content-between">
 
@@ -194,6 +189,13 @@ export default {
                 </li>
 
             </ul>
+            <button class="btn btn-outline-primary my-3" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                Contact the owner
+            </button>
+            <router-link :to="{ name: 'suites' }" class="btn btn-outline-info mb-5">Go back to search</router-link>
+            <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
+                class="btn btn-outline-danger">contact</router-link> -->
 
         </div>
     </div>
@@ -201,7 +203,7 @@ export default {
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasTopLabel">CONTACT THE HOUSE</h5>
+            <h5 class="offcanvas-title" id="offcanvasTopLabel">Contact the owner:</h5>
             <div v-if="success" class="alert alert-success text-start" role="alert">
                 Messaggio inviato con successo!
             </div>
@@ -233,9 +235,9 @@ export default {
                             {{ error }}
                         </p>
                     </div>
-                    <button class="btn btn-lg btn-primary text-white" type="submit" :disabled="loading">{{ loading ?
-                        'Sending...' : 'Send'
-                        }}</button>
+                    <button class="btn btn-lg btn-info " type="submit" :disabled="loading">
+                        {{ loading ? 'Sending...' : 'Send' }}
+                    </button>
                 </form>
             </div>
         </div>
@@ -263,9 +265,15 @@ i {
     width: 10px;
 }
 
+img {
+    object-fit: cover;
+    width: 500px;
+    height: 500px;
+}
+
 .offcanvas {
 
-    background-color: #a39696;
+    background-color: #d4d3d3;
 
 }
 </style>

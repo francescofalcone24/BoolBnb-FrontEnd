@@ -15,15 +15,15 @@ export default {
 
     data() {
         return {
-           store,
-            suite: [],
+            store,
+            suite: '',
             searchBar: [],
             room: 0,
             bed: 0,
             range: 20,
             search_input: null,
             result_suggest: [],
-            aka:[],
+            aka: [],
 
 
             base_url: "https://api.tomtom.com/search/2/search/",
@@ -34,8 +34,9 @@ export default {
 
             lat_rom: 0,
             lon_rom: 0,
-            unita: "kilometers"
-
+            unita: "kilometers",
+            my_base_url: 'http://127.0.0.1:8000',
+            latest_endpoint: '/api/suite/latest'
 
 
         }
@@ -49,11 +50,11 @@ export default {
         getSuite() {
             this.store.country_range.lat = this.result_suggest[0].position.lat
             this.store.country_range.lng = this.result_suggest[0].position.lon
-            
-            console.log(this.store.country_range , 'coordinate')
+
+            console.log(this.store.country_range, 'coordinate')
             // this.getApi()
             // console.log(this.range, 'questo è il range')
-            
+
             // axios.get('http://localhost:8000/api/suite').then(response => {
             //     // console.log(response, 'questa è la chiamata')
             //     this.store.suite = []
@@ -98,9 +99,9 @@ export default {
 
             const base_url = "https://api.tomtom.com/search/2/geocode/"
             this.aka = []
-           
+
             let mid_url = value.replace(/ /g, '%20');
-            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet={IT}`
+            const apiKey = `.json?key=jmRHcyl09MwwWAWkpuc1wvI3C3miUjkN&limit=5&countrySet=IT`
 
             delete axios.defaults.headers.common['X-Requested-With'];
 
@@ -108,26 +109,42 @@ export default {
                 this.result_suggest = response.data.results;
                 this.lat_rom = this.result_suggest[0].position.lat
                 this.lon_rom = this.result_suggest[0].position.lon
-                  for (let index = 0; index < this.result_suggest.length; index++) { 
-                      this.aka[index] = this.result_suggest[index].address.freeformAddress
-                  }
+                for (let index = 0; index < this.result_suggest.length; index++) {
+                    this.aka[index] = this.result_suggest[index].address.freeformAddress
+                }
             });
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
             console.log(this.searchBar, 'cliccato')
-            this.aka = []
+            this.aka = [];
+            this.disabled();
         },
 
-         // da spostare
-      
+        getHome() {
+            delete axios.defaults.headers.common['X-Requested-With'];
+
+            axios.get(this.my_base_url + this.latest_endpoint).then(response => {
+                this.suite = response.data.results;
+                console.log(this.suite);
+
+            });
+        },
+
+        disabled() {
+            document.getElementById("search-link").classList.remove("disabled")
+        }
+
+        // da spostare
     },
 
 
 
     mounted() {
-        // this.getDistanceBetweenPoints(this.lat_nap, this.lon_nap, this.lat_rom, this.lon_rom, this.unita)
-        
+        this.getHome();
+
+
+
     }
 
 
@@ -155,97 +172,96 @@ export default {
                             </ul>
                         </div>
                         <div>
-                            <!-- <button class="btn btn-success search-btn me-3" type="button"
-                                @click="getSuite">Search</button> -->
-                            <router-link :to="{ name: 'suites' }" class="nav-link text-light">
-                            <button  class="btn btn-success search-btn me-3" type="button" @click="getSuite">
-                                    Search
-                                    
-                                    </button>
-                                    </router-link>
-
-
-                                 
-
-                            <button class="btn btn-primary search-btn" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Filters
-                            </button>
-
-                            
+                            <router-link :to="{ name: 'suites' }" class="nav-link text-light disabled" id="search-link">
+                                <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite"> Search
+                                </button>
+                            </router-link>
                         </div>
-
-                       
-
-                        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop"
-                            aria-labelledby="offcanvasTopLabel">
-                            <div class="offcanvas-header">
-                                <h5 class="offcanvas-title" id="offcanvasTopLabel">Search filters:</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body d-flex flex-column flex-wrap align-content-start">
-                                <div class="offcanvas-item mx-5">
-                                    <label for="customRange1" class="form-label">Km radius {{ this.range }}</label>
-                                    <input type="range" min="0" max="50" v-model=range class="form-range"
-                                        id="customRange1">
-                                </div>
-                                <div class="offcanvas-item mx-5">
-                                    <label for="suite_room" class="form-label">Rooms:</label>
-                                    <input type="number" class="form-control" id="suite_room" placeholder="" name="room"
-                                        min="1" max="20" v-model=room>
-                                </div>
-                                <div class="offcanvas-item mx-5">
-                                    <label for="suite_bed" class="form-label">Beds:</label>
-                                    <input type="number" class="form-control" id="suite_bed" placeholder="" name="bed"
-                                        min="1" max="20" v-model=bed>
-                                </div>
-
-                                <!-- <div>
-                                    <div class="form-check mx-5">
-                                        <label for="services">Services:</label>
-                                        <div class="d-flex flex-column flex-wrap ">
-                                            <div>
-                                                <input class="form-check-input offcanvas-item" type="checkbox" value=""
-                                                    id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Service 1
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <input class="form-check-input offcanvas-item" type="checkbox" value=""
-                                                    id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Service 2
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <input class="form-check-input offcanvas-item" type="checkbox" value=""
-                                                    id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Service 3
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
-    <!-- <div class="container">
-        <ul v-for="element in aka " class="d-flex">
-            <li class="col-4"> -->
-                <!-- {{ element.address }} --> 
-                <!-- ciao -->
-            <!-- </li>
-        </ul>
-    </div> -->
+    <div class="container">
+        <h2 class="my-3">Our Advices:</h2>
+        <!-- <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
+            <div v-for="suite in this.suite" class="col-3 myBorder">
+                <div class="card my-3 myBorder">
+                    <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                        class="card-img-top h-100" alt="...">
+
+                    <img v-else="" :src="suite.img" class="card-img-top h-100" alt="...">
+                    <div class="card-body myBorder text-center">
+                        <h5 class="card-title ellipse py-1">{{ suite.title }}</h5>
+                        <p class="card-text ellipse">{{ suite.address }}</p>
+                        <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                            class="btn btn-outline-primary mt-auto">more
+                            details</router-link>
+                    </div>
+                </div>
+            </div>
+
+        </div> -->
+        <div v-for="suite in this.suite">
+            <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative">
+                <!-- <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div> -->
+                <div class="my-img col-3 me-3">
+                    <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                        class="card-img-top object-fit-cover " alt="...">
+
+                    <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded" alt="...">
+                </div>
+                <div class="col-6 ">
+                    <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                    <span>{{ suite.address }}</span>
+                    <div class="d-flex flex-wrap align-content-end">
+                        <div class="me-4">
+                            <div class="mt-3 d-flex align-items-center">
+                                <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                Rooms: {{ suite.room }}
+                            </div>
+                            <div class="mt-3 d-flex align-items-center">
+                                <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                Beds: {{ suite.bed }}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt-3 d-flex align-items-center">
+                                <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                Bathrooms: {{ suite.bathroom }}
+                            </div>
+                            <div class="mt-3 d-flex align-items-center">
+                                <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                Square Meters: {{ suite.squareM }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SERVICES QUI QUANDO LI ABBIAMO -->
+                <div class="ms-4 mt-2 col-2">
+
+                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                        class="btn btn-outline-primary mt-auto">Show Suite</router-link>
+                    <!-- <div>
+                                servizi:
+                                <br>
+                                1
+                                <br>
+                                2
+                                <br>
+                                3
+                                <br>
+                                4
+                            </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
 </template>
 
 <style scoped>
@@ -314,5 +330,28 @@ export default {
 .offcanvas-item {
     width: 20%;
     margin-bottom: 1rem;
+}
+
+.my-img {
+    width: 220px;
+    height: 220px;
+}
+
+.my-fa-w {
+    width: 20px;
+}
+
+.my-sponsored-div {
+    width: 110px;
+    height: 30px;
+    background-color: rgb(255, 123, 0);
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    padding: 2px;
+    font-weight: 500;
 }
 </style>
