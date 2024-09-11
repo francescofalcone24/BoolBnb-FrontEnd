@@ -36,18 +36,45 @@ export default {
 
   <nav class="navbar my-navbar p-0 m-0 align-items-center">
     <div class="d-flex justify-content-between align-items-center container">
-      <div class="w-50">
+      <div class="w-50 p-2">
         <router-link :to="{ name: 'home' }">
           <img src="../assets/img/BoolBnB.png" class="my-navbar p-0 m-0 img-logo" alt="">
         </router-link>
       </div>
       <div class="w-50">
+       
+
+
+
+
+
+        <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="staticBackdropLabel">MENU</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <div>
+              <router-link :to="{ name: 'home' }" class="nav-link text-dark"> Home </router-link>
+              <a class="text-decoration-none text-dark" href="http://localhost:8000/login">Login</a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
         <ul class="d-flex justify-content-end align-items-center text-decoration-none">
           <li class="nav-item list-group col-3 text-center list-style-none justify-self-center">
             <router-link :to="{ name: 'home' }" class="nav-link text-dark"> Home </router-link>
           </li>
           <li class="nav-item list-group col-3 text-center list-style-none justify-self-center">
             <a class="text-decoration-none text-dark" href="http://localhost:8000/login">Login</a>
+          </li>
+          <li class="nav-item list-group list-style-none text-dark">
+            <i class="fa fa-navicon" type="button" aria-hidden="true"  data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop" ></i>
           </li>
         </ul>
       </div>
@@ -62,6 +89,9 @@ export default {
 </template>
 
 <style scoped>
+ .fa-navicon{
+    display: none;
+  }
 .my-navbar {
   height: 5rem;
 }
@@ -70,4 +100,26 @@ export default {
   width: 20%;
   height: 20%;
 }
+@media only screen and (max-width: 768px) {
+  .img-logo{
+    width: 8rem;
+  }
+  li a{
+    display: none;
+  }
+  .fa-navicon{
+    display: block;
+  }
+  .breack-nav{
+    display: flex;
+    justify-content: space-between;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .img-logo{
+    width: 5rem;
+    gap: 1rem;
+  }
+}
+
 </style>
