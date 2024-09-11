@@ -214,7 +214,7 @@ export default {
 
                 <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
                     <!-- <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div> -->
-                    <div class="my-img col-3 me-3">
+                    <div class="my-img col-3 me-3 my-2">
                         <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
                             class="card-img-top object-fit-cover " alt="...">
 
@@ -364,7 +364,7 @@ export default {
     font-weight: 500;
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 768px) {
     .my-card-breack {
         flex-direction: column;
     }
