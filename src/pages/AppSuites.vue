@@ -191,7 +191,7 @@ export default {
             </div>
         </form>
 
-        <div class="container d-flex">
+        <div class="container container-breack">
 
 
 
@@ -201,7 +201,7 @@ export default {
                 <h4 class="border-bottom border-dark p-3 text-center m-0">Results: {{ filtered.length }}</h4>
 
                 <h5 class="border-bottom border-dark p-1 my-3">Filter by:</h5>
-                <div>
+                <div class="filtri-brack">
                     <div class="border-bottom border-dark my-3">
                         <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
                         </label>
@@ -225,133 +225,132 @@ export default {
 
 
 
-            <div class="col-9">
+            <div class="col-xl-8 col-lg-9 col-md-9 col-md-12">
                 <!-- CARD SPONSORIZZATE -->
                 <div v-for="suite in filtered">
-                    <div v-if="suite.sponsor === 1"
-                        class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative">
-                        <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
-                        <div class="my-img col-3 me-3">
-                            <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img"
-                                class="h-100 col-3 rounded card-img-top object-fit-cover " alt="...">
+                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                        class="text-decoration-none text-dark">
+                        <div v-if="suite.sponsor === 1"
+                            class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
+                            <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+                            <div class="my-img col-3 me-3">
+                                <img v-if="!suite.img.startsWith('http')"
+                                    :src="store.localHostUrl + '/storage/' + suite.img"
+                                    class="h-100 col-3 rounded card-img-top object-fit-cover " alt="...">
 
-                            <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded object-fit-cover"
-                                alt="...">
-                        </div>
-                        <div class="col-6 ">
-                            <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
-                            <span>{{ suite.address }}</span>
-                            <div class="d-flex flex-wrap align-content-end">
-                                <div class="me-4">
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
-                                        Rooms: {{ suite.room }}
+                                <img v-else="" :src="suite.img"
+                                    class="card-img-top h-100 col-3 rounded object-fit-cover" alt="...">
+                            </div>
+                            <div class="col-6 ">
+                                <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                                <p>{{ suite.address }}</p>
+                                <span>{{ suite.distance }} km from centre</span>
+                                <div class="d-flex flex-wrap align-content-end">
+                                    <div class="me-4">
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                            Rooms: {{ suite.room }}
+                                        </div>
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                            Beds: {{ suite.bed }}
+                                        </div>
                                     </div>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
-                                        Beds: {{ suite.bed }}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
-                                        Bathrooms: {{ suite.bathroom }}
-                                    </div>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
-                                        Square Meters: {{ suite.squareM }}
+                                    <div>
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                            Bathrooms: {{ suite.bathroom }}
+                                        </div>
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                            Square Meters: {{ suite.squareM }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- SERVICES QUI QUANDO LI ABBIAMO -->
+                            <div class="ms-4 mt-2 col-2">
+
+
+
+
+                                <div>
+                                    servizi:
+                                    <br>
+                                    1
+                                    <br>
+                                    2
+                                    <br>
+                                    3
+                                    <br>
+                                    4
+                                </div>
+                            </div>
                         </div>
-                        <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                        <div class="ms-4 mt-2 col-2">
-
-                            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                                class="btn btn-outline-primary mt-auto mb-3">
-                                Show Suite
-                            </router-link>
-                            <!-- <div>
-                                servizi:
-                                <br>
-                                1
-                                <br>
-                                2
-                                <br>
-                                3
-                                <br>
-                                4
-                            </div> -->
-                        </div>
-                    </div>
-                    <!-- <div class="card-body text-center">
-
-                        
-                    </div> -->
-
+                    </router-link>
                 </div>
 
 
                 <!-- CARD NON SPONSORIZZATE -->
                 <div v-for="suite in filtered">
-                    <div v-if="suite.sponsor === 0" class="col-12 ms-2 my-3 d-flex rounded border p-2">
+                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                        class="text-decoration-none text-dark">
+                        <div v-if="suite.sponsor === 0" class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 my-card-breack">
 
-                        <div class="my-img col-3 me-3">
-                            <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img"
-                                class="card-img-top object-fit-cover " alt="...">
+                            <div class="my-img col-3 me-3">
+                                <img v-if="!suite.img.startsWith('http')"
+                                    :src="store.localHostUrl + '/storage/' + suite.img"
+                                    class="card-img-top object-fit-cover " alt="...">
 
-                            <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded object-fit-cover"
-                                alt="...">
-                        </div>
-                        <div class="col-6 ">
-                            <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
-                            <span>{{ suite.address }}</span>
-                            <div class="d-flex flex-wrap align-content-end">
-                                <div class="me-4">
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
-                                        Rooms: {{ suite.room }}
+                                <img v-else="" :src="suite.img"
+                                    class="card-img-top h-100 col-3 rounded object-fit-cover" alt="...">
+                            </div>
+                            <div class="col-6 ">
+                                <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                                <p>{{ suite.address }}</p>
+                                <span>{{ suite.distance }} km from centre</span>
+
+                                <div class="d-flex flex-wrap align-content-end">
+                                    <div class="me-4">
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                            Rooms: {{ suite.room }}
+                                        </div>
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                            Beds: {{ suite.bed }}
+                                        </div>
                                     </div>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
-                                        Beds: {{ suite.bed }}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
-                                        Bathrooms: {{ suite.bathroom }}
-                                    </div>
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
-                                        Square Meters: {{ suite.squareM }}
+                                    <div>
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                            Bathrooms: {{ suite.bathroom }}
+                                        </div>
+                                        <div class="mt-3 d-flex align-items-center">
+                                            <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                            Square Meters: {{ suite.squareM }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="ms-4 mt-2 col-2">
+
+
+                                <div>
+                                    servizi:
+                                    <br>
+                                    1
+                                    <br>
+                                    2
+                                    <br>
+                                    3
+                                    <br>
+                                    4
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="ms-4 mt-2 col-2">
-
-                            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                                class="btn btn-outline-primary mt-auto mb-3">
-                                Show Suite
-                            </router-link>
-                            <!-- <div>
-                                servizi:
-                                <br>
-                                1
-                                <br>
-                                2
-                                <br>
-                                3
-                                <br>
-                                4
-                            </div> -->
-                        </div>
-                    </div>
-
+                    </router-link>
 
                 </div>
             </div>
@@ -361,6 +360,12 @@ export default {
 </template>
 
 <style scoped>
+.container-breack {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
 .my-left-bar {
     top: 1rem
 }
@@ -420,5 +425,28 @@ export default {
 
 #result {
     z-index: 99;
+}
+
+@media only screen and (max-width: 992px) {
+    .my-left-bar {
+        position: static;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container-breack {
+        display: block;
+    }
+
+    .my-card-breack {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+    }
+
+    .my-img {
+        align-self: center;
+    }
 }
 </style>
