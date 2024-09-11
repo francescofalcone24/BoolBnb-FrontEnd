@@ -1,6 +1,7 @@
 <script>
 import store from '../data/store';
 import axios from "axios";
+import { useRoute } from 'vue-router';
 
 export default {
 
@@ -28,7 +29,9 @@ export default {
             result_suggest: [],
             searchBar: [],
             pokemon: null,
-
+            base_url :'http://localhost:8000/api',
+            end_point : 0,
+            
         }
     },
     methods: {
@@ -40,11 +43,16 @@ export default {
             console.log(this.store.country_range, 'coordinate per chiamata')
             delete axios.defaults.headers.common['X-Requested-With'];
             console.log(this.store, 'questo è lo store');
-            axios.get('http://localhost:8000/api/suite/search', {
-                params: {
-                    lat: this.store.country_range.lat,
-                    lng: this.store.country_range.lng
-                }
+            axios.get(
+                // 'http://localhost:8000/api/suite/search'
+                this.base_url + this.end_point
+                // 'http://localhost:8000/api/suite/search?latitude='+ this.store.country_range.lat + '&longitude=' + this.store.country_range.lng +'&radius=20'
+                
+                , {
+                // params: {
+                //     lat: this.store.country_range.lat,
+                //     lng: this.store.country_range.lng
+                // }
             }).then(response => {
                 console.log(response.data.results, 'questa è la nuoava api');
                 this.store.suite = response.data.results;
@@ -132,11 +140,20 @@ export default {
         orderByDistance() {
             this.filtered.sort((a, b) => a.distance - b.distance)
         },
-
+        getroute(){
+            
+            const route = useRoute();  
+           
+            console.log( route.path ,'yo')
+            this.end_point = route.path
+            console.log(this.end_point, 'yo secondo')
+        }
 
     },
 
     mounted() {
+        this.getroute()
+        console.log(this.base_url + this.end_point)
         console.log(this.store);
         this.getApi();
     }

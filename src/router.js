@@ -16,7 +16,7 @@ const router = createRouter({
             component: AppHomepage
         },
         {
-            path: '/suites',
+            path: '/suite/search?:api_url',
             name: 'suites',
             component: AppSuites
         },

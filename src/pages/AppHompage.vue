@@ -2,6 +2,7 @@
 import store from '../data/store.js';
 import axios from "axios";
 
+
 export default {
 
     name: 'AppHompage',
@@ -36,7 +37,9 @@ export default {
             lon_rom: 0,
             unita: "kilometers",
             my_base_url: 'http://127.0.0.1:8000',
-            latest_endpoint: '/api/suite/latest'
+            latest_endpoint: '/api/suite/latest',
+            myApi: 'hola'
+            
 
 
         }
@@ -50,6 +53,7 @@ export default {
         getSuite() {
             this.store.country_range.lat = this.result_suggest[0].position.lat
             this.store.country_range.lng = this.result_suggest[0].position.lon
+            this.myApi = 'latitude='+ store.country_range.lat + '&longitude=' + store.country_range.lng
 
             console.log(this.store.country_range, 'coordinate')
             // this.getApi()
@@ -172,7 +176,7 @@ export default {
                             </ul>
                         </div>
                         <div>
-                            <router-link :to="{ name: 'suites' }" class="nav-link text-light disabled" id="search-link">
+                            <router-link :to="{ name: 'suites',params: { api_url: this.myApi } }" class="nav-link text-light disabled" id="search-link">
                                 <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite"> Search
                                 </button>
                             </router-link>
