@@ -227,7 +227,7 @@ export default {
                     </div>
                     <div class="offcanvas-item my-3">
                         <textarea class="border form-control" :class="{ 'is-invalid': errors.message }" name="text"
-                            id="text" cols="30" rows="10" placeholder="Message" v-model="text"></textarea>
+                            id="text" cols="30" rows="10" placeholder="Message" v-model="text" required></textarea>
                         <p v-for="(error, index) in errors.text" :key="`message-error-${index}`"
                             class="invalid-feedback">
                             {{ error }}
