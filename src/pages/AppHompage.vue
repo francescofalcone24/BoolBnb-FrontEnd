@@ -208,7 +208,9 @@ export default {
 
         </div> -->
         <div v-for="suite in this.suite">
-            <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative">
+            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }" class="text-dark text-decoration-none">
+          
+                <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
                 <!-- <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div> -->
                 <div class="my-img col-3 me-3">
                     <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
@@ -245,8 +247,7 @@ export default {
                 <!-- SERVICES QUI QUANDO LI ABBIAMO -->
                 <div class="ms-4 mt-2 col-2">
 
-                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                        class="btn btn-outline-primary mt-auto">Show Suite</router-link>
+                  
                     <!-- <div>
                                 servizi:
                                 <br>
@@ -259,7 +260,8 @@ export default {
                                 4
                             </div> -->
                 </div>
-            </div>
+                </div>
+            </router-link>
         </div>
 
     </div>
@@ -276,7 +278,7 @@ export default {
 .img-container {
     height: calc(100vh - 10rem);
     width: 100%;
-    background-size: 100%;
+    background-size: cover;
     background-position-y: center;
     background-repeat: no-repeat;
     background-image: url(../assets/img/lago.jpg);
@@ -285,6 +287,7 @@ export default {
 .searchbar-container {
     background-color: rgba(134, 134, 134, 0.815);
     width: 50%;
+    /* min-width: 25rem; */
     border-radius: 80px;
     margin-top: 2rem;
     margin-bottom: 10rem;
@@ -357,5 +360,22 @@ export default {
     color: white;
     padding: 2px;
     font-weight: 500;
+}
+
+@media only screen and (max-width: 576px) {
+    .my-card-breack{
+        flex-direction: column;
+    }
+    .my-img{
+        align-self: center;
+    }
+    .searchbar-container{
+        min-width: 80%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .my-card-breack{
+        /* flex-direction: column; */
+    }
 }
 </style>
