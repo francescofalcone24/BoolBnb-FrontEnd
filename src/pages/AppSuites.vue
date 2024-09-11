@@ -360,11 +360,12 @@ export default {
 </template>
 
 <style scoped>
-.container-breack{
+.container-breack {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
 .my-left-bar {
     top: 1rem
 }
@@ -425,26 +426,27 @@ export default {
 #result {
     z-index: 99;
 }
+
 @media only screen and (max-width: 992px) {
-  .my-left-bar{
-    position: static;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-  }
-  .filtri-brack{
-   
-  }
-  .container-breack{
-    display: block;
-  }
-  .my-card-breack{
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-  }
-  .my-img{
-    align-self: center;
-  }
+    .my-left-bar {
+        position: static;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container-breack {
+        display: block;
+    }
+
+    .my-card-breack {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+    }
+
+    .my-img {
+        align-self: center;
+    }
 }
 </style>
