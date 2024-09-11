@@ -295,7 +295,7 @@ export default {
                 <div v-for="suite in filtered">
                     <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                         class="text-decoration-none text-dark">
-                        <div v-if="suite.sponsor === 0" class="col-12 ms-2 my-3 d-flex rounded border p-2">
+                        <div v-if="suite.sponsor === 0" class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 my-card-breack">
 
                             <div class="my-img col-3 me-3">
                                 <img v-if="!suite.img.startsWith('http')"

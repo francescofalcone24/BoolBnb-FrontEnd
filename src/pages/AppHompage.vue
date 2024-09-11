@@ -276,7 +276,7 @@ export default {
 }
 
 .img-container {
-    height: calc(100vh - 10rem);
+    height: calc(800px - 10rem);
     width: 100%;
     background-size: cover;
     background-position-y: center;
@@ -371,6 +371,11 @@ export default {
     }
     .searchbar-container{
         min-width: 80%;
+    }
+}
+@media only screen and (max-width: 992px) {
+    .img-container{
+        background-position-x: right;
     }
 }
 </style>
