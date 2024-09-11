@@ -39,7 +39,7 @@ export default {
             my_base_url: 'http://127.0.0.1:8000',
             latest_endpoint: '/api/suite/latest',
             myApi: 'hola'
-            
+
 
 
         }
@@ -53,7 +53,7 @@ export default {
         getSuite() {
             this.store.country_range.lat = this.result_suggest[0].position.lat
             this.store.country_range.lng = this.result_suggest[0].position.lon
-            this.myApi = 'latitude='+ store.country_range.lat + '&longitude=' + store.country_range.lng
+            this.myApi = 'latitude=' + store.country_range.lat + '&longitude=' + store.country_range.lng
 
             console.log(this.store.country_range, 'coordinate')
             // this.getApi()
@@ -176,7 +176,8 @@ export default {
                             </ul>
                         </div>
                         <div>
-                            <router-link :to="{ name: 'suites',params: { api_url: this.myApi } }" class="nav-link text-light disabled" id="search-link">
+                            <router-link :to="{ name: 'suites', params: { api_url: this.myApi } }"
+                                class="nav-link text-light disabled" id="search-link">
                                 <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite"> Search
                                 </button>
                             </router-link>
@@ -188,7 +189,7 @@ export default {
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
     <div class="container">
-        <h2 class="my-3">Our Advices:</h2>
+        <h2 class="my-3 col-9 mx-auto">Our Advices:</h2>
         <!-- <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
             <div v-for="suite in this.suite" class="col-3 myBorder">
                 <div class="card my-3 myBorder">
@@ -207,48 +208,49 @@ export default {
             </div>
 
         </div> -->
-        <div v-for="suite in this.suite">
-            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }" class="text-dark text-decoration-none">
-          
-                <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
-                <!-- <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div> -->
-                <div class="my-img col-3 me-3">
-                    <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-                        class="card-img-top object-fit-cover " alt="...">
+        <div class="col-9 mx-auto" v-for="suite in this.suite">
+            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                class="text-dark text-decoration-none">
 
-                    <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded" alt="...">
-                </div>
-                <div class="col-6 ">
-                    <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
-                    <span>{{ suite.address }}</span>
-                    <div class="d-flex flex-wrap align-content-end">
-                        <div class="me-4">
-                            <div class="mt-3 d-flex align-items-center">
-                                <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
-                                Rooms: {{ suite.room }}
+                <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
+                    <!-- <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div> -->
+                    <div class="my-img col-3 me-3">
+                        <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                            class="card-img-top object-fit-cover " alt="...">
+
+                        <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded" alt="...">
+                    </div>
+                    <div class="col-6 ">
+                        <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                        <span>{{ suite.address }}</span>
+                        <div class="d-flex flex-wrap align-content-end">
+                            <div class="me-4">
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                    Rooms: {{ suite.room }}
+                                </div>
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                    Beds: {{ suite.bed }}
+                                </div>
                             </div>
-                            <div class="mt-3 d-flex align-items-center">
-                                <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
-                                Beds: {{ suite.bed }}
-                            </div>
-                        </div>
-                        <div>
-                            <div class="mt-3 d-flex align-items-center">
-                                <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
-                                Bathrooms: {{ suite.bathroom }}
-                            </div>
-                            <div class="mt-3 d-flex align-items-center">
-                                <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
-                                Square Meters: {{ suite.squareM }}
+                            <div>
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                    Bathrooms: {{ suite.bathroom }}
+                                </div>
+                                <div class="mt-3 d-flex align-items-center">
+                                    <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                    Square Meters: {{ suite.squareM }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                <div class="ms-4 mt-2 col-2">
+                    <!-- SERVICES QUI QUANDO LI ABBIAMO -->
+                    <div class="ms-4 mt-2 col-2">
 
-                  
-                    <!-- <div>
+
+                        <!-- <div>
                                 servizi:
                                 <br>
                                 1
@@ -259,7 +261,7 @@ export default {
                                 <br>
                                 4
                             </div> -->
-                </div>
+                    </div>
                 </div>
             </router-link>
         </div>
@@ -363,13 +365,15 @@ export default {
 }
 
 @media only screen and (max-width: 576px) {
-    .my-card-breack{
+    .my-card-breack {
         flex-direction: column;
     }
-    .my-img{
+
+    .my-img {
         align-self: center;
     }
-    .searchbar-container{
+
+    .searchbar-container {
         min-width: 80%;
     }
 }
