@@ -46,7 +46,7 @@ export default {
                 this.success = response.data.success;
                 if (!this.success) {
                     this.errors = response.data.errors;
-                    // console.log(this.errors);
+                     console.log(this.errors, 'non manda messaggio');
                 } else {
                     // ripulisco i campi di input
                     this.name = '';
