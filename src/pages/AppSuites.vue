@@ -66,6 +66,7 @@ export default {
                 }).catch(function (error) {
                     console.log(error);
                 });
+                this.changeUrl()
         },
 
         getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers') {
@@ -152,8 +153,14 @@ export default {
             // console.log(route.path, 'yo')
             // this.end_point = route.path
             // console.log(this.end_point, 'yo secondo')
+        },
+        changeUrl(){
+            history.pushState(
+                {},
+                null,
+                this.$route.path + encodeURI('?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20')
+            )
         }
-
     },
 
     mounted() {
@@ -192,6 +199,7 @@ export default {
                 <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
                     Search
                 </button>
+                <!-- <button @click="prova">prova</button> -->
                 <!-- </router-link> -->
             </div>
         </form>
