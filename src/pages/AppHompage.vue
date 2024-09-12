@@ -39,7 +39,9 @@ export default {
             my_base_url: 'http://127.0.0.1:8000',
             latest_endpoint: '/api/suite/latest',
             myApi: 'latitude=' + this.lat_rom + '&longitude=' + this.lon_rom + '&radius=20',
-            
+            visible : '',
+            scrollLine: null,
+            byeBye: ''
 
 
         }
@@ -137,7 +139,20 @@ export default {
 
         disabled() {
             document.getElementById("search-link").classList.remove("disabled")
-        }
+        },
+        getFix(){
+       this.scrollLine = window.scrollY
+        if(this.scrollLine > 300){
+            console.log(this.scrollLine,"sta andando")
+            // nav.classList.add("ciao")  
+             this.visible ="navFixed"
+             this.byeBye = "d-none"
+        }else if(this.scrollLine < 300){
+            console.log("contiene")
+            this.visible =""
+            this.byeBye =''
+        } 
+    }
 
         // da spostare
     },
@@ -149,7 +164,10 @@ export default {
 
 
 
-    }
+    },
+    created(){
+    window.addEventListener('scroll', this.getFix)
+  },
 
 
 }
@@ -160,30 +178,34 @@ export default {
     <div class="jumbotron">
         <div class="img-container">
             <div class="d-flex flex-column justify-content-end align-items-center h-100">
-                <h1 class="display-5 fw-bold text-light">
+                <h1 :class="this.byeBye" class="display-5 fw-bold text-light">
                     Welcome to BoolBnB
                 </h1>
-                <div class="searchbar-container">
-                    <form class="d-flex justify-content-center" role="search">
-                        <div class="col-8 me-3">
-                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
-                            <ul id="result" class="list-group position-absolute">
-                                <li class="list-group-item" v-for="item, index in this.aka"
-                                    @click="this.getChoose(index)">
-                                    {{ item }}
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <router-link :to="{ name: 'suites' , query : {latitude : this.lat_rom, longitude : this.lon_rom  } }"
-                                class="nav-link text-light disabled" id="search-link">
-                                <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite"> Search
-                                </button>
-                            </router-link>
-                        </div>
-                    </form>
-                </div>
+                
+                    <div  class="searchbar-container" :class="this.visible">
+                        <form class="d-flex justify-content-center" role="search">
+                            <div class="col-8 me-3">
+                                <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                                    v-model="pokemon" @input="getInputSearch" name="search_bar" required>
+                                <ul id="result" class="list-group position-absolute">
+                                    <li class="list-group-item" v-for="item, index in this.aka"
+                                        @click="this.getChoose(index)">
+                                        {{ item }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <router-link
+                                    :to="{ name: 'suites', query: { latitude: this.lat_rom, longitude: this.lon_rom } }"
+                                    class="nav-link text-light disabled" id="search-link">
+                                    <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite">
+                                        Search
+                                    </button>
+                                </router-link>
+                            </div>
+                        </form>
+                    </div>
+               
             </div>
         </div>
     </div>
@@ -208,21 +230,26 @@ export default {
             </div>
 
         </div> -->
-        <div class="col-9 mx-auto" v-for="suite in this.suite">
-            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
-                class="text-dark text-decoration-none">
+        <div v-for="suite in this.suite" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0">
+            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }" class="text-decoration-none">
 
-                <div class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
-                    <!-- <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div> -->
-                    <div class="my-img col-3 me-3 my-2">
+                <div v-if="suite.sponsor === 1"
+                    class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
+
+
+                    <div class="col-12 col-sm-4 d-flex align-items-center position-relative">
+                        <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+
                         <img v-if="!suite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-                            class="card-img-top object-fit-cover " alt="...">
-
-                        <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded" alt="...">
+                            class="" alt="...">
+                        <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
                     </div>
-                    <div class="col-6 ">
+
+
+                    <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
                         <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
-                        <span>{{ suite.address }}</span>
+                        <p>{{ suite.address }}</p>
+                        <span>{{ suite.distance }} KM from centre </span>
                         <div class="d-flex flex-wrap align-content-end">
                             <div class="me-4">
                                 <div class="mt-3 d-flex align-items-center">
@@ -246,23 +273,21 @@ export default {
                             </div>
                         </div>
                     </div>
+
                     <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                    <div class="ms-4 mt-2 col-2">
-
-
-                        <!-- <div>
-                                servizi:
-                                <br>
-                                1
-                                <br>
-                                2
-                                <br>
-                                3
-                                <br>
-                                4
-                            </div> -->
+                    <div
+                        class="p-3 col-6 col-sm-4 d-flex justify-content-start align-self-start gap-3 flex-wrap text-dark">
+                        <div class="col-12 text-center" style="font-size: 25px; height: 30px">
+                            Services:
+                        </div>
+                        <div class="d-flex col-2 flex-wrap" v-for="service in suite.services">
+                            <div class="d-flex gap text-end">
+                                <i :class="service.icon" class="col-3" style=""></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </router-link>
         </div>
 
@@ -273,12 +298,13 @@ export default {
 </template>
 
 <style scoped>
+
 .jumbo-img {
     width: 100%
 }
 
 .img-container {
-    height: calc(800px - 10rem);
+    height: calc(620px - 10rem);
     width: 100%;
     background-size: cover;
     background-position-y: center;
@@ -294,6 +320,16 @@ export default {
     margin-top: 2rem;
     margin-bottom: 10rem;
     padding: 1rem;
+}
+.navFixed{
+    position: fixed;
+   
+    background-color: rgba(134, 134, 134, 1);
+    left: 26%;
+    top:0;
+    color: black;
+    
+    z-index: 999
 }
 
 .searchbar {
@@ -363,8 +399,34 @@ export default {
     padding: 2px;
     font-weight: 500;
 }
+@media only screen and (max-width: 576px)  {
+  .navFixed{
+    width: 90%;
+    left:5%;
+   
+  }
+} 
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    img {
+        width: 159px;
+        height: 159px;
+    }
+} 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 769px) and (max-width: 992px)  {
+    img {
+        width: 199px;
+        height: 199px;
+    }
+} 
+@media only screen and (min-width: 992px)  {
+    img {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+/* @media only screen and (max-width: 768px) {
     .my-card-breack {
         flex-direction: column;
     }
@@ -381,5 +443,5 @@ export default {
     .img-container{
         background-position-x: right;
     }
-}
+} */
 </style>

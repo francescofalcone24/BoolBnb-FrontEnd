@@ -136,6 +136,12 @@ export default {
 
             // console.log(this.store.country_range, 'coordinate')
             this.getApi()
+              this.suite_art = 'd-none'
+                this.loading_art = ''
+            setTimeout(() => {
+                this.suite_art = ''
+                this.loading_art = 'd-none'
+            }, 2376);
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
@@ -231,111 +237,105 @@ export default {
 
 <template>
 
-    <header class="container">
 
 
-        <!-- SEARCHBAR -->
-        <div class="d-flex justify-content-center my-5" role="search">
-            <div class="col-8 me-3">
-                <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
-                    @input="getInputSearch" name="search_bar" required>
-                <ul id="result" class="list-group position-absolute">
-                    <li class="list-group-item" v-for="item, index in this.aka" @click="this.getChoose(index)">
-                        {{ item }}
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <!-- <router-link :to="{ name: 'suites' , query:{latitude: this.$route.query.latitude , longitude:this.$route.query.latitude} }" class="nav-link text-light"> -->
-                <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
-                    Search
-                </button>
-                <!-- <button @click="prova">prova</button> -->
-                <!-- </router-link> -->
-            </div>
-        </div>
-
-
-
-
-
+    <section id="aka" class="container-fluid my-bg" style=" width : 100%; z-index :999;">
         <!-- FILTERS BAR -->
-        <div class="col-12 col-2 p-0 d-flex flex-wrap border border-dark my-2 h-100 z-1 radius-25">
-            <!-- <h4 class="border-bottom border-dark p-3 text-center m-0">
-                    Results:
-                    <span :class="suite_art">
-                        {{ filtered.length }}
-                    </span>
-                </h4>
+        <div class=" container col-12 col-2 p-0 d-flex flex-wrap  h-100 z-1 radius-25">
 
-                <h5 class="border-bottom border-dark p-1 my-3">Filter by:</h5> -->
-            <div class="col-12 d-flex flex-wrap">
-                <div class="col-4 text-start my-3">
+            <!-- SEARCHBAR -->
+
+            <div class="d-flex justify-content-center w-100" role="search">
+                <div class="col-8 me-3">
+                    <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                        v-model="pokemon" @input="getInputSearch" name="search_bar" required>
+                    <ul id="result" class="list-group position-absolute">
+                        <li class="list-group-item" v-for="item, index in this.aka" @click="this.getChoose(index)">
+                            {{ item }}
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- <router-link :to="{ name: 'suites' , query:{latitude: this.$route.query.latitude , longitude:this.$route.query.latitude} }" class="nav-link text-light"> -->
+                    <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
+                        Search
+                    </button>
+                    <!-- <button @click="prova">prova</button> -->
+                    <!-- </router-link> -->
+                </div>
+            </div>
+
+            <div class="col-12 d-flex flex-wrap p-2">
+                <div class="col-4 text-start border-0 text-center">
                     <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
                     </label>
                     <input @input="filter()" type="range" min="0" max="20" v-model=range
-                        class="w-50 mx-2 mb-2 form-control form-range text-light" id="customRange1">
+                        class="w-50 mx-2 mb-2 form-control form-range text-light border-0 mx-5" id="customRange1">
                 </div>
-                <div class="col-4 text-start border-dark my-3">
+                <div class="col-4 text-start border-dark text-center">
                     <label for="suite_room" class="ms-2 fw-semibold form-label">Rooms:</label>
-                    <input type="number" class="w-50 mx-2 mb-2 form-control form-control" id="suite_room" placeholder=""
+                    <input type="number" class="w-50 mx-2 mb-2 form-control form-control mx-5" id="suite_room" placeholder=""
                         name="room" min="0" max="20" v-model=room @input="filter()">
                 </div>
-                <div class="col-4 text-start my-3">
+                <div class="col-4 text-start  text-center">
                     <label for="suite_bed" class="ms-2 fw-semibold form-label">Beds:</label>
-                    <input type="number" class="w-50 mx-2 mb-2 form-control" id="suite_bed" placeholder="" name="bed"
+                    <input type="number" class="w-50 mx-2 mb-2 form-control mx-5" id="suite_bed" placeholder="" name="bed"
                         min="0" max="20" v-model=bed @input="filter()">
                 </div>
-                <div class="col-12 my-3 d-flex flex-wrap">
+                <div class="col-12  d-flex flex-wrap justify-content-center">
 
                     <h4 for="suite_services" class="ms-2 fw-semibold form-label col-12">Select Services:</h4>
-                    <div v-for="service in services " class="d-flex flex-wrap col-2 p-2 justify-content-center">
-                        <i :class="service.icon" class="col-2 text-center"></i>
-
-                        <input class="mx-2 mb-2 col-2 text-center" type="checkbox" :value='service.id'
-                            :name="service.name" v-model="check" @input="filter()" />
+                    <div v-for="service in services " class=" text-start d-flex flex-wrap m-1 p-1 justify-content-center border rounded" style="line-height: 19px; width:200px; background-color: rgba(0,0,0,0.1);">
+                        <i :class="service.icon" class="col-2 text-start"></i>&nbsp;
+                        <input class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @input="filter()" />&nbsp;
+                            <span>{{ service.name }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
-    </header>
+    </section>
+
     <!-- ***************************************SUITE CARDS****************************************************** -->
-    <main class="container d-flex">
+    <main class="container d-flex justify-content-center align-items-center" >
+        <div style="height:53vh">
+                    <div :class="loading_art" class="loader col-1"  ></div>
+        </div>
+        
+        
 
-        <section :class="loading_art" class="load-wrapp justify-self-center col-12" style="position:relative;">
-            <div class="load-9" style=" position:relative; bottom: -75%;">
-
-                <div class="spinner" style="width : 175px">
-                    <div class="bubble-1"></div>
-                    <div class="bubble-2"></div>
-                </div>
-            </div>
-        </section>
+      
 
 
-        <section :class="suite_art" class="col-xl-12 col-lg-9 col-md-9 col-md-12">
+        <section id="suite_container" :class="suite_art" class="w-100"  >
             <!-- CARD SPONSORIZZATE -->
-            <div v-for="suite in filtered" class=" link-underline-opacity-0">
+            <div class="p-3 text-start ">
+                <h3>
+                    Results:
+                    <span :class="suite_art">
+                        {{ filtered.length }}
+                    </span>
+                </h3>
+            </div>
+
+            <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0">
                 <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                     class="text-decoration-none">
 
                     <div v-if="suite.sponsor === 1"
-                        class="col-12 d-flex rounded border p-2 position-relative justify-content-between mt-2">
+                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
 
-                        <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
 
-                        <div class="my-img col-3">
+                        <div class="col-12 col-sm-4 d-flex align-items-center position-relative">
+                            <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
 
                             <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img"
-                                class="h-100 col-3 rounded card-img-top object-fit-cover " alt="...">
-                            <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded object-fit-cover"
-                                alt="...">
+                                :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                            <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
                         </div>
 
 
-                        <div class="col-6 p-3 text-dark  text-decoration-none">
+                        <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
                             <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                             <p>{{ suite.address }}</p>
                             <span>{{ suite.distance }} KM from centre </span>
@@ -364,10 +364,11 @@ export default {
                         </div>
 
                         <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                        <div class="p-3 col-3 d-flex justify-content-end flex-wrap text-end text-dark">
-                            <span class="col-12 text-start" style="font-size: 25px; height: 30px">
+                        <div
+                            class="p-3 col-6 col-sm-4 d-flex justify-content-start align-self-start gap-3 flex-wrap text-dark">
+                            <div class="col-12 text-center" style="font-size: 25px; height: 30px">
                                 Services:
-                            </span>
+                            </div>
                             <div class="d-flex col-2 flex-wrap" v-for="service in suite.services">
                                 <div class="d-flex gap text-end">
                                     <i :class="service.icon" class="col-3" style=""></i>
@@ -381,25 +382,24 @@ export default {
 
 
             <!-- CARD NON SPONSORIZZATE -->
-            <div v-for="suite in filtered" :class="suite_art">
-                <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug }, query: { slug: suite.slug } }"
-                    class="text-decoration-none text-dark">
+            <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0">
+                <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                    class="text-decoration-none">
+
                     <div v-if="suite.sponsor === 0"
-                        class="col-12 d-flex rounded border p-2 position-relative justify-content-between mt-2">
+                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
 
-                       
 
-                        <div class="my-img col-3">
+                        <div class="col-12 col-sm-4 d-flex align-items-center position-relative">
+
 
                             <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img"
-                                class="h-100 col-3 rounded card-img-top object-fit-cover " alt="...">
-                            <img v-else="" :src="suite.img" class="card-img-top h-100 col-3 rounded object-fit-cover"
-                                alt="...">
+                                :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                            <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
                         </div>
 
 
-                        <div class="col-6 p-3 text-dark  text-decoration-none">
+                        <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
                             <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                             <p>{{ suite.address }}</p>
                             <span>{{ suite.distance }} KM from centre </span>
@@ -428,10 +428,11 @@ export default {
                         </div>
 
                         <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                        <div class="p-3 col-3 d-flex justify-content-end flex-wrap text-end text-dark">
-                            <span class="col-12 text-start" style="font-size: 25px; height: 30px">
+                        <div
+                            class="p-3 col-6 col-sm-4 d-flex justify-content-start align-self-start gap-3 flex-wrap text-dark">
+                            <div class="col-12 text-center" style="font-size: 25px; height: 30px">
                                 Services:
-                            </span>
+                            </div>
                             <div class="d-flex col-2 flex-wrap" v-for="service in suite.services">
                                 <div class="d-flex gap text-end">
                                     <i :class="service.icon" class="col-3" style=""></i>
@@ -439,9 +440,10 @@ export default {
                             </div>
                         </div>
                     </div>
-                </router-link>
 
+                </router-link>
             </div>
+
         </section>
     </main>
 
@@ -449,14 +451,29 @@ export default {
 </template>
 
 <style scoped>
-.container-breack {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
 }
 
-.my-left-bar {
-    top: 1rem
+/* Track scroll-bar */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 3px rgb(255, 255, 255);    
+}
+
+/* Handle scroll-bar */
+::-webkit-scrollbar-thumb {
+    background: rgb(209, 207, 207);
+    border-radius:4px;  
+}
+
+.img-container {
+    height: calc(800px - 10rem);
+    width: 100%;
+    background-size: cover;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-image: url(../assets/img/lago.jpg);
 }
 
 .searchbar {
@@ -673,184 +690,56 @@ p {
 
 
 
-.l-9 {
-    animation-delay: 1.44s;
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border-radius: 50%;
+  background: conic-gradient(#25b09b 25%,#f03355 0 50%,#514b82 0 75%,#ffa516 0);
+  animation: l22 2s infinite linear;
+}
+.loader::before,
+.loader::after {
+   content: "";
+   grid-area: 1/1;
+   margin: 15%;
+   border-radius: 50%;
+   background: inherit;
+   animation: inherit;
+}
+.loader::after {
+   margin: 25%;
+   animation-duration: 3s;
+}
+@keyframes l22 {
+  100% {transform: rotate(1turn)}
 }
 
 
-.load-9 .spinner {
-    animation: loadingI 2s linear infinite;
-}
-
-.load-9 .bubble-1,
-.load-9 .bubble-2 {
-    animation: bounce 2s ease-in-out infinite;
-}
-
-.load-9 .bubble-2 {
-    animation-delay: -1s;
-}
-
-
-
-@keyframes loadingA {
-    0% {
-        height: 15px;
+ 
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    img {
+        width: 159px;
+        height: 159px;
     }
+} 
 
-    50% {
-        height: 75px;
+@media only screen and (min-width: 769px) and (max-width: 992px)  {
+    img {
+        width: 199px;
+        height: 199px;
     }
+} 
+@media only screen and (min-width: 992px)  {
+    img {
+        width: 220px;
+        height: 220px;
+    };
+ 
+} 
 
-    100% {
-        height: 15px;
-    }
-}
-
-@keyframes loadingB {
-    0% {
-        width: 15px;
-    }
-
-    50% {
-        width: 75px;
-    }
-
-    100% {
-        width: 15px;
-    }
-}
-
-@keyframes loadingC {
-    0% {
-        transform: translate(0, 0);
-    }
-
-    50% {
-        transform: translate(0, 45px);
-    }
-
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@keyframes loadingD {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    50% {
-        transform: rotate(180deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes loadingE {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes loadingF {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes loadingG {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    50% {
-        transform: translate(70px, 0) rotate(360deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-}
-
-@keyframes loadingH {
-    0% {
-        width: 15px;
-    }
-
-    50% {
-        width: 75px;
-        padding: 4px;
-    }
-
-    100% {
-        width: 15px;
-    }
-}
-
-@keyframes loadingI {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: scale(0);
-    }
-
-    50% {
-        transform: scale(1);
-    }
-}
-
-@keyframes loadingJ {
-
-    0%,
-    100% {
-        transform: translate(0, 0);
-    }
-
-    50% {
-        transform: translate(80px, 0);
-        background-color: #f5634a;
-        width: 25px;
-    }
-}
-
-
-@media only screen and (max-width: 992px) {
-    .my-left-bar {
-        position: static;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-    }
-
-    .container-breack {
-        display: block;
-    }
-
-    .my-card-breack {
-        display: flex;
-        flex-direction: column;
-        align-self: center;
-    }
-
-    .my-img {
-        align-self: center;
-    }
-}
 </style>
+
