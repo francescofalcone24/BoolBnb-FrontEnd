@@ -41,25 +41,28 @@ export default {
             this.autocomplete(this.search_input)
         },
         getApi() {
-            console.log(this.store.country_range, 'coordinate per chiamata')
+            
+            console.log(this.$route.query.latitude, this.$route.query.longitude, 'coordinate per chiamata')
             delete axios.defaults.headers.common['X-Requested-With'];
-            console.log(this.store, 'questo è lo store');
+            // console.log(this.store, 'questo è lo store');
+          
             axios.get(
-                // 'http://localhost:8000/api/suite/search'
+                // 'http://localhost:8000/api'+  this.$route.path
                 // this.base_url + this.end_point
-                'http://localhost:8000/api/suite/search?latitude=' + this.store.country_range.lat + '&longitude=' + this.store.country_range.lng + '&radius=20'
+                'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20'
 
                 , {
-                    params: {
-                        lat: this.store.country_range.lat,
-                        lng: this.store.country_range.lng
-                    }
+                    // params: {
+                    //     latitude: this.store.country_range.lat,
+                    //     longitude: this.store.country_range.lng,
+                        
+                    // }
                 }).then(response => {
                     console.log(response.data.results, 'questa è la nuoava api');
-                    this.store.suite = response.data.results;
-                    this.filtered = this.store.suite;
-                    console.log(this.filtered, 'questo e` array filtrato da API')
-                    this.filter()
+                    // this.store.suite = response.data.results;
+                    this.filtered =  response.data.results;;
+                    // console.log(this.filtered, 'questo e` array filtrato da API')
+                    // this.filter()
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -80,26 +83,26 @@ export default {
             }
         },
 
-        filter() {
-            this.filtered = [];
-            for (let index = 0; index < this.store.suite.length; index++) {
+        // filter() {
+        //     this.filtered = [];
+        //     for (let index = 0; index < this.store.suite.length; index++) {
 
-                let filter_coordinate = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-                // this.filtered[index].distance = this.filter_coordinate
+        //         let filter_coordinate = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
+        //         // this.filtered[index].distance = this.filter_coordinate
 
 
-                if (filter_coordinate <= this.range) {
-                    if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
-                        this.store.suite[index].distance = filter_coordinate
-                        this.filtered.push(this.store.suite[index])
-                    }
-                }
-                // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-                console.log(this.filtered)
+        //         if (filter_coordinate <= this.range) {
+        //             if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
+        //                 this.store.suite[index].distance = filter_coordinate
+        //                 this.filtered.push(this.store.suite[index])
+        //             }
+        //         }
+        //         // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
+        //         // console.log(this.filtered)
 
-            }
-            this.orderByDistance();
-        },
+        //     }
+        //     this.orderByDistance();
+        // },
         autocomplete(value) {
 
             const base_url = "https://api.tomtom.com/search/2/geocode/"
@@ -120,15 +123,16 @@ export default {
             });
         },
         getSuite() {
-            this.store.country_range.lat = this.result_suggest[0].position.lat
-            this.store.country_range.lng = this.result_suggest[0].position.lon
+            this.$route.query.latitude = this.result_suggest[0].position.lat
+            
+            this.$route.query.longitude = this.result_suggest[0].position.lon
 
-            console.log(this.store.country_range, 'coordinate')
+            // console.log(this.store.country_range, 'coordinate')
             this.getApi()
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
-            console.log(this.searchBar, 'cliccato')
+            // console.log(this.searchBar, 'cliccato')
             this.aka = [];
             this.disabled();
             this.getApi();
@@ -142,21 +146,22 @@ export default {
             this.filtered.sort((a, b) => a.distance - b.distance)
         },
         getroute() {
+            console.log(this.$route.query ,'sono le query')
+           this.myApi = this.$route.path.api_url
 
-            const route = useRoute();
-
-            console.log(route.path, 'yo')
-            this.end_point = route.path
-            console.log(this.end_point, 'yo secondo')
+            // console.log(route.path, 'yo')
+            // this.end_point = route.path
+            // console.log(this.end_point, 'yo secondo')
         }
 
     },
 
     mounted() {
         this.getroute()
-        console.log(this.base_url + this.end_point)
-        console.log(this.store);
         this.getApi();
+        // console.log(this.base_url + this.end_point)
+        // console.log(this.store);
+            
     }
 
 
@@ -183,7 +188,7 @@ export default {
                 </ul>
             </div>
             <div>
-                <!-- <router-link :to="{ name: 'suites' }" class="nav-link text-light"> -->
+                <!-- <router-link :to="{ name: 'suites' , query:{latitude: this.$route.query.latitude , longitude:this.$route.query.latitude} }" class="nav-link text-light"> -->
                 <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
                     Search
                 </button>
@@ -191,7 +196,7 @@ export default {
             </div>
         </form>
 
-        <div class="container d-flex">
+        <div class="container container-breack">
 
 
 
@@ -201,7 +206,7 @@ export default {
                 <h4 class="border-bottom border-dark p-3 text-center m-0">Results: {{ filtered.length }}</h4>
 
                 <h5 class="border-bottom border-dark p-1 my-3">Filter by:</h5>
-                <div>
+                <div class="filtri-brack">
                     <div class="border-bottom border-dark my-3">
                         <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
                         </label>
@@ -225,13 +230,13 @@ export default {
 
 
 
-            <div class="col-9">
+            <div class="col-xl-8 col-lg-9 col-md-9 col-md-12">
                 <!-- CARD SPONSORIZZATE -->
                 <div v-for="suite in filtered">
                     <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                         class="text-decoration-none text-dark">
                         <div v-if="suite.sponsor === 1"
-                            class="col-12 ms-2 my-3 d-flex rounded border p-2 position-relative">
+                            class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 position-relative my-card-breack">
                             <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
                             <div class="my-img col-3 me-3">
                                 <img v-if="!suite.img.startsWith('http')"
@@ -293,9 +298,9 @@ export default {
 
                 <!-- CARD NON SPONSORIZZATE -->
                 <div v-for="suite in filtered">
-                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } , query: {slug : suite.slug } }"
                         class="text-decoration-none text-dark">
-                        <div v-if="suite.sponsor === 0" class="col-12 ms-2 my-3 d-flex rounded border p-2">
+                        <div v-if="suite.sponsor === 0" class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 my-card-breack">
 
                             <div class="my-img col-3 me-3">
                                 <img v-if="!suite.img.startsWith('http')"
@@ -360,6 +365,12 @@ export default {
 </template>
 
 <style scoped>
+.container-breack {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
 .my-left-bar {
     top: 1rem
 }
@@ -419,5 +430,28 @@ export default {
 
 #result {
     z-index: 99;
+}
+
+@media only screen and (max-width: 992px) {
+    .my-left-bar {
+        position: static;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .container-breack {
+        display: block;
+    }
+
+    .my-card-breack {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+    }
+
+    .my-img {
+        align-self: center;
+    }
 }
 </style>

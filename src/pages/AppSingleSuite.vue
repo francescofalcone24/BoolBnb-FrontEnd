@@ -132,7 +132,7 @@ export default {
         </div>
 
     </div> -->
-    <div class="container d-flex py-2 justify-content-around col-12 mt-5" v-if="store.singleSuite">
+    <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5" v-if="store.singleSuite">
 
         <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
             class="mb-5" alt="...">
@@ -301,5 +301,15 @@ img {
 
     background-color: #d4d3d3;
 
+}
+
+@media only screen and (max-width: 992px) {
+  .my-breack {
+    display: flex;
+    flex-direction: column;
+  }
+  img{
+    width: 100%;
+  }
 }
 </style>
