@@ -21,12 +21,10 @@ export default {
             loading: false,
             success: false,
             errors: {},
-            ip_address:'',
-            suite_id:0,
+            ip_address:0,
+            suite_id: null,
             successo: false,
             suite: null,
-            
-
 
         }
     },
@@ -48,7 +46,7 @@ export default {
                 this.success = response.data.success;
                 if (!this.success) {
                     this.errors = response.data.errors;
-                    console.log(this.errors);
+                    // console.log(this.errors);
                 } else {
                     // ripulisco i campi di input
                     this.name = '';
@@ -59,39 +57,36 @@ export default {
             });
         },
         getVisuals() {
-            // this.visuals.suite_id = this.store.singleSuite.id;
-            // let data = new FormData;
-            // data.append('ip_address', this.visuals.ip_address)
-            // data.append('suite_id', this.visuals.suite_id)
-            // console.log(this.suite);
-            
-            // axios.get('http://ipinfo.io/json').then(response => {
-            //     // console.log(response.data.ip);
-                
-            //     this.ip_address = response.data.ip;  
-            //     // console.log('ip',this.ip_address);
-            //     console.log(this.store.singleSuite);
-                
-            // });
-            // const data = {
-            //     'ip_address': '12',
-            //     'suite_id': '25',
+            axios.get('http://edns.ip-api.com/json', {
+                params: {
 
-            // };   
-           
-                // console.log("intervallo");
-            //     axios.post(`http://127.0.0.1:8000/api/visual`, data).then((response) => {
-            //     this.successo = response.data.success;
-            //     if (!this.successo) {
-            //         this.errors = response.data.errors;
-            //         console.log(this.errors);
-            //     } else {
-            //         // ripulisco i campi di input
-            //         // console.log(this.successo);
-                    
-            //     }
-            //     this.loading = false;
-            // });
+                }
+            }).then(response => {
+                let x = []
+                this.ip_address = response.data.dns.ip
+                console.log('ip', this.ip_address);
+                let data = {
+                    'ip_address': this.ip_address,
+                    'suite_id': '25',
+                }; 
+                
+                // ******* invio al db
+                axios.post('http://127.0.0.1:8000/api/visual', {
+                    ip : this.ip_address,
+                    suite: this.store.singleSuite.id
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                //  console.log(this.store.singleSuite);
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+            console.log('ip 2', this.ip_address);
         }
 
     },
@@ -99,7 +94,7 @@ export default {
     mounted() {
 
         //console.log(this.$route.params.slug);
-        console.log(this.$route.params, 'questa e la rotta per lo slug')
+        // console.log(this.$route.params, 'questa e la rotta per lo slug')
         // console.log(`http://127.0.0.1:8000/api/visual/${this.$route.params.slug}`)
         axios
             .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
@@ -119,14 +114,10 @@ export default {
                 }
 
 
-            });
-
-
-            // console.log(this.suite);
-            // if (this.suite != null) {
-            //     this.getVisuals();
                 
-            // }
+            });
+            setTimeout(this.getVisuals, 3000)
+            
     },
 
 
