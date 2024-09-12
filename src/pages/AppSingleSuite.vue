@@ -233,6 +233,20 @@ export default {
                     </span>
                 </li>
 
+                <li class="list-group-item">
+                    <div class="col-12 d-flex flex-wrap justify-content-between">
+
+
+
+                        <h3 class="col-12">Services:</h3>
+                        <div class="col-2 d-flex p-2 justify-content-center"
+                            v-for="service in store.singleSuite.services">
+                            <i :class="service.icon"></i>
+                        </div>
+                    </div>
+
+                </li>
+
             </ul>
             <button class="btn btn-outline-primary my-3" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
@@ -324,6 +338,17 @@ img {
 
     background-color: #d4d3d3;
 
+}
+
+@media only screen and (max-width: 1200px) {
+    .my-breack {
+        display: flex;
+        flex-direction: column;
+    }
+
+    img {
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 992px) {
