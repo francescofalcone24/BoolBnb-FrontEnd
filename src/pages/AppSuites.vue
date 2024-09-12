@@ -69,9 +69,12 @@ export default {
                     // this.store.suite = response.data.results;
                     this.filtered =  response.data.results[0];
                     this.services =  response.data.results[1];
+                    console.log(this.filtered, 'array robbe')
                     // console.log(response.data.richiesta, 'richiesta')
                     // console.log(this.filtered, 'questo e` array filtrato da API')
                     // this.filter()
+                    this.filter()
+                    this.orderByDistance()
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -94,26 +97,16 @@ export default {
         },
 
          filter() {
-
-            // console.log(this.range, 'sto spostando il range')
-            // console.log(this.check, 'servizi selezionati')
-            //  this.filtered = [];
-            //  for (let index = 0; index < this.store.suite.length; index++) {
-
-            //      let filter_coordinate = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-                 // this.filtered[index].distance = this.filter_coordinate
+                     for (let index = 0; index <= this.filtered.length -1; index++) {                       
+                        let filter_coordinate = this.getDistanceBetweenPoints(this.filtered[index].latitude, this.filtered[index].longitude, this.$route.query.latitude, this.$route.query.longitude);
+                        console.log( filter_coordinate + "dell'index" + index)
+                        this.filtered[index].distance =  filter_coordinate 
+                    }
 
 
-                //  if (filter_coordinate <= this.range) {
-                //      if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
-                //          this.store.suite[index].distance = filter_coordinate
-                //          this.filtered.push(this.store.suite[index])
-                //      }
-                //  }
-                 // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-                 // console.log(this.filtered)
-
-            //  }
+                
+                
+            
             //  this.orderByDistance();
          },
         autocomplete(value) {
@@ -205,9 +198,12 @@ export default {
                     // this.store.suite = response.data.results;
                     this.filtered =  response.data.results[0];
                     this.services =  response.data.results[1];               
+                    this.filter()
+                    this.orderByDistance()
                 }).catch(function (error) {
                     console.log(error);
                 });
+                // console.log(this.filtered[0].distance , 'al mounted')
                 
         },
         
@@ -315,7 +311,7 @@ export default {
                             <div class="col-6 ">
                                 <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                                 <p>{{ suite.address }}</p>
-                                <span>{{ suite.distance }} km from centre</span>
+                                <span>{{ suite.distance }} KM from centre </span>
                                 <div class="d-flex flex-wrap align-content-end">
                                     <div class="me-4">
                                         <div class="mt-3 d-flex align-items-center">
@@ -381,7 +377,7 @@ export default {
                             <div class="col-6 ">
                                 <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                                 <p>{{ suite.address }}</p>
-                                <span>{{ suite.distance }} km from centre</span>
+                                <span>{{ suite.distance }} KM from centre </span>
 
                                 <div class="d-flex flex-wrap align-content-end">
                                     <div class="me-4">
