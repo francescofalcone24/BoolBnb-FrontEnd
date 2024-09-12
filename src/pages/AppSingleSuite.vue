@@ -20,7 +20,12 @@ export default {
             name: '',
             loading: false,
             success: false,
-            errors: {}
+            errors: {},
+            ip_address:'',
+            suite_id:0,
+            successo: false,
+            suite: null,
+            
 
 
         }
@@ -53,6 +58,41 @@ export default {
                 this.loading = false;
             });
         },
+        getVisuals() {
+            // this.visuals.suite_id = this.store.singleSuite.id;
+            // let data = new FormData;
+            // data.append('ip_address', this.visuals.ip_address)
+            // data.append('suite_id', this.visuals.suite_id)
+            // console.log(this.suite);
+            
+            // axios.get('http://ipinfo.io/json').then(response => {
+            //     // console.log(response.data.ip);
+                
+            //     this.ip_address = response.data.ip;  
+            //     // console.log('ip',this.ip_address);
+            //     console.log(this.store.singleSuite);
+                
+            // });
+            // const data = {
+            //     'ip_address': '12',
+            //     'suite_id': '25',
+
+            // };   
+           
+                // console.log("intervallo");
+            //     axios.post(`http://127.0.0.1:8000/api/visual`, data).then((response) => {
+            //     this.successo = response.data.success;
+            //     if (!this.successo) {
+            //         this.errors = response.data.errors;
+            //         console.log(this.errors);
+            //     } else {
+            //         // ripulisco i campi di input
+            //         // console.log(this.successo);
+                    
+            //     }
+            //     this.loading = false;
+            // });
+        }
 
     },
 
@@ -60,23 +100,34 @@ export default {
 
         //console.log(this.$route.params.slug);
         console.log(this.$route.params, 'questa e la rotta per lo slug')
-        console.log(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
+        // console.log(`http://127.0.0.1:8000/api/visual/${this.$route.params.slug}`)
         axios
             .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
             .then(response => {
-                console.log(response.data.results, 'risposta api');
+                // console.log(response.data.results, 'risposta api');
 
 
                 if (response.data.status) {
                     this.store.singleSuite = response.data.results;
-                    console.log('questo è ', this.store.singleSuite);
+                    // console.log('questo è ', this.store.singleSuite);
+                    // this.suite_id = response.data.results.id;
+                    this.suite = response.data.results;
+                    // console.log(this.visuals);
+                    
                 } else {
-                    this.$router.push({ name: 'not-found' })
+                    this.$router.push({ name: 'not-found' });
                 }
 
 
-            })
-    }
+            });
+
+
+            // console.log(this.suite);
+            // if (this.suite != null) {
+            //     this.getVisuals();
+                
+            // }
+    },
 
 
 }
