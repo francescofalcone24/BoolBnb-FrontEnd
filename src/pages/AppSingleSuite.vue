@@ -25,11 +25,31 @@ export default {
             suite_id: null,
             successo: false,
             suite: null,
+            validateEmail: false
 
         }
     },
     methods: {
+
+        validateEmailInput() {
+
+            this.validateEmail = false
+            const emailInput = document.getElementById('email').value;
+            const feedbackElement = document.getElementById('emailFeedback');
+            const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+
+            if (emailInput.includes('@') && emailInput.includes('.') && !emailInput.endsWith('.')) {
+                feedbackElement.textContent = ""; // Email is valid
+                this.validateEmail = true
+            } else {
+                feedbackElement.textContent = "Please enter a valid email address.";
+                this.validateEmail = false
+            }
+
+        },
+
         sendForm() {
+
             if (this.validateEmail == true) {
                 this.loading = true;
                 const data = {
@@ -134,29 +154,6 @@ export default {
 
 <template>
 
-    <!-- <div class="container text-center p-0" v-if="store.singleSuite">
-
-
-        <div class="card mb-3 p-5">
-
-            <img v-if="!store.singleSuite.img.startsWith('http')" style="height: 50rem;"
-                :src="store.localHostUrl + '/storage/' + store.singleSuite.img" class="card-img-top" alt="...">
-
-            <img v-else="" :src="store.singleSuite.img" class="card-img-top" alt="..." style="height: 50rem;">
-
-
-            <div class=" card-body">
-
-                <h5 class="card-title">{{ store.singleSuite.title }}</h5>
-                <p class="card-text">{{ store.singleSuite.address }}</p>
-                <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">
-                    back to the list</router-link>
-
-            </div>
-
-        </div>
-
-    </div> -->
     <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5"
         v-if="store.singleSuite">
 
