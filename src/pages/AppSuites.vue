@@ -188,7 +188,7 @@ export default {
                 </ul>
             </div>
             <div>
-                <!-- <router-link :to="{ name: 'suites' }" class="nav-link text-light"> -->
+                <!-- <router-link :to="{ name: 'suites' , query:{latitude: this.$route.query.latitude , longitude:this.$route.query.latitude} }" class="nav-link text-light"> -->
                 <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
                     Search
                 </button>
