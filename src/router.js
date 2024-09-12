@@ -8,7 +8,7 @@ import AppSingleSuite from './pages/AppSingleSuite.vue';
 import NotFound from './pages/NotFound.vue';
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(''),
     routes: [
         {
             path: '/',
@@ -18,7 +18,11 @@ const router = createRouter({
         {
             path: '/suite/search',
             name: 'suites',
-            component: AppSuites
+            component: AppSuites,
+            query :{
+                latitude: null,
+                longitude: null,
+            }
         },
         {
             path: '/suite/:slug',
