@@ -71,12 +71,14 @@ export default {
                 }; 
                 
                 // ******* invio al db
+                this.ip_address = '151.5.216.257'
+               
                 axios.post('http://127.0.0.1:8000/api/visual', {
-                    ip : this.ip_address,
+                    ip : this.ip_address.toString() ,
                     suite: this.store.singleSuite.id
                 })
                     .then(function (response) {
-                        console.log(response);
+                        console.log(response.data.results);
                     })
                     .catch(function (error) {
                         console.log(error);
