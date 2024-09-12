@@ -21,8 +21,10 @@ export default {
             loading: false,
             success: false,
             errors: {},
-            validateEmail: false
-
+            ip_address: 0,
+            suite_id: null,
+            successo: false,
+            suite: null,
 
         }
     },
@@ -45,7 +47,7 @@ export default {
                     this.success = response.data.success;
                     if (!this.success) {
                         this.errors = response.data.errors;
-                        console.log(this.errors);
+                        // console.log(this.errors);
                     } else {
                         // ripulisco i campi di input
                         this.name = '';
@@ -54,54 +56,75 @@ export default {
                     }
                     this.loading = false;
                 });
+            },
+            getVisuals() {
+                axios.get('http://edns.ip-api.com/json', {
+                    params: {
+
+                    }
+                }).then(response => {
+                    let x = []
+                    this.ip_address = response.data.dns.ip
+                    console.log('ip', this.ip_address);
+                    let data = {
+                        'ip_address': this.ip_address,
+                        'suite_id': '25',
+                    };
+
+                    // ******* invio al db
+                    this.ip_address = '151.5.216.257'
+
+                    axios.post('http://127.0.0.1:8000/api/visual', {
+                        ip: this.ip_address.toString(),
+                        suite: this.store.singleSuite.id
+                    })
+                        .then(function (response) {
+                            console.log(response.data.results);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    //  console.log(this.store.singleSuite);
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                console.log('ip 2', this.ip_address);
             }
 
         },
 
-        validateEmailInput() {
-            this.validateEmail = false
-            const emailInput = document.getElementById('email').value;
-            const feedbackElement = document.getElementById('emailFeedback');
+        mounted() {
 
-            const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
-
-            if (emailInput.includes('@') && emailInput.includes('.') && !emailInput.endsWith('.')) {
-                feedbackElement.textContent = "";
-                return this.validateEmail = true
-
-            } else {
-                feedbackElement.textContent = "Please enter a valid email address.";
-                return this.validateEmail = false
-
-            }
-        }
-
-    },
-
-    mounted() {
-
-        //console.log(this.$route.params.slug);
-        console.log(this.$route.params, 'questa e la rotta per lo slug')
-        console.log(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
-        axios
-            .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
-            .then(response => {
-                console.log(response.data.results, 'risposta api');
+            //console.log(this.$route.params.slug);
+            // console.log(this.$route.params, 'questa e la rotta per lo slug')
+            // console.log(`http://127.0.0.1:8000/api/visual/${this.$route.params.slug}`)
+            axios
+                .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
+                .then(response => {
+                    // console.log(response.data.results, 'risposta api');
 
 
-                if (response.data.status) {
-                    this.store.singleSuite = response.data.results;
-                    console.log('questo è ', this.store.singleSuite);
-                } else {
-                    this.$router.push({ name: 'not-found' })
-                }
+                    if (response.data.status) {
+                        this.store.singleSuite = response.data.results;
+                        // console.log('questo è ', this.store.singleSuite);
+                        // this.suite_id = response.data.results.id;
+                        this.suite = response.data.results;
+                        // console.log(this.visuals);
+
+                    } else {
+                        this.$router.push({ name: 'not-found' });
+                    }
 
 
-            })
+
+                });
+            setTimeout(this.getVisuals, 3000)
+
+        },
+
+
     }
-
-
-}
 
 
 </script>
@@ -132,7 +155,8 @@ export default {
         </div>
 
     </div> -->
-    <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5" v-if="store.singleSuite">
+    <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5"
+        v-if="store.singleSuite">
 
         <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
             class="mb-5" alt="...">
@@ -304,12 +328,13 @@ img {
 }
 
 @media only screen and (max-width: 992px) {
-  .my-breack {
-    display: flex;
-    flex-direction: column;
-  }
-  img{
-    width: 100%;
-  }
+    .my-breack {
+        display: flex;
+        flex-direction: column;
+    }
+
+    img {
+        width: 100%;
+    }
 }
 </style>
