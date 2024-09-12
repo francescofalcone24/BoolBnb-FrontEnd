@@ -56,75 +56,77 @@ export default {
                     }
                     this.loading = false;
                 });
-            },
-            getVisuals() {
-                axios.get('http://edns.ip-api.com/json', {
-                    params: {
-
-                    }
-                }).then(response => {
-                    let x = []
-                    this.ip_address = response.data.dns.ip
-                    console.log('ip', this.ip_address);
-                    let data = {
-                        'ip_address': this.ip_address,
-                        'suite_id': '25',
-                    };
-
-                    // ******* invio al db
-                    this.ip_address = '151.5.216.257'
-
-                    axios.post('http://127.0.0.1:8000/api/visual', {
-                        ip: this.ip_address.toString(),
-                        suite: this.store.singleSuite.id
-                    })
-                        .then(function (response) {
-                            console.log(response.data.results);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    //  console.log(this.store.singleSuite);
-
-                }).catch(function (error) {
-                    console.log(error);
-                });
-                console.log('ip 2', this.ip_address);
             }
-
         },
+        getVisuals() {
+            axios.get('http://edns.ip-api.com/json', {
+                params: {
 
-        mounted() {
+                }
+            }).then(response => {
+                let x = []
+                this.ip_address = response.data.dns.ip
+                console.log('ip', this.ip_address);
+                let data = {
+                    'ip_address': this.ip_address,
+                    'suite_id': '25',
+                };
 
-            //console.log(this.$route.params.slug);
-            // console.log(this.$route.params, 'questa e la rotta per lo slug')
-            // console.log(`http://127.0.0.1:8000/api/visual/${this.$route.params.slug}`)
-            axios
-                .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
-                .then(response => {
-                    // console.log(response.data.results, 'risposta api');
+                // ******* invio al db
+                this.ip_address = '151.5.216.257'
+
+                axios.post('http://127.0.0.1:8000/api/visual', {
+                    ip: this.ip_address.toString(),
+                    suite: this.store.singleSuite.id
+                })
+                    .then(function (response) {
+                        console.log(response.data.results);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                //  console.log(this.store.singleSuite);
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+            console.log('ip 2', this.ip_address);
+        }
+
+    },
+
+    mounted() {
+
+        //console.log(this.$route.params.slug);
+        // console.log(this.$route.params, 'questa e la rotta per lo slug')
+        // console.log(`http://127.0.0.1:8000/api/visual/${this.$route.params.slug}`)
+        axios
+            .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
+            .then(response => {
+                // console.log(response.data.results, 'risposta api');
 
 
-                    if (response.data.status) {
-                        this.store.singleSuite = response.data.results;
-                        // console.log('questo è ', this.store.singleSuite);
-                        // this.suite_id = response.data.results.id;
-                        this.suite = response.data.results;
-                        // console.log(this.visuals);
+                if (response.data.status) {
+                    this.store.singleSuite = response.data.results;
+                    // console.log('questo è ', this.store.singleSuite);
+                    // this.suite_id = response.data.results.id;
+                    this.suite = response.data.results;
+                    // console.log(this.visuals);
 
-                    } else {
-                        this.$router.push({ name: 'not-found' });
-                    }
-
-
-
-                });
-            setTimeout(this.getVisuals, 3000)
-
-        },
+                } else {
+                    this.$router.push({ name: 'not-found' });
+                }
 
 
-    }
+
+            });
+        setTimeout(this.getVisuals, 3000)
+
+    },
+
+
+
+}
 
 
 </script>
