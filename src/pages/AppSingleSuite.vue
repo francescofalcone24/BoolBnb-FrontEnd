@@ -21,40 +21,62 @@ export default {
             loading: false,
             success: false,
             errors: {},
-            ip_address:0,
+            ip_address: 0,
             suite_id: null,
             successo: false,
             suite: null,
+            validateEmail: false
 
         }
     },
     methods: {
+
+        validateEmailInput() {
+
+            this.validateEmail = false
+            const emailInput = document.getElementById('email').value;
+            const feedbackElement = document.getElementById('emailFeedback');
+            const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+
+            if (emailInput.includes('@') && emailInput.includes('.') && !emailInput.endsWith('.')) {
+                feedbackElement.textContent = ""; // Email is valid
+                this.validateEmail = true
+            } else {
+                feedbackElement.textContent = "Please enter a valid email address.";
+                this.validateEmail = false
+            }
+
+        },
+
         sendForm() {
-            this.loading = true;
-            const data = {
-                'name': this.name,
-                'email': this.email,
-                'text': this.text
-            };
 
-            // pulisco l'array con i messaggi
-            this.errors = {};
+            if (this.validateEmail == true) {
+                this.loading = true;
+                const data = {
+                    'name': this.name,
+                    'email': this.email,
+                    'text': this.text
+                };
 
-            // Importante - Stiamo comunicando con Laravel, quindi non è più obbligatorio inserire gli headers con il Content-Type
-            // come abbiamo fatto invece quando comunicavamo direttamente con gli script PHP
-            axios.post(`http://127.0.0.1:8000/api/pincopallino/${this.$route.params.slug}`, data).then((response) => {
-                this.success = response.data.success;
-                if (!this.success) {
-                    this.errors = response.data.errors;
-                    // console.log(this.errors);
-                } else {
-                    // ripulisco i campi di input
-                    this.name = '';
-                    this.email = '';
-                    this.text = '';
-                }
-                this.loading = false;
-            });
+                // pulisco l'array con i messaggi
+                this.errors = {};
+
+                // Importante - Stiamo comunicando con Laravel, quindi non è più obbligatorio inserire gli headers con il Content-Type
+                // come abbiamo fatto invece quando comunicavamo direttamente con gli script PHP
+                axios.post(`http://127.0.0.1:8000/api/pincopallino/${this.$route.params.slug}`, data).then((response) => {
+                    this.success = response.data.success;
+                    if (!this.success) {
+                        this.errors = response.data.errors;
+                        // console.log(this.errors);
+                    } else {
+                        // ripulisco i campi di input
+                        this.name = '';
+                        this.email = '';
+                        this.text = '';
+                    }
+                    this.loading = false;
+                });
+            }
         },
         getVisuals() {
             axios.get('http://edns.ip-api.com/json', {
@@ -68,15 +90,17 @@ export default {
                 let data = {
                     'ip_address': this.ip_address,
                     'suite_id': '25',
-                }; 
-                
+                };
+
                 // ******* invio al db
+                this.ip_address = '151.5.216.257'
+
                 axios.post('http://127.0.0.1:8000/api/visual', {
-                    ip : this.ip_address,
+                    ip: this.ip_address.toString(),
                     suite: this.store.singleSuite.id
                 })
                     .then(function (response) {
-                        console.log(response);
+                        console.log(response.data.results);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -108,17 +132,18 @@ export default {
                     // this.suite_id = response.data.results.id;
                     this.suite = response.data.results;
                     // console.log(this.visuals);
-                    
+
                 } else {
                     this.$router.push({ name: 'not-found' });
                 }
 
 
-                
+
             });
-            setTimeout(this.getVisuals, 3000)
-            
+        setTimeout(this.getVisuals, 3000)
+
     },
+
 
 
 }
@@ -129,30 +154,8 @@ export default {
 
 <template>
 
-    <!-- <div class="container text-center p-0" v-if="store.singleSuite">
-
-
-        <div class="card mb-3 p-5">
-
-            <img v-if="!store.singleSuite.img.startsWith('http')" style="height: 50rem;"
-                :src="store.localHostUrl + '/storage/' + store.singleSuite.img" class="card-img-top" alt="...">
-
-            <img v-else="" :src="store.singleSuite.img" class="card-img-top" alt="..." style="height: 50rem;">
-
-
-            <div class=" card-body">
-
-                <h5 class="card-title">{{ store.singleSuite.title }}</h5>
-                <p class="card-text">{{ store.singleSuite.address }}</p>
-                <router-link :to="{ name: 'suites' }" class="btn btn-outline-danger">
-                    back to the list</router-link>
-
-            </div>
-
-        </div>
-
-    </div> -->
-    <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5" v-if="store.singleSuite">
+    <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5"
+        v-if="store.singleSuite">
 
         <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
             class="mb-5" alt="...">
@@ -263,11 +266,15 @@ export default {
                     </div>
                     <div class="offcanvas-item my-3">
                         <input class="border form-control" :class="{ 'is-invalid': errors.email }" type="text"
-                            name="email" id="email" placeholder="Email" v-model="email">
-                        <p v-for="(error, index) in errors.email" :key="`message-error-${index}`"
+                            name="email" id="email" placeholder="Email" v-model="email" required
+                            @input="validateEmailInput()">
+                        <!-- <p v-for="(error, index) in errors.email" :key="`message-error-${index}`"
                             class="invalid-feedback">
                             {{ error }}
-                        </p>
+                        </p> -->
+                        <span id="emailFeedback" style="color: red;"></span>
+
+
                     </div>
                     <div class="offcanvas-item my-3">
                         <textarea class="border form-control" :class="{ 'is-invalid': errors.message }" name="text"
@@ -320,12 +327,13 @@ img {
 }
 
 @media only screen and (max-width: 992px) {
-  .my-breack {
-    display: flex;
-    flex-direction: column;
-  }
-  img{
-    width: 100%;
-  }
+    .my-breack {
+        display: flex;
+        flex-direction: column;
+    }
+
+    img {
+        width: 100%;
+    }
 }
 </style>
