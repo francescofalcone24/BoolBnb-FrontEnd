@@ -31,7 +31,10 @@ export default {
             pokemon: null,
             base_url: 'http://localhost:8000/api',
             end_point: 0,
-            myApi: null
+            myApi: null,
+            check : [],
+            services : [],
+            service_url : ''
 
         }
     },
@@ -49,18 +52,24 @@ export default {
             axios.get(
                 // 'http://localhost:8000/api'+  this.$route.path
                 // this.base_url + this.end_point
-                'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20'
+                //'http://localhost:8000/api' + this.$route.fullPath
+                'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' + 
+                this.$route.query.longitude +
+                '&radius='+ this.range +
+                '&room=' + this.room +
+                '&bed=' + this.bed +
+                this.$route.query.services
 
                 , {
-                    // params: {
-                    //     latitude: this.store.country_range.lat,
-                    //     longitude: this.store.country_range.lng,
-                        
-                    // }
+                     params: {
+                        service : this.check 
+                     }
                 }).then(response => {
                     console.log(response.data.results, 'questa è la nuoava api');
                     // this.store.suite = response.data.results;
-                    this.filtered =  response.data.results;;
+                    this.filtered =  response.data.results[0];
+                    this.services =  response.data.results[1];
+                    // console.log(response.data.richiesta, 'richiesta')
                     // console.log(this.filtered, 'questo e` array filtrato da API')
                     // this.filter()
                 }).catch(function (error) {
@@ -84,26 +93,29 @@ export default {
             }
         },
 
-        // filter() {
-        //     this.filtered = [];
-        //     for (let index = 0; index < this.store.suite.length; index++) {
+         filter() {
 
-        //         let filter_coordinate = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-        //         // this.filtered[index].distance = this.filter_coordinate
+            // console.log(this.range, 'sto spostando il range')
+            // console.log(this.check, 'servizi selezionati')
+            //  this.filtered = [];
+            //  for (let index = 0; index < this.store.suite.length; index++) {
+
+            //      let filter_coordinate = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
+                 // this.filtered[index].distance = this.filter_coordinate
 
 
-        //         if (filter_coordinate <= this.range) {
-        //             if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
-        //                 this.store.suite[index].distance = filter_coordinate
-        //                 this.filtered.push(this.store.suite[index])
-        //             }
-        //         }
-        //         // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
-        //         // console.log(this.filtered)
+                //  if (filter_coordinate <= this.range) {
+                //      if ((this.store.suite[index].room >= this.room) && (this.store.suite[index].bed >= this.bed)) {
+                //          this.store.suite[index].distance = filter_coordinate
+                //          this.filtered.push(this.store.suite[index])
+                //      }
+                //  }
+                 // this.distance = this.getDistanceBetweenPoints(this.store.country_range.lat, this.store.country_range.lng, this.store.suite[index].latitude, this.store.suite[index].longitude);
+                 // console.log(this.filtered)
 
-        //     }
-        //     this.orderByDistance();
-        // },
+            //  }
+            //  this.orderByDistance();
+         },
         autocomplete(value) {
 
             const base_url = "https://api.tomtom.com/search/2/geocode/"
@@ -147,7 +159,7 @@ export default {
             this.filtered.sort((a, b) => a.distance - b.distance)
         },
         getroute() {
-            console.log(this.$route.query ,'sono le query')
+            console.log(this.$route ,'questo è lurl')
            this.myApi = this.$route.path.api_url
 
             // console.log(route.path, 'yo')
@@ -155,19 +167,57 @@ export default {
             // console.log(this.end_point, 'yo secondo')
         },
         changeUrl(){
+            
+            let url = null
+            this.service_url = ''
+            for (let index = 0; index < this.check.length; index++) {
+                    url = '&service[]=' + this.check[index]
+                    // console.log(url)
+                   this.service_url += url 
+                   console.log(this.service_url)
+                    
+                }
+                // this.$route.fullPath += this.service_url  
             history.pushState(
                 {},
                 null,
-                this.$route.path + encodeURI('?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20')
+                // this.$route.fullPath
+                this.$route.path + '?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=' + this.range +'&room=' + this.room +'&bed=' + this.bed + this.service_url 
             )
-        }
+        }, 
+        getApiMounted() {
+            
+            // console.log(this.$route.query.latitude, this.$route.query.longitude, 'coordinate per chiamata')
+            delete axios.defaults.headers.common['X-Requested-With'];
+            
+          
+            axios.get(
+                // 'http://localhost:8000/api'+  this.$route.path
+                // this.base_url + this.end_point
+                'http://localhost:8000/api' + this.$route.fullPath
+                // 'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20' + this.$route.query.services
+                , {
+                    //  params: {
+                    //     service : this.check 
+                    //  }
+                }).then(response => {
+                    console.log(response.data.results, 'questa è la nuoava api');
+                    // this.store.suite = response.data.results;
+                    this.filtered =  response.data.results[0];
+                    this.services =  response.data.results[1];               
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                
+        },
+        
     },
 
     mounted() {
         this.getroute()
-        this.getApi();
-        // console.log(this.base_url + this.end_point)
-        // console.log(this.store);
+        this.getApiMounted();
+      
+        
             
     }
 
@@ -230,6 +280,14 @@ export default {
                         <label for="suite_bed" class="ms-2 fw-semibold form-label">Beds:</label>
                         <input type="number" class="w-50 mx-2 mb-2 form-control" id="suite_bed" placeholder=""
                             name="bed" min="0" max="20" v-model=bed @input="filter()">
+                    </div>
+                    <div class="my-3">
+                       
+                        <p>Selected checkbox: {{ this.check }}</p>
+                        <div v-for="service in services">
+                            <label class="ms-2 fw-semibold form-label" :for="service.name">{{service.name}}</label><br />
+                            <input class="mx-2 mb-2" type="checkbox" :value='service.id ' :name="service.name" v-model="check" @input="filter()" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -306,9 +364,11 @@ export default {
 
                 <!-- CARD NON SPONSORIZZATE -->
                 <div v-for="suite in filtered">
-                    <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } , query: {slug : suite.slug } }"
+                    <router-link
+                        :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } , query: {slug : suite.slug } }"
                         class="text-decoration-none text-dark">
-                        <div v-if="suite.sponsor === 0" class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 my-card-breack">
+                        <div v-if="suite.sponsor === 0"
+                            class="col-xl-12 ms-2 my-3 d-flex rounded border p-2 my-card-breack">
 
                             <div class="my-img col-3 me-3">
                                 <img v-if="!suite.img.startsWith('http')"

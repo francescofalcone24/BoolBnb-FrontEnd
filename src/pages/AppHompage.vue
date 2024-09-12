@@ -176,7 +176,7 @@ export default {
                             </ul>
                         </div>
                         <div>
-                            <router-link :to="{ name: 'suites' , query : {latitude : this.lat_rom, longitude : this.lon_rom} }"
+                            <router-link :to="{ name: 'suites' , query : {latitude : this.lat_rom, longitude : this.lon_rom  } }"
                                 class="nav-link text-light disabled" id="search-link">
                                 <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite"> Search
                                 </button>
