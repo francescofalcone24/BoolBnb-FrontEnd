@@ -122,7 +122,7 @@ export default {
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
-            console.log(this.searchBar, 'cliccato')
+            console.log(this.aka, 'cliccato')
             this.aka = [];
             this.disabled();
         },
@@ -196,7 +196,7 @@ export default {
                         </div>
                         <div>
                             <router-link
-                                :to="{ name: 'suites', query: { latitude: this.lat_rom, longitude: this.lon_rom } }"
+                                :to="{ name: 'suites', query: { latitude: this.lat_rom, longitude: this.lon_rom, address: this.pokemon }, params: { address: this.pokemon } }"
                                 class="nav-link text-light disabled" id="search-link">
                                 <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite">
                                     Search
@@ -211,6 +211,7 @@ export default {
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
     <div class="container">
+
         <h2 class="my-3 col-9 mx-auto">Our Advices:</h2>
         <!-- <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
             <div v-for="suite in this.suite" class="col-3 myBorder">

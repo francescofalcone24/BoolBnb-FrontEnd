@@ -6,7 +6,9 @@ import { useRoute } from 'vue-router';
 export default {
 
     name: 'AppSuites',
-
+    // props :{
+    //     address : Object
+    // },
 
     components: {
 
@@ -28,7 +30,7 @@ export default {
             aka: [],
             result_suggest: [],
             searchBar: [],
-            pokemon: null,
+            pokemon: this.$route.query.address,
             base_url: 'http://localhost:8000/api',
             end_point: 0,
             myApi: null,
@@ -54,19 +56,22 @@ export default {
             axios.get(
                 // 'http://localhost:8000/api'+  this.$route.path
                 // this.base_url + this.end_point
-                //'http://localhost:8000/api' + this.$route.fullPath
-                'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' +
-                this.$route.query.longitude +
-                '&radius=' + this.range +
-                '&room=' + this.room +
-                '&bed=' + this.bed +
-                this.$route.query.services
+                // 'http://localhost:8000/api' + this.$route.fullPath
+
+                 'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' +
+                 this.$route.query.longitude +
+                 '&radius=' + this.range +
+                 '&room=' + this.room +
+                 '&bed=' + this.bed 
+
+                // this.$route.query.services
 
                 , {
                     params: {
                         service: this.check
                     }
-                }).then(response => {
+                }
+            ).then(response => {
                     console.log(response.data.results, 'questa è la nuoava api');
                     // this.store.suite = response.data.results;
                     this.filtered = response.data.results[0];
@@ -103,6 +108,7 @@ export default {
                 console.log(filter_coordinate + "dell'index" + index)
                 this.filtered[index].distance = filter_coordinate
             }
+            
 
 
 
@@ -122,30 +128,30 @@ export default {
 
             axios.get(base_url + mid_url + apiKey).then(response => {
                 this.result_suggest = response.data.results;
-                this.lat_rom = this.result_suggest[0].position.lat
-                this.lon_rom = this.result_suggest[0].position.lon
+                this.$route.query.latitude = this.result_suggest[0].position.lat
+                this.$route.query.longitude = this.result_suggest[0].position.lon
                 for (let index = 0; index < this.result_suggest.length; index++) {
                     this.aka[index] = this.result_suggest[index].address.freeformAddress
                 }
             });
         },
         getSuite() {
-            this.$route.query.latitude = this.result_suggest[0].position.lat
-
-            this.$route.query.longitude = this.result_suggest[0].position.lon
-
+        
+            
             // console.log(this.store.country_range, 'coordinate')
             this.getApi()
-              this.suite_art = 'd-none'
-                this.loading_art = ''
+            this.suite_art = 'd-none'
+            this.loading_art = ''
             setTimeout(() => {
                 this.suite_art = ''
                 this.loading_art = 'd-none'
             }, 2376);
+            this.filter()
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
-            // console.log(this.searchBar, 'cliccato')
+            
+             console.log(this.$route.query.address, 'cliccato')
             this.aka = [];
             this.disabled();
             this.getApi();
@@ -181,8 +187,9 @@ export default {
             history.pushState(
                 {},
                 null,
+                
                 // this.$route.fullPath
-                this.$route.path + '?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=' + this.range + '&room=' + this.room + '&bed=' + this.bed + this.service_url
+                this.$route.path + '?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=' + this.range + '&room=' + this.room + '&bed=' + this.bed + this.service_url + '&address=' + this.pokemon
             )
         },
         getApiMounted() {
@@ -190,11 +197,11 @@ export default {
             // console.log(this.$route.query.latitude, this.$route.query.longitude, 'coordinate per chiamata')
             delete axios.defaults.headers.common['X-Requested-With'];
 
-
+            this.pokemon = this.$route.query.address
             axios.get(
                 // 'http://localhost:8000/api'+  this.$route.path
                 // this.base_url + this.end_point
-                'http://localhost:8000/api' + this.$route.fullPath
+                'http://localhost:8000/api' + this.$route.fullPath 
                 // 'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20' + this.$route.query.services
                 , {
                     //  params: {
@@ -217,15 +224,27 @@ export default {
                 this.loading_art = 'd-none'
             }, 2376);
         },
+        
 
     },
 
     mounted() {
         this.getroute()
         this.getApiMounted();
+        console.log(this.$route)
+        // this.pokemon = this.$route.query.address
+        console.log(this.$route.fullPath.includes("service[]=2"),'lo include')
+        
 
 
 
+    }, 
+    created(){
+        // setTimeout(() => {
+            
+        //        this.pokemon = this.$route.query.address
+        //        console.log(this.pokemon , 'created')
+        //     }, 200);
     }
 
 
@@ -269,25 +288,26 @@ export default {
                 <div class="col-4 text-start border-0 text-center">
                     <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
                     </label>
-                    <input @input="filter()" type="range" min="0" max="20" v-model=range
+                    <input @input="getSuite()" type="range" min="0" max="20" v-model=range
                         class="w-50 mx-2 mb-2 form-control form-range text-light border-0 mx-5" id="customRange1">
                 </div>
                 <div class="col-4 text-start border-dark text-center">
                     <label for="suite_room" class="ms-2 fw-semibold form-label">Rooms:</label>
                     <input type="number" class="w-50 mx-2 mb-2 form-control form-control mx-5" id="suite_room" placeholder=""
-                        name="room" min="0" max="20" v-model=room @input="filter()">
+                        name="room" min="1" max="20" v-model=room @input="getSuite()">
                 </div>
                 <div class="col-4 text-start  text-center">
                     <label for="suite_bed" class="ms-2 fw-semibold form-label">Beds:</label>
                     <input type="number" class="w-50 mx-2 mb-2 form-control mx-5" id="suite_bed" placeholder="" name="bed"
-                        min="0" max="20" v-model=bed @input="filter()">
+                        min="1" max="20" v-model=bed @input="getSuite()">
                 </div>
                 <div class="col-12  d-flex flex-wrap justify-content-center">
 
                     <h4 for="suite_services" class="ms-2 fw-semibold form-label col-12">Select Services:</h4>
                     <div v-for="service in services " class=" text-start d-flex flex-wrap m-1 p-1 justify-content-center border rounded" style="line-height: 19px; width:200px; background-color: rgba(0,0,0,0.1);">
                         <i :class="service.icon" class="col-2 text-start"></i>&nbsp;
-                        <input class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @input="filter()" />&nbsp;
+                        <input v-if="this.$route.fullPath.includes(`service[]=`) == true"  class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @change="getSuite()" checked>&nbsp;
+                        <input v-else="this.$route.fullPath.includes(`service[]=2`) != true"  class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @change="getSuite()">
                             <span>{{ service.name }}</span>
                     </div>
                 </div>
@@ -299,7 +319,8 @@ export default {
     <!-- ***************************************SUITE CARDS****************************************************** -->
     <main class="container d-flex justify-content-center align-items-center" >
         <div style="height:53vh">
-                    <div :class="loading_art" class="loader col-1"  ></div>
+            <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem" >        
+            </div>
         </div>
         
         

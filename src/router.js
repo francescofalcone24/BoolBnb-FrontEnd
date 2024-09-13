@@ -22,6 +22,10 @@ const router = createRouter({
             query :{
                 latitude: null,
                 longitude: null,
+            },
+            params :
+            {
+                address: {}  ,
             }
         },
         {
