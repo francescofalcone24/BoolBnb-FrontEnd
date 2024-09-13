@@ -428,7 +428,7 @@ export default {
 
 
             <!-- CARD NON SPONSORIZZATE -->
-            <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0">
+            <div v-for="suite in filtered" class="aaaa col-lg-12 col-md-12 col-12 link-underline-opacity-0">
                 <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                     class="text-decoration-none">
 
