@@ -40,7 +40,6 @@ export default {
             latest_endpoint: '/api/suite/latest',
             myApi: 'latitude=' + this.lat_rom + '&longitude=' + this.lon_rom + '&radius=20',
             visible: '',
-            visible: '',
             scrollLine: null,
             byeBye: ''
 
@@ -154,19 +153,6 @@ export default {
                 this.byeBye = ''
             }
         }
-        getFix() {
-            this.scrollLine = window.scrollY
-            if (this.scrollLine > 300) {
-                console.log(this.scrollLine, "sta andando")
-                // nav.classList.add("ciao")  
-                this.visible = "navFixed"
-                this.byeBye = "d-none"
-            } else if (this.scrollLine < 300) {
-                console.log("contiene")
-                this.visible = ""
-                this.byeBye = ''
-            }
-        }
 
         // da spostare
     },
@@ -178,9 +164,6 @@ export default {
 
 
 
-    },
-    created() {
-        window.addEventListener('scroll', this.getFix)
     },
     created() {
         window.addEventListener('scroll', this.getFix)
@@ -202,9 +185,8 @@ export default {
                 <div class="searchbar-container" :class="this.visible">
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-3">
-                            <input class="searchbar w-100" type="search" placeholder="Search a location"
-                                aria-label="Search" v-model="pokemon" @input="getInputSearch" name="search_bar"
-                                required>
+                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
                             <ul id="result" class="list-group position-absolute">
                                 <li class="list-group-item" v-for="item, index in this.aka"
                                     @click="this.getChoose(index)">
@@ -229,7 +211,6 @@ export default {
     </div>
     <!--************************************* SEZIONE PER LE CARD **********************************************************-->
     <div class="container">
-
 
         <h2 class="my-3 col-9 mx-auto">Our Advices:</h2>
         <!-- <div class="row col-12 col-sm-6 col-md-4 col-xl-3 w-100">
@@ -269,7 +250,7 @@ export default {
                     <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
                         <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                         <p>{{ suite.address }}</p>
-                        <!-- <span>{{ suite.distance }} KM from centre </span> -->
+                        <span>{{ suite.distance }} KM from centre </span>
                         <div class="d-flex flex-wrap align-content-end">
                             <div class="me-4">
                                 <div class="mt-3 d-flex align-items-center">
@@ -342,129 +323,114 @@ export default {
 }
 
 .navFixed {
+    position: fixed;
 
+    background-color: rgba(134, 134, 134, 1);
+    left: 26%;
+    top: 0;
+    color: black;
+
+    z-index: 999
+}
+
+.searchbar {
+    border-radius: 80px;
+    height: 3rem;
+    background-color: rgba(240, 248, 255, 0);
+    border: white 2px solid;
+    /* width: 70%; */
+    padding: 1rem;
+    outline: none;
+    color: white;
+}
+
+.searchbar:focus {
+    background-color: white;
+    transition: 0.5s;
+    color: black
+}
+
+
+.searchbar::placeholder {
+    color: rgba(255, 255, 255, 0.927);
+}
+
+.search-btn {
+    height: 3rem;
+    border-radius: 20px;
+    background-color: rgba(240, 248, 255, 0);
+    border: white 2px solid;
+}
+
+.search-btn:hover {
+    background-color: white;
+    color: rgb(0, 89, 255);
+}
+
+.offcanvas {
+    background-color: #222;
+    color: white;
+    height: 50vh;
+}
+
+.offcanvas-item {
+    width: 20%;
+    margin-bottom: 1rem;
+}
+
+.my-img {
+    width: 220px;
+    height: 220px;
+}
+
+.my-fa-w {
+    width: 20px;
+}
+
+.my-sponsored-div {
+    width: 110px;
+    height: 30px;
+    background-color: rgb(255, 123, 0);
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    padding: 2px;
+    font-weight: 500;
+}
+
+@media only screen and (max-width: 576px) {
     .navFixed {
-        position: fixed;
+        width: 90%;
+        left: 5%;
 
-        background-color: rgba(134, 134, 134, 1);
-        left: 26%;
-        top: 0;
-        color: black;
-
-        z-index: 999
     }
+}
 
-    .searchbar {
-        border-radius: 80px;
-        height: 3rem;
-        background-color: rgba(240, 248, 255, 0);
-        border: white 2px solid;
-        /* width: 70%; */
-        padding: 1rem;
-        outline: none;
-        color: white;
-    }
-
-    .searchbar:focus {
-        background-color: white;
-        transition: 0.5s;
-        color: black
-    }
-
-
-    .searchbar::placeholder {
-        color: rgba(255, 255, 255, 0.927);
-    }
-
-    .search-btn {
-        height: 3rem;
-        border-radius: 20px;
-        background-color: rgba(81, 81, 82, 0.662);
-        border: white 2px solid;
-    }
-
-    .search-btn:hover {
-        background-color: white;
-        color: rgb(0, 89, 255);
-    }
-
-    .offcanvas {
-        background-color: #222;
-        color: white;
-        height: 50vh;
-    }
-
-    .offcanvas-item {
-        width: 20%;
-        margin-bottom: 1rem;
-    }
-
-    .my-img {
-        width: 220px;
-        height: 220px;
-    }
-
-    .my-fa-w {
-        width: 20px;
-    }
-
-    .my-sponsored-div {
-        width: 110px;
-        height: 30px;
-        background-color: rgb(255, 123, 0);
-        position: absolute;
-        top: 1rem;
-        left: 0;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-        color: white;
-        padding: 2px;
-        font-weight: 500;
-    }
-
-    @media only screen and (max-width: 576px) {
-        .navFixed {
-            width: 90%;
-            left: 5%;
-
-        }
-    }
-
-
-    @media only screen and (max-width: 576px) {
-        .navFixed {
-            width: 90%;
-            left: 5%;
-
-        }
-    }
-
-    @media only screen and (min-width: 576px) and (max-width: 768px) {
-        img {
-            width: 159px;
-            height: 159px;
-        }
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    img {
+        width: 159px;
+        height: 159px;
     }
 }
 
 @media only screen and (min-width: 769px) and (max-width: 992px) {
-    @media only screen and (min-width: 769px) and (max-width: 992px) {
-        img {
-            width: 199px;
-            height: 199px;
-        }
+    img {
+        width: 199px;
+        height: 199px;
     }
+}
 
-    @media only screen and (min-width: 992px) {}
-
-    @media only screen and (min-width: 992px) {
-        img {
-            width: 220px;
-            height: 220px;
-        }
+@media only screen and (min-width: 992px) {
+    img {
+        width: 220px;
+        height: 220px;
     }
+}
 
-    /* @media only screen and (max-width: 768px) {
+/* @media only screen and (max-width: 768px) {
     .my-card-breack {
         flex-direction: column;
     }
@@ -481,4 +447,5 @@ export default {
     .img-container{
         background-position-x: right;
     }
-} */</style>
+} */
+</style>
