@@ -6,7 +6,9 @@ import { useRoute } from 'vue-router';
 export default {
 
     name: 'AppSuites',
-
+    // props :{
+    //     address : Object
+    // },
 
     components: {
 
@@ -28,7 +30,7 @@ export default {
             aka: [],
             result_suggest: [],
             searchBar: [],
-            pokemon: null,
+            pokemon: this.$route.query.address,
             base_url: 'http://localhost:8000/api',
             end_point: 0,
             myApi: null,
@@ -103,6 +105,7 @@ export default {
                 console.log(filter_coordinate + "dell'index" + index)
                 this.filtered[index].distance = filter_coordinate
             }
+            
 
 
 
@@ -133,19 +136,21 @@ export default {
             this.$route.query.latitude = this.result_suggest[0].position.lat
 
             this.$route.query.longitude = this.result_suggest[0].position.lon
-
+            
             // console.log(this.store.country_range, 'coordinate')
             this.getApi()
-              this.suite_art = 'd-none'
-                this.loading_art = ''
+            this.suite_art = 'd-none'
+            this.loading_art = ''
             setTimeout(() => {
                 this.suite_art = ''
                 this.loading_art = 'd-none'
             }, 2376);
+            this.filter()
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
-            // console.log(this.searchBar, 'cliccato')
+            
+             console.log(this.$route.query.address, 'cliccato')
             this.aka = [];
             this.disabled();
             this.getApi();
@@ -223,6 +228,8 @@ export default {
     mounted() {
         this.getroute()
         this.getApiMounted();
+        console.log(this.$route)
+        // this.pokemon = this.$route.query.address
 
 
 
@@ -269,25 +276,25 @@ export default {
                 <div class="col-4 text-start border-0 text-center">
                     <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
                     </label>
-                    <input @input="filter()" type="range" min="0" max="20" v-model=range
+                    <input @input="getSuite()" type="range" min="0" max="20" v-model=range
                         class="w-50 mx-2 mb-2 form-control form-range text-light border-0 mx-5" id="customRange1">
                 </div>
                 <div class="col-4 text-start border-dark text-center">
                     <label for="suite_room" class="ms-2 fw-semibold form-label">Rooms:</label>
                     <input type="number" class="w-50 mx-2 mb-2 form-control form-control mx-5" id="suite_room" placeholder=""
-                        name="room" min="0" max="20" v-model=room @input="filter()">
+                        name="room" min="1" max="20" v-model=room @input="getSuite()">
                 </div>
                 <div class="col-4 text-start  text-center">
                     <label for="suite_bed" class="ms-2 fw-semibold form-label">Beds:</label>
                     <input type="number" class="w-50 mx-2 mb-2 form-control mx-5" id="suite_bed" placeholder="" name="bed"
-                        min="0" max="20" v-model=bed @input="filter()">
+                        min="1" max="20" v-model=bed @input="getSuite()">
                 </div>
                 <div class="col-12  d-flex flex-wrap justify-content-center">
 
                     <h4 for="suite_services" class="ms-2 fw-semibold form-label col-12">Select Services:</h4>
                     <div v-for="service in services " class=" text-start d-flex flex-wrap m-1 p-1 justify-content-center border rounded" style="line-height: 19px; width:200px; background-color: rgba(0,0,0,0.1);">
                         <i :class="service.icon" class="col-2 text-start"></i>&nbsp;
-                        <input class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @input="filter()" />&nbsp;
+                        <input class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @change="getSuite()" />&nbsp;
                             <span>{{ service.name }}</span>
                     </div>
                 </div>
@@ -299,7 +306,8 @@ export default {
     <!-- ***************************************SUITE CARDS****************************************************** -->
     <main class="container d-flex justify-content-center align-items-center" >
         <div style="height:53vh">
-                    <div :class="loading_art" class="loader col-1"  ></div>
+            <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem" >        
+            </div>
         </div>
         
         
