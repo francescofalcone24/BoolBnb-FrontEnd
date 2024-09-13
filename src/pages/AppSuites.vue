@@ -58,11 +58,11 @@ export default {
                 // this.base_url + this.end_point
                 // 'http://localhost:8000/api' + this.$route.fullPath
 
-                 'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' +
-                 this.$route.query.longitude +
-                 '&radius=' + this.range +
-                 '&room=' + this.room +
-                 '&bed=' + this.bed 
+                'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' +
+                this.$route.query.longitude +
+                '&radius=' + this.range +
+                '&room=' + this.room +
+                '&bed=' + this.bed
 
                 // this.$route.query.services
 
@@ -72,18 +72,18 @@ export default {
                     }
                 }
             ).then(response => {
-                    console.log(response.data.results, 'questa è la nuoava api');
-                    // this.store.suite = response.data.results;
-                    this.filtered = response.data.results[0];
-                    this.services = response.data.results[1];
-                    // console.log(response.data.richiesta, 'richiesta')
-                    // console.log(this.filtered, 'questo e` array filtrato da API')
-                    // this.filter()
-                    this.filter()
-                    this.orderByDistance()
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                console.log(response.data.results, 'questa è la nuoava api');
+                // this.store.suite = response.data.results;
+                this.filtered = response.data.results[0];
+                this.services = response.data.results[1];
+                // console.log(response.data.richiesta, 'richiesta')
+                // console.log(this.filtered, 'questo e` array filtrato da API')
+                // this.filter()
+                this.filter()
+                this.orderByDistance()
+            }).catch(function (error) {
+                console.log(error);
+            });
             this.changeUrl()
         },
 
@@ -108,7 +108,7 @@ export default {
                 console.log(filter_coordinate + "dell'index" + index)
                 this.filtered[index].distance = filter_coordinate
             }
-            
+
 
 
 
@@ -136,8 +136,8 @@ export default {
             });
         },
         getSuite() {
-        
-            
+
+
             // console.log(this.store.country_range, 'coordinate')
             this.getApi()
             this.suite_art = 'd-none'
@@ -150,8 +150,8 @@ export default {
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
-            
-             console.log(this.$route.query.address, 'cliccato')
+
+            console.log(this.$route.query.address, 'cliccato')
             this.aka = [];
             this.disabled();
             this.getApi();
@@ -187,7 +187,7 @@ export default {
             history.pushState(
                 {},
                 null,
-                
+
                 // this.$route.fullPath
                 this.$route.path + '?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=' + this.range + '&room=' + this.room + '&bed=' + this.bed + this.service_url + '&address=' + this.pokemon
             )
@@ -201,7 +201,7 @@ export default {
             axios.get(
                 // 'http://localhost:8000/api'+  this.$route.path
                 // this.base_url + this.end_point
-                'http://localhost:8000/api' + this.$route.fullPath 
+                'http://localhost:8000/api' + this.$route.fullPath
                 // 'http://localhost:8000/api/suite/search?latitude=' + this.$route.query.latitude + '&longitude=' + this.$route.query.longitude + '&radius=20' + this.$route.query.services
                 , {
                     //  params: {
@@ -224,7 +224,7 @@ export default {
                 this.loading_art = 'd-none'
             }, 2376);
         },
-        
+
 
     },
 
@@ -233,15 +233,15 @@ export default {
         this.getApiMounted();
         console.log(this.$route)
         // this.pokemon = this.$route.query.address
-        console.log(this.$route.fullPath.includes("service[]=2"),'lo include')
-        
+        console.log(this.$route.fullPath.includes("service[]=2"), 'lo include')
 
 
 
-    }, 
-    created(){
+
+    },
+    created() {
         // setTimeout(() => {
-            
+
         //        this.pokemon = this.$route.query.address
         //        console.log(this.pokemon , 'created')
         //     }, 200);
@@ -264,7 +264,7 @@ export default {
 
             <!-- SEARCHBAR -->
 
-            <div class="d-flex justify-content-center w-100" role="search">
+            <div class="d-flex justify-content-center w-100 py-4" role="search">
                 <div class="col-8 me-3">
                     <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
                         v-model="pokemon" @input="getInputSearch" name="search_bar" required>
@@ -284,31 +284,43 @@ export default {
                 </div>
             </div>
 
-            <div class="col-12 d-flex flex-wrap p-2">
-                <div class="col-4 text-start border-0 text-center">
-                    <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: <br> {{ this.range }}
+            <!---------------------------- FILTERS ---------------------------->
+            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded">
+                <div
+                    class="col-lg-2 text-start d-flex flex-column justify-content-center align-items-center border-0 col-sm-4">
+                    <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: {{ this.range }}
                     </label>
                     <input @input="getSuite()" type="range" min="0" max="20" v-model=range
                         class="w-50 mx-2 mb-2 form-control form-range text-light border-0 mx-5" id="customRange1">
                 </div>
-                <div class="col-4 text-start border-dark text-center">
-                    <label for="suite_room" class="ms-2 fw-semibold form-label">Rooms:</label>
-                    <input type="number" class="w-50 mx-2 mb-2 form-control form-control mx-5" id="suite_room" placeholder=""
+                <div class="col-lg-2 text-start d-flex align-items-center col-sm-4">
+                    <label for="suite_room" class="m-2 fw-semibold form-label">Rooms:</label>
+                    <input type="number" class="w-50 m-2 form-control form-control " id="suite_room" placeholder=""
                         name="room" min="1" max="20" v-model=room @input="getSuite()">
                 </div>
-                <div class="col-4 text-start  text-center">
-                    <label for="suite_bed" class="ms-2 fw-semibold form-label">Beds:</label>
-                    <input type="number" class="w-50 mx-2 mb-2 form-control mx-5" id="suite_bed" placeholder="" name="bed"
-                        min="1" max="20" v-model=bed @input="getSuite()">
+                <div class="col-lg-2 text-start d-flex align-items-center col-sm-4">
+                    <label for="suite_bed" class="m-2 fw-semibold form-label">Beds:</label>
+                    <input type="number" class="w-50 m-2 form-control form-control " id="suite_bed" placeholder=""
+                        name="bed" min="1" max="20" v-model=bed @input="getSuite()">
                 </div>
-                <div class="col-12  d-flex flex-wrap justify-content-center">
+                <div class="col-lg-6 col-sm-12 d-flex flex-wrap justify-content-center">
 
-                    <h4 for="suite_services" class="ms-2 fw-semibold form-label col-12">Select Services:</h4>
-                    <div v-for="service in services " class=" text-start d-flex flex-wrap m-1 p-1 justify-content-center border rounded" style="line-height: 19px; width:200px; background-color: rgba(0,0,0,0.1);">
-                        <i :class="service.icon" class="col-2 text-start"></i>&nbsp;
-                        <input v-if="this.$route.fullPath.includes(`service[]=`) == true"  class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @change="getSuite()" checked>&nbsp;
-                        <input v-else="this.$route.fullPath.includes(`service[]=2`) != true"  class="text-start" type="checkbox" :value='service.id' :name="service.name" v-model="check" @change="getSuite()">
-                            <span>{{ service.name }}</span>
+                    <h5 for="suite_services" class="ms-2 fw-semibold form-label col-12 text-center">Select Services:
+                    </h5>
+                    <div v-for="service in services " class=" text-start d-flex flex-wrap m-1 p-1  border rounded col-3"
+                        style="line-height: 19px;  background-color: rgba(0,0,0,0.1);">
+                        <div class="">
+                            <input v-if="this.$route.fullPath.includes(`service[]=`) == true" class=" me-2"
+                                type="checkbox" :value='service.id' :name="service.name" v-model="check"
+                                @change="getSuite()" checked>&nbsp;
+                            <input v-else="this.$route.fullPath.includes(`service[]=2`) != true" class=" me-2"
+                                type="checkbox" :value='service.id' :name="service.name" v-model="check"
+                                @change="getSuite()">
+                            <i :class="service.icon" class="col-2 "></i>&nbsp;
+                        </div>
+
+
+                        <span>{{ service.name }}</span>
                     </div>
                 </div>
             </div>
@@ -317,18 +329,18 @@ export default {
     </section>
 
     <!-- ***************************************SUITE CARDS****************************************************** -->
-    <main class="container d-flex justify-content-center align-items-center" >
+    <main class="container d-flex justify-content-center align-items-center">
         <div style="height:53vh">
-            <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem" >        
+            <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem">
             </div>
         </div>
-        
-        
-
-      
 
 
-        <section id="suite_container" :class="suite_art" class="w-100"  >
+
+
+
+
+        <section id="suite_container" :class="suite_art" class="w-100">
             <!-- CARD SPONSORIZZATE -->
             <div class="p-3 text-start ">
                 <h3>
@@ -347,19 +359,24 @@ export default {
                         class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
 
 
-                        <div class="col-12 col-sm-4 d-flex align-items-center position-relative">
-                            <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+                        <div class="col-12 col-sm-4 d-flex align-items-center ">
 
-                            <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
-                            <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
+                            <div class="position-relative">
+                                <img v-if="!suite.img.startsWith('http')"
+                                    :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                                <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
+
+                                <!-- Etichetta sponsored -->
+                                <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+                            </div>
+
                         </div>
 
 
                         <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
                             <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                             <p>{{ suite.address }}</p>
-                            <span>{{ suite.distance }} KM from centre </span>
+                            <span>{{ suite.distance }} KM from center </span>
                             <div class="d-flex flex-wrap align-content-end">
                                 <div class="me-4">
                                     <div class="mt-3 d-flex align-items-center">
@@ -385,15 +402,23 @@ export default {
                         </div>
 
                         <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                        <div
-                            class="p-3 col-6 col-sm-4 d-flex justify-content-start align-self-start gap-3 flex-wrap text-dark">
-                            <div class="col-12 text-center" style="font-size: 25px; height: 30px">
+                        <div class="p-3 col-6 col-sm-4 d-flex align-self-start gap-4 flex-wrap text-dark">
+                            <div class="col-12 text-start" style="font-size: 25px; height: 30px">
                                 Services:
                             </div>
-                            <div class="d-flex col-2 flex-wrap" v-for="service in suite.services">
-                                <div class="d-flex gap text-end">
-                                    <i :class="service.icon" class="col-3" style=""></i>
+                            <div class="d-flex flex-wrap col-12">
+                                <div class="d-flex flex-column px-2">
+                                    <div class="" v-for="service in suite.services">
+                                        <i :class="service.icon" class="col-3" style=""></i>
+
+                                    </div>
                                 </div>
+                                <div class="d-flex flex-column px-2">
+                                    <div class="d-flex flex-column" v-for="service in suite.services">
+                                        <div>{{ service.name }}</div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -478,14 +503,19 @@ export default {
 }
 
 /* Track scroll-bar */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 3px rgb(255, 255, 255);    
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 3px rgb(255, 255, 255);
 }
 
 /* Handle scroll-bar */
 ::-webkit-scrollbar-thumb {
     background: rgb(209, 207, 207);
-    border-radius:4px;  
+    border-radius: 4px;
+}
+
+img {
+    width: 220px;
+    height: 220px;
 }
 
 .img-container {
@@ -715,52 +745,56 @@ p {
 
 /* HTML: <div class="loader"></div> */
 .loader {
-  width: 50px;
-  aspect-ratio: 1;
-  display: grid;
-  border-radius: 50%;
-  background: conic-gradient(#25b09b 25%,#f03355 0 50%,#514b82 0 75%,#ffa516 0);
-  animation: l22 2s infinite linear;
+    width: 50px;
+    aspect-ratio: 1;
+    display: grid;
+    border-radius: 50%;
+    background: conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);
+    animation: l22 2s infinite linear;
 }
+
 .loader::before,
 .loader::after {
-   content: "";
-   grid-area: 1/1;
-   margin: 15%;
-   border-radius: 50%;
-   background: inherit;
-   animation: inherit;
+    content: "";
+    grid-area: 1/1;
+    margin: 15%;
+    border-radius: 50%;
+    background: inherit;
+    animation: inherit;
 }
+
 .loader::after {
-   margin: 25%;
-   animation-duration: 3s;
+    margin: 25%;
+    animation-duration: 3s;
 }
+
 @keyframes l22 {
-  100% {transform: rotate(1turn)}
+    100% {
+        transform: rotate(1turn)
+    }
 }
 
-
- 
-@media only screen and (min-width: 576px) and (max-width: 768px) {
+@media only screen and (max-width: 992px) {
     img {
-        width: 159px;
-        height: 159px;
+        width: 220px;
+        height: 220px;
     }
-} 
 
-@media only screen and (min-width: 769px) and (max-width: 992px)  {
+
+
+}
+
+@media only screen and (max-width: 769px) {
     img {
         width: 199px;
         height: 199px;
     }
-} 
-@media only screen and (min-width: 992px)  {
+}
+
+@media only screen and (max-width: 576px) {
     img {
-        width: 220px;
-        height: 220px;
-    };
- 
-} 
-
+        width: 159px;
+        height: 159px;
+    }
+}
 </style>
-
