@@ -39,7 +39,7 @@ export default {
             my_base_url: 'http://127.0.0.1:8000',
             latest_endpoint: '/api/suite/latest',
             myApi: 'latitude=' + this.lat_rom + '&longitude=' + this.lon_rom + '&radius=20',
-            visible : '',
+            visible: '',
             scrollLine: null,
             byeBye: ''
 
@@ -140,19 +140,19 @@ export default {
         disabled() {
             document.getElementById("search-link").classList.remove("disabled")
         },
-        getFix(){
-       this.scrollLine = window.scrollY
-        if(this.scrollLine > 300){
-            console.log(this.scrollLine,"sta andando")
-            // nav.classList.add("ciao")  
-             this.visible ="navFixed"
-             this.byeBye = "d-none"
-        }else if(this.scrollLine < 300){
-            console.log("contiene")
-            this.visible =""
-            this.byeBye =''
-        } 
-    }
+        getFix() {
+            this.scrollLine = window.scrollY
+            if (this.scrollLine > 300) {
+                console.log(this.scrollLine, "sta andando")
+                // nav.classList.add("ciao")  
+                this.visible = "navFixed"
+                this.byeBye = "d-none"
+            } else if (this.scrollLine < 300) {
+                console.log("contiene")
+                this.visible = ""
+                this.byeBye = ''
+            }
+        }
 
         // da spostare
     },
@@ -165,9 +165,9 @@ export default {
 
 
     },
-    created(){
-    window.addEventListener('scroll', this.getFix)
-  },
+    created() {
+        window.addEventListener('scroll', this.getFix)
+    },
 
 
 }
@@ -181,31 +181,31 @@ export default {
                 <h1 :class="this.byeBye" class="display-5 fw-bold text-light">
                     Welcome to BoolBnB
                 </h1>
-                
-                    <div  class="searchbar-container" :class="this.visible">
-                        <form class="d-flex justify-content-center" role="search">
-                            <div class="col-8 me-3">
-                                <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                                    v-model="pokemon" @input="getInputSearch" name="search_bar" required>
-                                <ul id="result" class="list-group position-absolute">
-                                    <li class="list-group-item" v-for="item, index in this.aka"
-                                        @click="this.getChoose(index)">
-                                        {{ item }}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <router-link
-                                    :to="{ name: 'suites', query: { latitude: this.lat_rom, longitude: this.lon_rom } }"
-                                    class="nav-link text-light disabled" id="search-link">
-                                    <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite">
-                                        Search
-                                    </button>
-                                </router-link>
-                            </div>
-                        </form>
-                    </div>
-               
+
+                <div class="searchbar-container" :class="this.visible">
+                    <form class="d-flex justify-content-center" role="search">
+                        <div class="col-8 me-3">
+                            <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
+                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
+                            <ul id="result" class="list-group position-absolute">
+                                <li class="list-group-item" v-for="item, index in this.aka"
+                                    @click="this.getChoose(index)">
+                                    {{ item }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <router-link
+                                :to="{ name: 'suites', query: { latitude: this.lat_rom, longitude: this.lon_rom } }"
+                                class="nav-link text-light disabled" id="search-link">
+                                <button class="btn btn-success search-btn me-3 " type="button" @click="getSuite">
+                                    Search
+                                </button>
+                            </router-link>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -249,7 +249,7 @@ export default {
                     <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
                         <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                         <p>{{ suite.address }}</p>
-                        <span>{{ suite.distance }} KM from centre </span>
+                        <!-- <span>{{ suite.distance }} KM from centre </span> -->
                         <div class="d-flex flex-wrap align-content-end">
                             <div class="me-4">
                                 <div class="mt-3 d-flex align-items-center">
@@ -298,7 +298,6 @@ export default {
 </template>
 
 <style scoped>
-
 .jumbo-img {
     width: 100%
 }
@@ -321,14 +320,15 @@ export default {
     margin-bottom: 10rem;
     padding: 1rem;
 }
-.navFixed{
+
+.navFixed {
     position: fixed;
-   
+
     background-color: rgba(134, 134, 134, 1);
     left: 26%;
-    top:0;
+    top: 0;
     color: black;
-    
+
     z-index: 999
 }
 
@@ -399,27 +399,30 @@ export default {
     padding: 2px;
     font-weight: 500;
 }
-@media only screen and (max-width: 576px)  {
-  .navFixed{
-    width: 90%;
-    left:5%;
-   
-  }
-} 
+
+@media only screen and (max-width: 576px) {
+    .navFixed {
+        width: 90%;
+        left: 5%;
+
+    }
+}
+
 @media only screen and (min-width: 576px) and (max-width: 768px) {
     img {
         width: 159px;
         height: 159px;
     }
-} 
+}
 
-@media only screen and (min-width: 769px) and (max-width: 992px)  {
+@media only screen and (min-width: 769px) and (max-width: 992px) {
     img {
         width: 199px;
         height: 199px;
     }
-} 
-@media only screen and (min-width: 992px)  {
+}
+
+@media only screen and (min-width: 992px) {
     img {
         width: 220px;
         height: 220px;
