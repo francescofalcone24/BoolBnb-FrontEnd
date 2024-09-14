@@ -39,6 +39,7 @@ export default {
             service_url: '',
             suite_art: 'd-none',
             loading_art: '',
+            alah : null
 
         }
     },
@@ -49,7 +50,7 @@ export default {
         },
         getApi() {
 
-            console.log(this.$route.query.latitude, this.$route.query.longitude, 'coordinate per chiamata')
+            // console.log(this.$route.query.latitude, this.$route.query.longitude, 'coordinate per chiamata')
             delete axios.defaults.headers.common['X-Requested-With'];
             // console.log(this.store, 'questo è lo store');
 
@@ -105,7 +106,7 @@ export default {
         filter() {
             for (let index = 0; index <= this.filtered.length - 1; index++) {
                 let filter_coordinate = this.getDistanceBetweenPoints(this.filtered[index].latitude, this.filtered[index].longitude, this.$route.query.latitude, this.$route.query.longitude);
-                console.log(filter_coordinate + "dell'index" + index)
+                // console.log(filter_coordinate + "dell'index" + index)
                 this.filtered[index].distance = filter_coordinate
             }
 
@@ -151,7 +152,7 @@ export default {
         getChoose(x) {
             this.pokemon = this.aka[x]
 
-            console.log(this.$route.query.address, 'cliccato')
+            // console.log(this.$route.query.address, 'cliccato')
             this.aka = [];
             this.disabled();
             this.getApi();
@@ -165,7 +166,7 @@ export default {
             this.filtered.sort((a, b) => a.distance - b.distance)
         },
         getroute() {
-            console.log(this.$route, 'questo è lurl')
+            // console.log(this.$route, 'questo è lurl')
             this.myApi = this.$route.path.api_url
 
             // console.log(route.path, 'yo')
@@ -180,7 +181,7 @@ export default {
                 url = '&service[]=' + this.check[index]
                 // console.log(url)
                 this.service_url += url
-                console.log(this.service_url)
+                // console.log(this.service_url)
 
             }
             // this.$route.fullPath += this.service_url  
@@ -224,6 +225,7 @@ export default {
                 this.loading_art = 'd-none'
             }, 2376);
         },
+        
 
 
     },
@@ -231,7 +233,7 @@ export default {
     mounted() {
         this.getroute()
         this.getApiMounted();
-        console.log(this.$route)
+        // console.log(this.$route)
         // this.pokemon = this.$route.query.address
         console.log(this.$route.fullPath.includes("service[]=2"), 'lo include')
 
@@ -260,23 +262,24 @@ export default {
 
     <section id="aka" class="container-fluid my-bg" style=" width : 100%; z-index :999;">
         <!-- FILTERS BAR -->
-        <div class=" container col-12 col-2 p-0 d-flex flex-wrap  h-100 z-1 radius-25">
+        <div class="container col-sm-12 col-12 p-0 d-flex flex-wrap  h-100 z-1 radius-25" style="position:relative;">
 
             <!-- SEARCHBAR -->
 
             <div class="d-flex justify-content-center w-100 py-4" role="search">
-                <div class="col-8 me-3">
-                    <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                        v-model="pokemon" @input="getInputSearch" name="search_bar" required>
+                <div class="col-sm-10 col-8 d-flex  justify-content-center">
+                    <input class="searchbar" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
+                        @input="getInputSearch" name="search_bar" style="width: 90%;" required autocomplete="off">
                     <ul id="result" class="list-group position-absolute">
                         <li class="list-group-item" v-for="item, index in this.aka" @click="this.getChoose(index)">
                             {{ item }}
                         </li>
                     </ul>
                 </div>
-                <div>
+                <div class="col-sm-2  col-4 d-flex justify-content-end justify-content-sm-start ">
                     <!-- <router-link :to="{ name: 'suites' , query:{latitude: this.$route.query.latitude , longitude:this.$route.query.latitude} }" class="nav-link text-light"> -->
-                    <button id="search-btn" class="btn btn-success search-btn me-3" type="button" @click="getSuite">
+                    <button id="search-btn" class="btn my_btn " type="button" @click="getSuite"
+                        style="position: absolute;">
                         Search
                     </button>
                     <!-- <button @click="prova">prova</button> -->
@@ -285,7 +288,17 @@ export default {
             </div>
 
             <!---------------------------- FILTERS ---------------------------->
-            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded">
+            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded" style="position: relative;">
+                <span class=""
+                    style="position: absolute;right:0; top:0; border-top: 35px solid #514b82;border-left: 55px solid rgba(77, 41, 223, 0); color:whitesmoke; background-color:  conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);z-index:5"></span>
+                <span class=""
+                    style="position: absolute;right:0; top:0; border-top: 39px solid #f03355;border-left: 110px solid rgba(77, 41, 223, 0); color:whitesmoke; background-color:  conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);z-index:4"></span>
+                <span class=""
+                    style="position: absolute;right:0; top:0; border-top: 43px solid #25b09b;border-left: 165px solid rgba(77, 41, 223, 0); color:whitesmoke; background-color:  conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);z-index:3"></span>
+                <span class=""
+                    style="position: absolute;right:0; top:0; border-top: 47px solid #ffa516;border-left: 220px solid rgba(77, 41, 223, 0); color:whitesmoke; background-color:  conic-gradient(#ffa516 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);z-index:2"></span>
+
+
                 <div
                     class="col-lg-2 text-start d-flex flex-column justify-content-center align-items-center border-0 col-sm-4">
                     <label for="customRange1" class="ms-2 fw-semibold form-label">Km radius: {{ this.range }}
@@ -305,22 +318,20 @@ export default {
                 </div>
                 <div class="col-lg-6 col-sm-12 d-flex flex-wrap justify-content-center">
 
-                    <h5 for="suite_services" class="ms-2 fw-semibold form-label col-12 text-center">Select Services:
+                    <h5 for="suite_services" class="ms-2 fw-semibold form-label col-12 text-center">
+                        Select Services:
                     </h5>
-                    <div v-for="service in services " class=" text-start d-flex flex-wrap m-1 p-1  border rounded col-3"
-                        style="line-height: 19px;  background-color: rgba(0,0,0,0.1);">
-                        <div class="">
-                            <input v-if="this.$route.fullPath.includes(`service[]=`) == true" class=" me-2"
-                                type="checkbox" :value='service.id' :name="service.name" v-model="check"
-                                @change="getSuite()" checked>&nbsp;
-                            <input v-else="this.$route.fullPath.includes(`service[]=2`) != true" class=" me-2"
-                                type="checkbox" :value='service.id' :name="service.name" v-model="check"
-                                @change="getSuite()">
-                            <i :class="service.icon" class="col-2 "></i>&nbsp;
+                    <div class="d-flex col-12 flex-wrap justify-content-start">
+                        <div v-for="service, index in services" :key="index" class="text-center p-1 col-4">
+                            <label :for="services.name" class="border rounded p-2 w-100 h-100" id="services">
+                                <input class="" type="checkbox" :value='service.id' :name="service.name" v-model="check"
+                                    :id="service.name" @change="getSuite()">
+                                <span style="font-size: 15px;">
+                                    &nbsp;{{ service.name }}&nbsp;
+                                </span>
+                                <i :class="service.icon" class=""></i>
+                            </label>
                         </div>
-
-
-                        <span>{{ service.name }}</span>
                     </div>
                 </div>
             </div>
@@ -329,18 +340,16 @@ export default {
     </section>
 
     <!-- ***************************************SUITE CARDS****************************************************** -->
-    <main class="container d-flex justify-content-center align-items-center">
+    <main class="d-flex justify-content-center align-items-center">
         <div style="height:53vh">
             <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem">
             </div>
         </div>
 
 
+        <section :class="suite_art" class="container">
 
 
-
-
-        <section id="suite_container" :class="suite_art" class="w-100">
             <!-- CARD SPONSORIZZATE -->
             <div class="p-3 text-start ">
                 <h3>
@@ -351,15 +360,15 @@ export default {
                 </h3>
             </div>
 
-            <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0">
+            <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0" id="my_suite">
                 <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                     class="text-decoration-none">
 
                     <div v-if="suite.sponsor === 1"
-                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
+                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap"  >
 
 
-                        <div class="col-12 col-sm-4 d-flex align-items-center ">
+                        <div class="col-12 col-md-4 d-flex align-items-center ">
 
                             <div class="position-relative">
                                 <img v-if="!suite.img.startsWith('http')"
@@ -373,7 +382,7 @@ export default {
                         </div>
 
 
-                        <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
+                        <div class="col-6 p-3 col-md-4 text-dark  text-decoration-none">
                             <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                             <p>{{ suite.address }}</p>
                             <span>{{ suite.distance }} KM from center </span>
@@ -402,7 +411,7 @@ export default {
                         </div>
 
                         <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                        <div class="p-3 col-6 col-sm-4 d-flex align-self-start gap-4 flex-wrap text-dark">
+                        <div class="p-3 col-6 col-md-4 d-flex align-self-start gap-4 flex-wrap text-dark">
                             <div class="col-12 text-start" style="font-size: 25px; height: 30px">
                                 Services:
                             </div>
@@ -428,27 +437,29 @@ export default {
 
 
             <!-- CARD NON SPONSORIZZATE -->
-            <div v-for="suite in filtered" class="aaaa col-lg-12 col-md-12 col-12 link-underline-opacity-0">
+            <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0" id="my_suite">
                 <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                     class="text-decoration-none">
 
-                    <div v-if="suite.sponsor === 0"
+                    <div v-if="suite.sponsor === 1"
                         class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
 
 
-                        <div class="col-12 col-sm-4 d-flex align-items-center position-relative">
+                        <div class="col-12 col-md-4 d-flex align-items-center ">
 
+                            <div class="position-relative">
+                                <img v-if="!suite.img.startsWith('http')"
+                                    :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                                <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
+                            </div>
 
-                            <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
-                            <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
                         </div>
 
 
-                        <div class="col-6 p-3 col-sm-4 text-dark  text-decoration-none">
+                        <div class="col-6 p-3 col-md-4 text-dark  text-decoration-none">
                             <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                             <p>{{ suite.address }}</p>
-                            <span>{{ suite.distance }} KM from centre </span>
+                            <span>{{ suite.distance }} KM from center </span>
                             <div class="d-flex flex-wrap align-content-end">
                                 <div class="me-4">
                                     <div class="mt-3 d-flex align-items-center">
@@ -474,15 +485,23 @@ export default {
                         </div>
 
                         <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                        <div
-                            class="p-3 col-6 col-sm-4 d-flex justify-content-start align-self-start gap-3 flex-wrap text-dark">
-                            <div class="col-12 text-center" style="font-size: 25px; height: 30px">
+                        <div class="p-3 col-6 col-md-4 d-flex align-self-start gap-4 flex-wrap text-dark">
+                            <div class="col-12 text-start" style="font-size: 25px; height: 30px">
                                 Services:
                             </div>
-                            <div class="d-flex col-2 flex-wrap" v-for="service in suite.services">
-                                <div class="d-flex gap text-end">
-                                    <i :class="service.icon" class="col-3" style=""></i>
+                            <div class="d-flex flex-wrap col-12">
+                                <div class="d-flex flex-column px-2">
+                                    <div class="" v-for="service in suite.services">
+                                        <i :class="service.icon" class="col-3" style=""></i>
+
+                                    </div>
                                 </div>
+                                <div class="d-flex flex-column px-2">
+                                    <div class="d-flex flex-column" v-for="service in suite.services">
+                                        <div>{{ service.name }}</div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -497,6 +516,36 @@ export default {
 </template>
 
 <style scoped>
+.my_btn{
+    margin-top: 3px;
+    margin-left: 0;
+    border: 2.3px solid black;
+    border-radius: 45px;
+}
+.my_btn:hover{
+    transform: scale(1.15); 
+    background: linear-gradient(204deg, #ffffff 50%, #514b82 58%  62%, #f03355 70% 74%, #25b09b 82% 86%, #ffa516 82% 100%);
+    color:white;
+    /* color: rgb(113, 88, 62); */
+    font-weight: bold;
+    -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-color: rgb(0, 0, 0);
+    /* background: linear-gradient(90deg, rgb(255, 255, 255) 50%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 50%); */
+}
+#services{
+    line-height: 25px; 
+    background-color: rgba(0,0,0,0.05);
+}
+#services:hover{
+    background-color: rgba(255, 165, 22,0.7);
+    cursor: pointer;
+}
+#my_suite:hover{
+    transform: scale(1.01);
+    background-color: rgba(255, 165, 22,0.6);
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgb(23, 23, 23);;
+}
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -513,10 +562,7 @@ export default {
     border-radius: 4px;
 }
 
-img {
-    width: 220px;
-    height: 220px;
-}
+
 
 .img-container {
     height: calc(800px - 10rem);
@@ -557,10 +603,7 @@ img {
 
 }
 
-.my-img {
-    width: 220px;
-    height: 220px;
-}
+
 
 .my-fa-w {
     width: 20px;
@@ -582,6 +625,8 @@ img {
 
 #result {
     z-index: 99;
+    left: 5.8%;
+    top:28%;
 }
 
 /*  */
@@ -773,28 +818,57 @@ p {
         transform: rotate(1turn)
     }
 }
-
-@media only screen and (max-width: 992px) {
+/* -->AGGIUNTO altro breakpoint per gestire la lista dei risultati */
+@media only screen and (max-width: 1200px) {
+    #result{
+        top: 25%;
+    }
+}
+@media only screen and (min-width: 992px) {
     img {
         width: 220px;
         height: 220px;
     }
-
-
-
 }
 
-@media only screen and (max-width: 769px) {
+@media only screen and (min-width: 769px) and (max-width: 992px)  {
     img {
         width: 199px;
         height: 199px;
     }
+    #result{
+        top: 23%;
+    }
+
+
+
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+  /* img {
+        width: 159px;
+        height: 159px;
+        in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
+    } */
+    #result{
+        top: 20%;
+        left: 7.2%;
+    }
 }
 
 @media only screen and (max-width: 576px) {
-    img {
-        width: 159px;
-        height: 159px;
+    #result{
+        top: 17.5%;
+        left: 7.2%;
+    }
+  
+}
+/* -->SOTTO I 410PX LA LISTA DEI SUGGERIMENTI è INGESTIBILE */
+@media only screen and (min-width: 410px) and (max-width: 575px) {
+    #result{
+        top: 17.3%;
+        left: 9.8% ;
+        width: 55%;
     }
 }
 </style>
