@@ -148,6 +148,7 @@ export default {
                 this.loading_art = 'd-none'
             }, 2376);
             this.filter()
+            console.log(this.filtered, 'deve stamparle')
         },
         getChoose(x) {
             this.pokemon = this.aka[x]
@@ -213,8 +214,8 @@ export default {
                     // this.store.suite = response.data.results;
                     this.filtered = response.data.results[0];
                     this.services = response.data.results[1];
-                    this.filter()
-                    this.orderByDistance()
+                    // this.filter()
+                    // this.orderByDistance()
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -364,7 +365,7 @@ export default {
                 <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                     class="text-decoration-none">
 
-                    <div v-if="suite.sponsor === 1"
+                    <div v-if="suite.sponsor == 1"
                         class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap"  >
 
 
@@ -441,7 +442,7 @@ export default {
                 <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
                     class="text-decoration-none">
 
-                    <div v-if="suite.sponsor === 1"
+                    <div v-if="suite.sponsor == 0"
                         class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
 
 
