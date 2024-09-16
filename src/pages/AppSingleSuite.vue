@@ -265,7 +265,7 @@ export default {
             <h5 class="offcanvas-title" id="offcanvasTopLabel">Contact the owner:</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             <div v-if="success" class="alert alert-success text-start" role="alert">
-                Messaggio inviato con successo!
+                Message sent successfully!
             </div>
         </div>
         <div class="offcanvas-body d-flex flex-column flex-wrap ">
