@@ -264,7 +264,7 @@ export default {
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasTopLabel">Contact the owner:</h5>
             <div v-if="success" class="alert alert-success text-start" role="alert">
-                Messaggio inviato con successo!
+                Message sent successfully!
             </div>
         </div>
         <div class="offcanvas-body d-flex flex-column flex-wrap ">
