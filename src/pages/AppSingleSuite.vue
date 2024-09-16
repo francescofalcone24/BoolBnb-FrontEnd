@@ -128,7 +128,7 @@ export default {
 
                 if (response.data.status) {
                     this.store.singleSuite = response.data.results;
-                    // console.log('questo è ', this.store.singleSuite);
+                    console.log('questo è ', this.store.singleSuite);
                     // this.suite_id = response.data.results.id;
                     this.suite = response.data.results;
                     // console.log(this.visuals);
@@ -153,111 +153,112 @@ export default {
 
 
 <template>
+    <section style="padding:6rem">
+        <div class="container my-breack d-flex py-4 justify-content-around col-xl-12 col-l-12" v-if="store.singleSuite">
 
-    <div class="container my-breack d-flex py-2 justify-content-around col-xl-12 col-l-12 mt-5"
-        v-if="store.singleSuite">
-
-        <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-            class="mb-5" alt="...">
-
-        <img v-else="" :src="store.singleSuite.img" class="mb-5" alt="...">
-
-        <div class="d-flex flex-column ">
-            <h2 class="card-title">{{ store.singleSuite.title }}</h2>
-            <p class="card-text">{{ store.singleSuite.address }}</p>
+            <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                class="mb-5" alt="...">
 
 
+            <img v-else="" :src="store.singleSuite.img" class="mb-5" alt="...">
 
-            <ul class="list-group list-group-flush mb-3">
-                <li class="list-group-item">
-                    <div class="col-6 d-flex justify-content-between">
-
-                        <i class="fa-solid fa-person-shelter col-6"></i>
-
-
-                        <strong class="col-6">
-                            Rooms :
-                        </strong>
-                    </div>
-                    <span>
-
-                        {{ store.singleSuite.room }}
-                    </span>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="col-6 d-flex justify-content-between">
-
-                        <i class="fa-solid fa-toilet col-6"></i>
-
-
-                        <strong class="col-6">
-                            Bathrooms :
-                        </strong>
-                    </div>
-                    <span>
-
-                        {{ store.singleSuite.bathroom }}
-                    </span>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="col-6 d-flex justify-content-between">
-
-                        <i class="fa-solid fa-bed col-6"></i>
-
-
-                        <strong class="col-6">
-                            Beds :
-                        </strong>
-                    </div>
-                    <span>
-
-                        {{ store.singleSuite.bed }}
-                    </span>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="col-6 d-flex justify-content-between">
-
-                        <i class="fa-solid fa-maximize col-6"></i>
-
-
-                        <strong class="col-6">
-                            Square-Meters :
-                        </strong>
-                    </div>
-                    <span>
-
-                        {{ store.singleSuite.squareM }}
-                    </span>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="col-12 d-flex flex-wrap justify-content-between">
+            <div class="d-flex flex-column ">
+                <h2 class="card-title">{{ store.singleSuite.title }}</h2>
+                <p class="card-text">{{ store.singleSuite.address }}</p>
 
 
 
-                        <h3 class="col-12">Services:</h3>
-                        <div class="col-2 d-flex p-2 justify-content-center"
-                            v-for="service in store.singleSuite.services">
-                            <i :class="service.icon"></i>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">
+                        <div class="col-6 d-flex justify-content-between">
+
+                            <i class="fa-solid fa-person-shelter col-6"></i>
+
+
+                            <strong class="col-6">
+                                Rooms :
+                            </strong>
                         </div>
-                    </div>
+                        <span>
 
-                </li>
+                            {{ store.singleSuite.room }}
+                        </span>
+                    </li>
 
-            </ul>
-            <button class="btn btn-outline-primary my-3" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                Contact the owner
-            </button>
-            <router-link :to="{ name: 'suites' }" class="btn btn-outline-info mb-5">Go back to search</router-link>
-            <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
+                    <li class="list-group-item">
+                        <div class="col-6 d-flex justify-content-between">
+
+                            <i class="fa-solid fa-toilet col-6"></i>
+
+
+                            <strong class="col-6">
+                                Bathrooms :
+                            </strong>
+                        </div>
+                        <span>
+
+                            {{ store.singleSuite.bathroom }}
+                        </span>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="col-6 d-flex justify-content-between">
+
+                            <i class="fa-solid fa-bed col-6"></i>
+
+
+                            <strong class="col-6">
+                                Beds :
+                            </strong>
+                        </div>
+                        <span>
+
+                            {{ store.singleSuite.bed }}
+                        </span>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="col-6 d-flex justify-content-between">
+
+                            <i class="fa-solid fa-maximize col-6"></i>
+
+
+                            <strong class="col-6">
+                                Square-Meters :
+                            </strong>
+                        </div>
+                        <span>
+
+                            {{ store.singleSuite.squareM }}
+                        </span>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="col-12 d-flex flex-wrap justify-content-between">
+
+
+
+                            <h3 class="col-12">Services:</h3>
+                            <div class="col-2 d-flex p-2 justify-content-center"
+                                v-for="service in store.singleSuite.services">
+                                <i :class="service.icon"></i>
+                            </div>
+                        </div>
+
+                    </li>
+
+                </ul>
+                <button class="btn btn-outline-primary my-3" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                    Contact the owner
+                </button>
+                <router-link :to="{ name: 'suites' }" class="btn btn-outline-info mb-5">Go back to search</router-link>
+                <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
                 class="btn btn-outline-danger">contact</router-link> -->
 
+            </div>
         </div>
-    </div>
+    </section>
     <!-- ***************************************OFFCANVAS****************************************************** -->
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
