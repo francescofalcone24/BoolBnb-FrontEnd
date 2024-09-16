@@ -39,7 +39,7 @@ export default {
             service_url: '',
             suite_art: 'd-none',
             loading_art: '',
-            alah : null
+            alah: null
 
         }
     },
@@ -226,7 +226,7 @@ export default {
                 this.loading_art = 'd-none'
             }, 2376);
         },
-        
+
 
 
     },
@@ -263,7 +263,7 @@ export default {
 
     <section id="aka" class="container-fluid my-bg">
         <!-- FILTERS BAR -->
-        <div class="container col-sm-12 col-12 p-0 d-flex flex-wrap  h-100 z-1 radius-25" >
+        <div class="container col-sm-12 col-12 p-0 d-flex flex-wrap  h-100 z-1 radius-25">
 
             <!-- SEARCHBAR -->
 
@@ -289,7 +289,8 @@ export default {
             </div>
 
             <!---------------------------- FILTERS ---------------------------->
-            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded" style="position: relative; background-color: white;">
+            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded"
+                style="position: relative; background-color: white;">
                 <span class=""
                     style="position: absolute;right:0; top:0; border-top: 35px solid #514b82;border-left: 55px solid rgba(77, 41, 223, 0); color:whitesmoke; background-color:  conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);z-index:5"></span>
                 <span class=""
@@ -341,7 +342,7 @@ export default {
     </section>
 
     <!-- ***************************************SUITE CARDS****************************************************** -->
-    <main class="d-flex justify-content-center align-items-center" >
+    <main class="d-flex justify-content-center align-items-center">
         <div style="height:53vh">
             <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem">
             </div>
@@ -366,7 +367,7 @@ export default {
                     class="text-decoration-none">
 
                     <div v-if="suite.sponsor == 1"
-                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap"  >
+                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
 
 
                         <div class="col-12 col-md-4 d-flex align-items-center ">
@@ -521,36 +522,42 @@ export default {
     background-color: white;
     width : 100%; z-index :999; position:fixed; max-height:5rem ; width:100%; margin-top:5.5rem;
 } */
-.my_btn{
+.my_btn {
     margin-top: 3px;
     margin-left: 0;
     border: 2.3px solid black;
     border-radius: 45px;
 }
-.my_btn:hover{
-    transform: scale(1.15); 
-    background: linear-gradient(204deg, #ffffff 50%, #514b82 58%  62%, #f03355 70% 74%, #25b09b 82% 86%, #ffa516 82% 100%);
-    color:white;
+
+.my_btn:hover {
+    transform: scale(1.15);
+    background: linear-gradient(204deg, #ffffff 50%, #514b82 58% 62%, #f03355 70% 74%, #25b09b 82% 86%, #ffa516 82% 100%);
+    color: white;
     /* color: rgb(113, 88, 62); */
     font-weight: bold;
     -webkit-text-stroke-width: 0.3px;
-  -webkit-text-stroke-color: rgb(0, 0, 0);
+    -webkit-text-stroke-color: rgb(0, 0, 0);
     /* background: linear-gradient(90deg, rgb(255, 255, 255) 50%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 50%); */
 }
-#services{
-    line-height: 25px; 
-    background-color: rgba(0,0,0,0.05);
+
+#services {
+    line-height: 25px;
+    background-color: rgba(0, 0, 0, 0.05);
 }
-#services:hover{
-    background-color: rgba(255, 165, 22,0.7);
+
+#services:hover {
+    background-color: rgba(255, 165, 22, 0.7);
     cursor: pointer;
 }
-#my_suite:hover{
+
+#my_suite:hover {
     transform: scale(1.01);
-    background-color: rgba(255, 165, 22,0.6);
+    background-color: rgba(255, 165, 22, 0.6);
     border-radius: 5px;
-    box-shadow: 0 0 3px rgb(23, 23, 23);;
+    box-shadow: 0 0 3px rgb(23, 23, 23);
+    transition: 0.3s;
 }
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -823,29 +830,33 @@ p {
         transform: rotate(1turn)
     }
 }
+
 /* -->AGGIUNTO altro breakpoint per gestire la lista dei risultati */
 @media only screen and (max-width: 1200px) {
-    #result{
+    #result {
         top: 25%;
     }
 }
+
 @media only screen and (min-width: 992px) {
     img {
         width: 220px;
         height: 220px;
     }
-    #result{
+
+    #result {
         top: 99%;
         left: 7%;
     }
 }
 
-@media only screen and (min-width: 769px) and (max-width: 992px)  {
+@media only screen and (min-width: 769px) and (max-width: 992px) {
     img {
         width: 199px;
         height: 199px;
     }
-    #result{
+
+    #result {
         top: 99%;
         left: 7.8%;
     }
@@ -855,12 +866,13 @@ p {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 768px) {
-  /* img {
+
+    /* img {
         width: 159px;
         height: 159px;
         in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
     } */
-    #result{
+    #result {
         top: 99%;
         left: 9%;
     }
@@ -875,7 +887,7 @@ p {
 } */
 /* -->SOTTO I 410PX LA LISTA DEI SUGGERIMENTI è INGESTIBILE */
 @media only screen and (min-width: 410px) and (max-width: 576px) {
-    #result{
+    #result {
         top: 99%;
         left: 9%;
         width: 55%;
