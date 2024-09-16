@@ -214,13 +214,14 @@ export default {
                     // this.store.suite = response.data.results;
                     this.filtered = response.data.results[0];
                     this.services = response.data.results[1];
-                    // this.filter()
-                    // this.orderByDistance()
+                    this.filter()
+                    this.orderByDistance()
+                    
                 }).catch(function (error) {
                     console.log(error);
                 });
             // console.log(this.filtered[0].distance , 'al mounted')
-
+                
             setTimeout(() => {
                 this.suite_art = ''
                 this.loading_art = 'd-none'
@@ -325,7 +326,7 @@ export default {
                     </h5>
                     <div class="d-flex col-12 flex-wrap justify-content-start">
                         <div v-for="service, index in services" :key="index" class="text-center p-1 col-4">
-                            <label :for="services.name" class="border rounded p-2 w-100 h-100" id="services">
+                            <label :for="services.name" class="border rounded p-2 w-100 h-100 text-start" id="services">
                                 <input class="" type="checkbox" :value='service.id' :name="service.name" v-model="check"
                                     :id="service.name" @change="getSuite()">
                                 <span style="font-size: 15px;">
@@ -374,7 +375,7 @@ export default {
 
                             <div class="position-relative">
                                 <img v-if="!suite.img.startsWith('http')"
-                                    :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                                    :src="store.localHostUrl + '/storage/' + suite.img" class=" col-3 rounded card-img-top object-fit-cover" alt="...">
                                 <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
 
                                 <!-- Etichetta sponsored -->
@@ -440,7 +441,7 @@ export default {
 
             <!-- CARD NON SPONSORIZZATE -->
             <div v-for="suite in filtered" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0" id="my_suite">
-                <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } , query : this.$route }"
                     class="text-decoration-none">
 
                     <div v-if="suite.sponsor == 0"
@@ -451,7 +452,7 @@ export default {
 
                             <div class="position-relative">
                                 <img v-if="!suite.img.startsWith('http')"
-                                    :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                                    :src="store.localHostUrl + '/storage/' + suite.img" class=" col-3 rounded card-img-top object-fit-cover" alt="...">
                                 <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
                             </div>
 
@@ -867,11 +868,11 @@ p {
 
 @media only screen and (min-width: 576px) and (max-width: 768px) {
 
-    /* img {
+     /* img {
         width: 159px;
         height: 159px;
-        in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
-    } */
+         in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm */
+    
     #result {
         top: 99%;
         left: 9%;

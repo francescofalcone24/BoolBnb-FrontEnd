@@ -25,7 +25,9 @@ export default {
             suite_id: null,
             successo: false,
             suite: null,
-            validateEmail: false
+            validateEmail: false,
+            suite_art :'d-none',
+            loading_art: '',
 
         }
     },
@@ -120,6 +122,9 @@ export default {
         //console.log(this.$route.params.slug);
         // console.log(this.$route.params, 'questa e la rotta per lo slug')
         // console.log(`http://127.0.0.1:8000/api/visual/${this.$route.params.slug}`)
+        setTimeout(() => {
+            
+        
         axios
             .get(`http://127.0.0.1:8000/api/suite/name/${this.$route.params.slug}`)
             .then(response => {
@@ -140,7 +145,13 @@ export default {
 
 
             });
+        },200);
         setTimeout(this.getVisuals, 3000)
+        console.log(this.$route.query, 'query route') 
+        setTimeout(() => {
+                this.suite_art = ''
+                this.loading_art = 'd-none'
+            }, 846);
 
     },
 
@@ -154,7 +165,13 @@ export default {
 
 <template>
     <section style="padding-top:6rem">
-        <div class=" container d-flex flex-wrap py-4" v-if="store.singleSuite">
+        <section class="container d-flex justify-content-center" :class="loading_art">
+            <div style="height:50vh">
+                <div :class="loading_art" class="loader col-1" style="width:150px;margin-top:2rem;">
+                </div>
+            </div>
+        </section>
+        <div :class="suite_art" class=" container d-flex flex-wrap py-4" v-if="store.singleSuite">
 
             <div class="col-12 col-sm-12 col-lg-6">
                 <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
@@ -254,7 +271,8 @@ export default {
                         data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
                         Contact the owner
                     </button>
-                    <router-link :to="{ name: 'suites' }" class="btn btn-outline-info">Go back to search</router-link>
+                    <button @click="$router.go(-1)" class="btn btn-outline-info">Go back to search</button>
+                    <!-- <a @click="$router.go(-1)">back</a> -->
                 </div>
                 <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
                 class="btn btn-outline-danger">contact</router-link> -->
@@ -346,6 +364,39 @@ img {
     background-color: #d4d3d3;
 
 }
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    display: grid;
+    border-radius: 50%;
+    background: conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);
+    animation: l22 2s infinite linear;
+}
+
+.loader::before,
+.loader::after {
+    content: "";
+    grid-area: 1/1;
+    margin: 15%;
+    border-radius: 50%;
+    background: inherit;
+    animation: inherit;
+}
+
+.loader::after {
+    margin: 25%;
+    animation-duration: 3s;
+}
+@keyframes l22 {
+    100% {
+        transform: rotate(1turn)
+    }
+}
+
+/* end animation */
 @media only screen and (min-width: 1200px) {
    span{
     font-size: 21px;

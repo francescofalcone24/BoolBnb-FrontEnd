@@ -226,7 +226,7 @@ export default {
 
                             <div class="position-relative">
                                 <img v-if="!suite.img.startsWith('http')"
-                                    :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                                    :src="store.localHostUrl + '/storage/' + suite.img" alt="..." class=" col-3 rounded card-img-top object-fit-cover">
                                 <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
 
                                 <!-- Etichetta sponsored -->
@@ -422,6 +422,12 @@ export default {
         top: 99%;
         left: 7%;
     }
+    .navFixed {
+        width: 50%;
+        left: 25.1%;
+        top: 5.9%;
+
+    }
 }
 @media only screen and (min-width: 769px) and (max-width: 992px)  {
     img {
@@ -440,14 +446,21 @@ export default {
 
 }
 @media only screen and (min-width: 576px) and (max-width: 768px) {
-  /* img {
-        width: 159px;
-        height: 159px;
-        in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
-    } */
+   img {
+        /* width: 498px;
+        height: 664px; */
+        aspect-ratio: 1/1;
+        /* in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm */
+    } 
     #result{
         top: 99%;
         left: 9%;
+    }
+    .navFixed {
+        width: 90%;
+        left: 5%;
+        top: 8.6%;
+
     }
 }
 @media only screen and (max-width: 576px) {
