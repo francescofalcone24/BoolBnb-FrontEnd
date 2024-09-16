@@ -185,9 +185,8 @@ export default {
                 <div class="searchbar-container" :class="this.visible">
                     <form class="d-flex justify-content-center" role="search">
                         <div class="col-8 me-2 position-relative">
-                            <input class="searchbar w-100" type="search" placeholder="Search a location"
-                                aria-label="Search" v-model="pokemon" @input="getInputSearch" name="search_bar" required
-                                autocomplete="off">
+                            <input class="searchbar w-100" type="search" placeholder="Search a location" aria-label="Search"
+                                v-model="pokemon" @input="getInputSearch" name="search_bar" required autocomplete="off">
                             <ul id="result" class="list-group position-absolute">
                                 <li class="list-group-item" v-for="item, index in this.aka"
                                     @click="this.getChoose(index)">
@@ -214,80 +213,81 @@ export default {
     <div class="container">
 
         <h2 class="my-3 col-9 mx-auto">Our Advices:</h2>
-
+      
         <div v-for="suite in this.suite" class="col-lg-12 col-md-12 col-12 link-underline-opacity-0" id="my_suite">
-            <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }" class="text-decoration-none">
+                <router-link :to="{ name: 'AppSingleSuite', params: { slug: suite.slug } }"
+                    class="text-decoration-none">
 
-                <div v-if="suite.sponsor === 1"
-                    class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap">
+                    <div v-if="suite.sponsor === 1"
+                        class="col-12 d-flex rounded border p-2 justify-content-between mt-2 flex-wrap"  >
 
 
-                    <div class="col-12 col-md-4 d-flex align-items-center ">
+                        <div class="col-12 col-md-4 d-flex align-items-center ">
 
-                        <div class="position-relative">
-                            <img v-if="!suite.img.startsWith('http')"
-                                :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
-                            <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
+                            <div class="position-relative">
+                                <img v-if="!suite.img.startsWith('http')"
+                                    :src="store.localHostUrl + '/storage/' + suite.img" class="" alt="...">
+                                <img v-else="" :src="suite.img" class=" col-3 rounded card-img-top object-fit-cover">
 
-                            <!-- Etichetta sponsored -->
-                            <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+                                <!-- Etichetta sponsored -->
+                                <div class="my-sponsored-div">Sponsored<i class="fa-regular fa-star ms-1"></i></div>
+                            </div>
+
                         </div>
 
+
+                        <div class="col-6 p-3 col-md-4 text-dark  text-decoration-none">
+                            <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
+                            <p>{{ suite.address }}</p>
+                            
+                            <div class="d-flex flex-wrap align-content-end">
+                                <div class="me-4">
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
+                                        Rooms: {{ suite.room }}
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
+                                        Beds: {{ suite.bed }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
+                                        Bathrooms: {{ suite.bathroom }}
+                                    </div>
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
+                                        Square Meters: {{ suite.squareM }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SERVICES QUI QUANDO LI ABBIAMO -->
+                        <div class="p-3 col-6 col-md-4 d-flex align-self-start gap-4 flex-wrap text-dark">
+                            <div class="col-12 text-start" style="font-size: 25px; height: 30px">
+                                Services:
+                            </div>
+                            <div class="d-flex flex-wrap col-12">
+                                <div class="d-flex flex-column px-2">
+                                    <div class="" v-for="service in suite.services">
+                                        <i :class="service.icon" class="col-3" style=""></i>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column px-2">
+                                    <div class="d-flex flex-column" v-for="service in suite.services">
+                                        <div>{{ service.name }}</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
-
-                    <div class="col-6 p-3 col-md-4 text-dark  text-decoration-none">
-                        <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
-                        <p>{{ suite.address }}</p>
-                        <span>{{ suite.distance }} KM from center </span>
-                        <div class="d-flex flex-wrap align-content-end">
-                            <div class="me-4">
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-person-shelter me-2 text-center"></i>
-                                    Rooms: {{ suite.room }}
-                                </div>
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-bed me-2 text-center"></i>
-                                    Beds: {{ suite.bed }}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-toilet me-2 text-center"></i>
-                                    Bathrooms: {{ suite.bathroom }}
-                                </div>
-                                <div class="mt-3 d-flex align-items-center">
-                                    <i class="my-fa-w fa-solid fa-maximize me-2 text-center"></i>
-                                    Square Meters: {{ suite.squareM }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SERVICES QUI QUANDO LI ABBIAMO -->
-                    <div class="p-3 col-6 col-md-4 d-flex align-self-start gap-4 flex-wrap text-dark">
-                        <div class="col-12 text-start" style="font-size: 25px; height: 30px">
-                            Services:
-                        </div>
-                        <div class="d-flex flex-wrap col-12">
-                            <div class="d-flex flex-column px-2">
-                                <div class="" v-for="service in suite.services">
-                                    <i :class="service.icon" class="col-3" style=""></i>
-
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column px-2">
-                                <div class="d-flex flex-column" v-for="service in suite.services">
-                                    <div>{{ service.name }}</div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </router-link>
-        </div>
+                </router-link>
+            </div>
 
     </div>
 
@@ -296,18 +296,16 @@ export default {
 </template>
 
 <style scoped>
-.jumbotron {
-    padding-top: 6rem;
+.jumbotron{
+     padding-top: 6rem; 
 }
 
-#my_suite:hover {
+#my_suite:hover{
     transform: scale(1.01);
-    background-color: rgba(255, 165, 22, 0.6);
+    background-color: rgba(255, 165, 22,0.6);
     border-radius: 5px;
-    box-shadow: 0 0 3px rgb(23, 23, 23);
-    transition: 0.3s;
+    box-shadow: 0 0 3px rgb(23, 23, 23);;
 }
-
 .jumbo-img {
     width: 100%
 }
@@ -336,7 +334,7 @@ export default {
 
     background-color: rgba(134, 134, 134, 1);
     left: 26%;
-    top: 0;
+    top: 3.89%;
     color: black;
 
     z-index: 999
@@ -367,7 +365,7 @@ export default {
 .search-btn {
     height: 3rem;
     border-radius: 20px;
-    background-color: rgba(240, 248, 255, 0.438);
+    background-color: rgba(240, 248, 255, 0.5);
     border: white 2px solid;
 }
 
@@ -409,76 +407,71 @@ export default {
     padding: 2px;
     font-weight: 500;
 }
-
 @media only screen and (max-width: 1200px) {
-    #result {
+    #result{
         top: 25%;
     }
 
 }
-
 @media only screen and (min-width: 992px) {
     img {
         width: 220px;
         height: 220px;
     }
-
-    #result {
+    #result{
         top: 99%;
         left: 7%;
     }
 }
-
-@media only screen and (min-width: 769px) and (max-width: 992px) {
+@media only screen and (min-width: 769px) and (max-width: 992px)  {
     img {
         width: 199px;
         height: 199px;
     }
-
-    #result {
+    #result{
         top: 99%;
         left: 7.8%;
     }
-
-    .jumbotron {
-        padding-top: 4rem;
-    }
+    .jumbotron{
+     padding-top: 4rem; 
+}
 
 
 
 }
-
 @media only screen and (min-width: 576px) and (max-width: 768px) {
-
-    /* img {
+  /* img {
         width: 159px;
         height: 159px;
         in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
     } */
-    #result {
+    #result{
         top: 99%;
         left: 9%;
     }
 }
-
 @media only screen and (max-width: 576px) {
     .navFixed {
         width: 90%;
         left: 5%;
-    }
 
-    .searchbar-container {
+    }
+    .searchbar-container{
         width: 90%;
     }
-
-    #result {
+    #result{
         top: 99%;
         left: 5%;
         width: 55%;
     }
-
-    .jumbotron {
-        padding-top: 4.3rem;
+    .jumbotron{
+     padding-top: 4.3rem; 
+     
+}
+img {
+        width: 100%;
+         aspect-ratio: 1/1; 
+        /* in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm */
     }
 }
 
