@@ -263,13 +263,14 @@ export default {
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasTopLabel">Contact the owner:</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             <div v-if="success" class="alert alert-success text-start" role="alert">
                 Messaggio inviato con successo!
             </div>
         </div>
         <div class="offcanvas-body d-flex flex-column flex-wrap ">
             <div class="row">
-                <form @submit.prevent="sendForm()" class="col-12 text-start">
+                <form @submit.prevent="sendForm()" class="col-12 text-start" autocomplete="off">
                     <div class="offcanvas-item my-3">
                         <input class=" border form-control" :class="{ 'is-invalid': errors.name }" type="text"
                             name="name" id="name" placeholder="Name" v-model="name">
