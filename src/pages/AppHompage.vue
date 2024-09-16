@@ -239,7 +239,7 @@ export default {
                         <div class="col-6 p-3 col-md-4 text-dark  text-decoration-none">
                             <h4 class="card-title ellipse py-1">{{ suite.title }}</h4>
                             <p>{{ suite.address }}</p>
-                            <span>{{ suite.distance }} KM from center </span>
+                            
                             <div class="d-flex flex-wrap align-content-end">
                                 <div class="me-4">
                                     <div class="mt-3 d-flex align-items-center">
@@ -454,6 +454,7 @@ export default {
     .navFixed {
         width: 90%;
         left: 5%;
+
     }
     .searchbar-container{
         width: 90%;
@@ -465,7 +466,13 @@ export default {
     }
     .jumbotron{
      padding-top: 4.3rem; 
+     
 }
+img {
+        width: 100%;
+         aspect-ratio: 1/1; 
+        /* in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm */
+    }
 }
 
 

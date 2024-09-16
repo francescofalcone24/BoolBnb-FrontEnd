@@ -153,22 +153,24 @@ export default {
 
 
 <template>
-    <section style="padding:6rem">
-        <div class="container my-breack d-flex py-4 justify-content-around col-xl-12 col-l-12" v-if="store.singleSuite">
+    <section style="padding-top:6rem">
+        <div class=" container d-flex flex-wrap py-4" v-if="store.singleSuite">
 
-            <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
-                class="mb-5" alt="...">
-
-
-            <img v-else="" :src="store.singleSuite.img" class="mb-5" alt="...">
-
-            <div class="d-flex flex-column ">
-                <h2 class="card-title">{{ store.singleSuite.title }}</h2>
-                <p class="card-text">{{ store.singleSuite.address }}</p>
+            <div class="col-12 col-sm-12 col-lg-6">
+                <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                class="" alt="...">
 
 
+                <img v-else="" :src="store.singleSuite.img" class="" alt="...">
+            </div>
 
-                <ul class="list-group list-group-flush mb-3">
+            <div class=" col-12 col-sm-12 col-lg-6 d-flex flex-wrap p-3">
+                <h2 class="card-title col-12">{{ store.singleSuite.title }}</h2>
+                <p class="card-text col-12">{{ store.singleSuite.address }}</p>
+
+
+
+                <ul class="list-group list-group-flush mb-3 col-12">
                     <li class="list-group-item">
                         <div class="col-6 d-flex justify-content-between">
 
@@ -233,26 +235,27 @@ export default {
                         </span>
                     </li>
 
-                    <li class="list-group-item">
-                        <div class="col-12 d-flex flex-wrap justify-content-between">
+                    <li class="list-group-item col-12 d-flex flex-wrap justify-content-start">
+                       
 
 
 
                             <h3 class="col-12">Services:</h3>
-                            <div class="col-2 d-flex p-2 justify-content-center"
-                                v-for="service in store.singleSuite.services">
-                                <i :class="service.icon"></i>
+                            <div class="col-6" v-for="service in store.singleSuite.services">
+                                <span id="services" class="p-2"><i :class="service.icon" style="margin-right: 1.3rem;"  ></i>{{ service.name }}</span>
                             </div>
-                        </div>
+                        
 
                     </li>
 
                 </ul>
-                <button class="btn btn-outline-primary my-3" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                    Contact the owner
-                </button>
-                <router-link :to="{ name: 'suites' }" class="btn btn-outline-info mb-5">Go back to search</router-link>
+                <div class="col-12">
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                        Contact the owner
+                    </button>
+                    <router-link :to="{ name: 'suites' }" class="btn btn-outline-info">Go back to search</router-link>
+                </div>
                 <!-- <router-link :to="{ name: 'Contacts', params: { id: store.singleSuite.id } }"
                 class="btn btn-outline-danger">contact</router-link> -->
 
@@ -332,8 +335,10 @@ i {
 
 img {
     object-fit: cover;
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    aspect-ratio: 1/1;
+    margin-top: 3rem;
+    padding: 1.5rem;
 }
 
 .offcanvas {
@@ -341,26 +346,76 @@ img {
     background-color: #d4d3d3;
 
 }
+@media only screen and (min-width: 1200px) {
+   span{
+    font-size: 21px;
+   }  
+   #services{
+    font-size: 18px;
+    white-space: nowrap;
+    margin-right: 1.5rem;
 
-@media only screen and (max-width: 1200px) {
-    .my-breack {
-        display: flex;
-        flex-direction: column;
+   }
+  
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+   span{
+    font-size: 21px;
+   }  
+   #services{
+    font-size: 18px;
+    white-space: nowrap;
+
+   }
+  
+}
+
+@media only screen and (min-width: 769px) and (max-width: 992px)  {
+    
+
+
+    span{
+    font-size: 19px;
+   }  
+   #services{
+    font-size: 18px;
+    white-space: nowrap;
+
+   }
+
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    span{
+    font-size: 17px;
+   }  
+   #services{
+    font-size: 14px;
+    white-space: nowrap;
+
+   }
+}
+
+/* @media only screen and (max-width: 576px) {
+    #result{
+        top: 99%;
+        left: 9%;
     }
-
-    img {
+  
+} */
+/* -->SOTTO I 410PX LA LISTA DEI SUGGERIMENTI è INGESTIBILE */
+@media only screen and (min-width: 315px) and (max-width: 576px) {
+    #services{
+        font-size: 17px;
+    white-space: nowrap;
+    }
+    .container{
         width: 100%;
+    }
+    i{
+        font-size: 20px;
     }
 }
 
-@media only screen and (max-width: 992px) {
-    .my-breack {
-        display: flex;
-        flex-direction: column;
-    }
-
-    img {
-        width: 100%;
-    }
-}
 </style>
