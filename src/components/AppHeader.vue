@@ -32,16 +32,14 @@ export default {
 </script>
 
 <template>
-
-
-  <nav class="navbar my-navbar  m-0 align-items-center" id="my_Bg" >
-    <div class="d-flex justify-content-between align-items-center container">
-      <div class="w-50 p-2">
+  <nav class="navbar my-navbar  m-0 align-items-center" id="my_Bg"  style="position: fixed; width: 100%;z-index: 999;">
+    <div class="d-flex justify-content-around align-items-center container">
+      <div class="col-6 p-2">
         <router-link :to="{ name: 'home' }">
           <img src="../assets/img/BoolBnB.png" class="my-navbar p-0 m-0 img-logo" alt="">
         </router-link>
       </div>
-      <div class="w-50" >
+      <div class="col-6" >
        
 
 
@@ -98,7 +96,7 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0);
 }
 #my_Bg{
-   background: linear-gradient(110deg, #ffffff 59%, rgba(255, 165, 22,0.875) 61%  70%, rgba(37, 176, 155,0.875) 71% 80%, rgba(240, 51, 85,0.875) 81% 90%, rgba(81, 75, 130,0.875) 91% 100%);
+   background: linear-gradient(110deg, #ffffff 59%, rgba(255, 165, 22) 61%  70%, rgba(37, 176, 155) 71% 80%, rgba(240, 51, 85) 81% 90%, rgba(81, 75, 130) 91% 100%);
 }
 .img-logo {
   width: 20%;

@@ -261,14 +261,14 @@ export default {
 
 
 
-    <section id="aka" class="container-fluid my-bg" style=" width : 100%; z-index :999;">
+    <section id="aka" class="container-fluid my-bg">
         <!-- FILTERS BAR -->
-        <div class="container col-sm-12 col-12 p-0 d-flex flex-wrap  h-100 z-1 radius-25" style="position:relative;">
+        <div class="container col-sm-12 col-12 p-0 d-flex flex-wrap  h-100 z-1 radius-25" >
 
             <!-- SEARCHBAR -->
 
-            <div class="d-flex justify-content-center w-100 py-4" role="search">
-                <div class="col-sm-10 col-8 d-flex  justify-content-center">
+            <div class="d-flex justify-content-center w-100 py-4" role="search" style="margin-top: 6rem;">
+                <div class="col-sm-10 col-8 d-flex  justify-content-center position-relative">
                     <input class="searchbar" type="search" placeholder="Search" aria-label="Search" v-model="pokemon"
                         @input="getInputSearch" name="search_bar" style="width: 90%;" required autocomplete="off">
                     <ul id="result" class="list-group position-absolute">
@@ -289,7 +289,7 @@ export default {
             </div>
 
             <!---------------------------- FILTERS ---------------------------->
-            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded" style="position: relative;">
+            <div class="col-12 d-flex flex-wrap p-4 border border-dark rounded" style="position: relative; background-color: white;">
                 <span class=""
                     style="position: absolute;right:0; top:0; border-top: 35px solid #514b82;border-left: 55px solid rgba(77, 41, 223, 0); color:whitesmoke; background-color:  conic-gradient(#25b09b 25%, #f03355 0 50%, #514b82 0 75%, #ffa516 0);z-index:5"></span>
                 <span class=""
@@ -341,7 +341,7 @@ export default {
     </section>
 
     <!-- ***************************************SUITE CARDS****************************************************** -->
-    <main class="d-flex justify-content-center align-items-center">
+    <main class="d-flex justify-content-center align-items-center" >
         <div style="height:53vh">
             <div :class="loading_art" class="loader col-1" style="width:150px; margin-top: 13rem">
             </div>
@@ -517,6 +517,10 @@ export default {
 </template>
 
 <style scoped>
+/* #aka{
+    background-color: white;
+    width : 100%; z-index :999; position:fixed; max-height:5rem ; width:100%; margin-top:5.5rem;
+} */
 .my_btn{
     margin-top: 3px;
     margin-left: 0;
@@ -626,8 +630,8 @@ export default {
 
 #result {
     z-index: 99;
-    left: 5.8%;
-    top:28%;
+    left: 6.8%;
+    top: 99%;
 }
 
 /*  */
@@ -830,6 +834,10 @@ p {
         width: 220px;
         height: 220px;
     }
+    #result{
+        top: 99%;
+        left: 7%;
+    }
 }
 
 @media only screen and (min-width: 769px) and (max-width: 992px)  {
@@ -838,7 +846,8 @@ p {
         height: 199px;
     }
     #result{
-        top: 23%;
+        top: 99%;
+        left: 7.8%;
     }
 
 
@@ -852,23 +861,23 @@ p {
         in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
     } */
     #result{
-        top: 20%;
-        left: 7.2%;
+        top: 99%;
+        left: 9%;
     }
 }
 
-@media only screen and (max-width: 576px) {
+/* @media only screen and (max-width: 576px) {
     #result{
-        top: 17.5%;
-        left: 7.2%;
+        top: 99%;
+        left: 9%;
     }
   
-}
+} */
 /* -->SOTTO I 410PX LA LISTA DEI SUGGERIMENTI è INGESTIBILE */
-@media only screen and (min-width: 410px) and (max-width: 575px) {
+@media only screen and (min-width: 410px) and (max-width: 576px) {
     #result{
-        top: 17.3%;
-        left: 9.8% ;
+        top: 99%;
+        left: 9%;
         width: 55%;
     }
 }

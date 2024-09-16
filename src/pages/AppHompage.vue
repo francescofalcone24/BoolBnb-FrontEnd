@@ -184,9 +184,9 @@ export default {
 
                 <div class="searchbar-container" :class="this.visible">
                     <form class="d-flex justify-content-center" role="search">
-                        <div class="col-8 me-2">
+                        <div class="col-8 me-2 position-relative">
                             <input class="searchbar w-100" type="search" placeholder="Search" aria-label="Search"
-                                v-model="pokemon" @input="getInputSearch" name="search_bar" required>
+                                v-model="pokemon" @input="getInputSearch" name="search_bar" required autocomplete="off">
                             <ul id="result" class="list-group position-absolute">
                                 <li class="list-group-item" v-for="item, index in this.aka"
                                     @click="this.getChoose(index)">
@@ -297,7 +297,7 @@ export default {
 
 <style scoped>
 .jumbotron{
-    margin-top: 0.6rem;
+     padding-top: 6rem; 
 }
 
 #my_suite:hover{
@@ -407,7 +407,49 @@ export default {
     padding: 2px;
     font-weight: 500;
 }
+@media only screen and (max-width: 1200px) {
+    #result{
+        top: 25%;
+    }
 
+}
+@media only screen and (min-width: 992px) {
+    img {
+        width: 220px;
+        height: 220px;
+    }
+    #result{
+        top: 99%;
+        left: 7%;
+    }
+}
+@media only screen and (min-width: 769px) and (max-width: 992px)  {
+    img {
+        width: 199px;
+        height: 199px;
+    }
+    #result{
+        top: 99%;
+        left: 7.8%;
+    }
+    .jumbotron{
+     padding-top: 4rem; 
+}
+
+
+
+}
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+  /* img {
+        width: 159px;
+        height: 159px;
+        in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
+    } */
+    #result{
+        top: 99%;
+        left: 9%;
+    }
+}
 @media only screen and (max-width: 576px) {
     .navFixed {
         width: 90%;
@@ -416,29 +458,22 @@ export default {
     .searchbar-container{
         width: 90%;
     }
-}
-
-@media only screen and (min-width: 576px) and (max-width: 768px) {
-    /* img {
-        width: 159px;
-        height: 159px;
-        in caso voleste mettere queste passare la sezione delle colonne della card da col-md a col-sm
-    } */
-}
-
-@media only screen and (min-width: 769px) and (max-width: 992px) {
-    img {
-        width: 199px;
-        height: 199px;
+    #result{
+        top: 99%;
+        left: 5%;
+        width: 55%;
     }
+    .jumbotron{
+     padding-top: 4.3rem; 
+}
 }
 
-@media only screen and (min-width: 992px) {
-    img {
-        width: 220px;
-        height: 220px;
-    }
-}
+
+
+
+
+
+
 
 /* @media only screen and (max-width: 768px) {
     .my-card-breack {
