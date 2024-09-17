@@ -132,11 +132,11 @@ export default {
 
 
                 if (response.data.status) {
-                    this.store.singleSuite = response.data.results;
+                    //this.store.singleSuite = response.data.results;
                     console.log('questo è ', this.store.singleSuite);
-                    // this.suite_id = response.data.results.id;
+                    //this.suite_id = response.data.results.id;
                     this.suite = response.data.results;
-                    // console.log(this.visuals);
+                     console.log(this.suite, 'queta è lapp');
 
                 } else {
                     this.$router.push({ name: 'not-found' });
@@ -171,19 +171,19 @@ export default {
                 </div>
             </div>
         </section>
-        <div :class="suite_art" class=" container d-flex flex-wrap py-4" v-if="store.singleSuite">
+        <div :class="suite_art" class=" container d-flex flex-wrap py-4" v-if="this.suite">
 
             <div class="col-12 col-sm-12 col-lg-6">
-                <img v-if="!store.singleSuite.img.startsWith('http')" :src="store.localHostUrl + '/storage/' + suite.img"
+                <img v-if="suite.img.startsWith('http') == false" :src="store.localHostUrl + '/storage/' + suite.img"
                 class="" alt="...">
 
 
-                <img v-else="" :src="store.singleSuite.img" class="" alt="...">
+                <img v-else="" :src="suite.img" class="" alt="...">
             </div>
 
             <div class=" col-12 col-sm-12 col-lg-6 d-flex flex-wrap p-3">
-                <h2 class="card-title col-12">{{ store.singleSuite.title }}</h2>
-                <p class="card-text col-12">{{ store.singleSuite.address }}</p>
+                <h2 class="card-title col-12">{{ suite.title }}</h2>
+                <p class="card-text col-12">{{ suite.address }}</p>
 
 
 
@@ -200,7 +200,7 @@ export default {
                         </div>
                         <span>
 
-                            {{ store.singleSuite.room }}
+                            {{ suite.room }}
                         </span>
                     </li>
 
@@ -216,7 +216,7 @@ export default {
                         </div>
                         <span>
 
-                            {{ store.singleSuite.bathroom }}
+                            {{ suite.bathroom }}
                         </span>
                     </li>
 
@@ -232,7 +232,7 @@ export default {
                         </div>
                         <span>
 
-                            {{ store.singleSuite.bed }}
+                            {{ suite.bed }}
                         </span>
                     </li>
 
@@ -248,7 +248,7 @@ export default {
                         </div>
                         <span>
 
-                            {{ store.singleSuite.squareM }}
+                            {{ suite.squareM }}
                         </span>
                     </li>
 
@@ -258,7 +258,7 @@ export default {
 
 
                             <h3 class="col-12">Services:</h3>
-                            <div class="col-6" v-for="service in store.singleSuite.services">
+                            <div class="col-6" v-for="service in suite.services">
                                 <span id="services" class="p-2"><i :class="service.icon" style="margin-right: 1.3rem;"  ></i>{{ service.name }}</span>
                             </div>
                         
